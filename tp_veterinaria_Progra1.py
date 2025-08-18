@@ -11,26 +11,26 @@ ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "a
 
 def crear_matrices():
     duenos = [
-        [1, "Ana",   "Pérez",  "ana.perez@example.com",   "+54 11 5555-1111"],
-        [2, "Bruno", "Silva",  "bruno.silva@example.com", "+54 11 5555-2222"],
-        [3, "Carla", "Gómez",  "carla.gomez@example.com", "+54 11 5555-3333"]
+        [1, "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111"],
+        [2, "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222"],
+        [3, "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333"]
     ]
     mascotas = [
-        [101, "Milo",  "Perro", "Labrador",      5, 1, 23.5, "Macho"],
-        [102, "Luna",  "Gato",  "Siamés",        3, 1,  4.2, "Hembra"],
-        [103, "Rocky", "Perro", "Bulldog",       4, 2, 20.0, "Macho"],
-        [104, "Nina",  "Gato",  "Común europeo", 2, 3,  3.8, "Hembra"]
+        [101, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho"],
+        [102, "Luna", "Gato", "Siamés", 3, 1, 4.2, "Hembra"],
+        [103, "Rocky", "Perro", "Bulldog", 4, 2, 20.0, "Macho"],
+        [104, "Nina", "Gato", "Común europeo", 2, 3, 3.8, "Hembra"]
     ]
     turnos = [
-        [1001, 101, "15-08-2025", "10:00", "Extraccion"],
-        [1002, 102, "16-08-2025", "11:30", "Operacion"],
-        [1003, 103, "16-08-2025", "10:00", "Chequeo anual"],
-        [1004, 104, "17-08-2025", "09:00", "Triple gatuna"]
+        [1001, 101, "15-08-2025", "10:00", 23, "Extraccion"],
+        [1002, 102, "16-08-2025", "11:30", 54, "Operacion"],
+        [1003, 103, "16-08-2025", "10:00", 32, "Chequeo anual"],
+        [1004, 104, "17-08-2025", "09:00", 65, "Triple gatuna"]
     ]
     veterinarios = [
-        [23, "Martín", "Herrera",  "Clínico",  "+54 11 5555-1111", True],
-        [54, "Camila", "Álvarez",  "Cirujano", "+54 11 5555-2222", False],
-        [32, "Julián", "Duerte",  "Farmacéutico", "+54 11 5555-3333", True]
+        [23, "Martín", "Herrera", "Clínico", "+54 11 5555-1111", True],
+        [54, "Camila", "Álvarez", "Cirujano", "+54 11 5555-2222", False],
+        [32, "Julián", "Duerte", "Farmacéutico", "+54 11 5555-3333", True]
     ]
 
     return duenos, mascotas, turnos, veterinarios
