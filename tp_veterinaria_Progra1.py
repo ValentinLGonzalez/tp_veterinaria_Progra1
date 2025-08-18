@@ -4,8 +4,7 @@
 
 ENCAB_DUENOS       = ["dueño_id", "nombre", "apellido", "email", "telefono"]
 ENCAB_MASCOTAS     = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo"]
-ENCAB_TRATAMIENTOS = ["tratamiento_id", "descripcion"]
-ENCAB_TURNOS       = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento_id"]
+ENCAB_TURNOS       = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento"]
 
 # Función para crear las matrices con datos de prueba
 
@@ -21,18 +20,13 @@ def crear_matrices():
         [103, "Rocky", "Perro", "Bulldog",       4, 2, 20.0, "Macho"],
         [104, "Nina",  "Gato",  "Común europeo", 2, 3,  3.8, "Hembra"]
     ]
-    tratamientos = [
-        [501, "Control general"],
-        [502, "Vacunación antirrábica"],
-        [503, "Desparasitación"]
-    ]
     turnos = [
-        [1001, 101, "15-08-2025", "10:00", 501],
-        [1002, 102, "16-08-2025", "11:30", 502],
-        [1003, 103, "16-08-2025", "10:00", 503],
-        [1004, 104, "17-08-2025", "09:00", 501]
+        [1001, 101, "15-08-2025", "10:00", "Extraccion"],
+        [1002, 102, "16-08-2025", "11:30", "Operacion"],
+        [1003, 103, "16-08-2025", "10:00", "Chequeo anual"],
+        [1004, 104, "17-08-2025", "09:00", "Triple gatuna"]
     ]
-    return duenos, mascotas, tratamientos, turnos
+    return duenos, mascotas, turnos
 
 
 # Función para imprimir matrices
@@ -51,13 +45,11 @@ def imprimir_matriz(encabezado, matriz):
 
 # Programa principal
 
-duenos, mascotas, tratamientos, turnos = crear_matrices()
+duenos, mascotas, turnos = crear_matrices()
 
 print("DUEÑOS")
 imprimir_matriz(ENCAB_DUENOS, duenos)
 print("\nMASCOTAS")
 imprimir_matriz(ENCAB_MASCOTAS, mascotas)
-print("\nTRATAMIENTOS")
-imprimir_matriz(ENCAB_TRATAMIENTOS, tratamientos)
 print("\nTURNOS")
 imprimir_matriz(ENCAB_TURNOS, turnos)
