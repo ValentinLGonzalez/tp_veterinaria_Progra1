@@ -2,9 +2,10 @@
 
 # Encabezados
 
-ENCAB_DUENOS       = ["dueño_id", "nombre", "apellido", "email", "telefono"]
-ENCAB_MASCOTAS     = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo"]
-ENCAB_TURNOS       = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento"]
+ENCAB_DUENOS = ["dueño_id", "nombre", "apellido", "email", "telefono"]
+ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo"]
+ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento"]
+ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "activo"]
 
 # Función para crear las matrices con datos de prueba
 
@@ -26,7 +27,13 @@ def crear_matrices():
         [1003, 103, "16-08-2025", "10:00", "Chequeo anual"],
         [1004, 104, "17-08-2025", "09:00", "Triple gatuna"]
     ]
-    return duenos, mascotas, turnos
+    veterinarios = [
+        [23, "Martín", "Herrera",  "Clínico",  "+54 11 5555-1111", True],
+        [54, "Camila", "Álvarez",  "Cirujano", "+54 11 5555-2222", False],
+        [32, "Julián", "Duerte",  "Farmacéutico", "+54 11 5555-3333", True]
+    ]
+
+    return duenos, mascotas, turnos, veterinarios
 
 
 # Función para imprimir matrices
