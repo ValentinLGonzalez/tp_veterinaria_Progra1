@@ -2,7 +2,7 @@
 
 # Encabezados
 
-ENCAB_DUENOS = ["dueño_id", "nombre", "apellido", "email", "telefono"]
+ENCAB_DUENOS = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono"]
 ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo"]
 ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento"]
 ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "activo"]
