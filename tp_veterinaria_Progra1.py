@@ -3,7 +3,7 @@
 # Encabezados
 ENCAB_DUENOS = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono", "activo"]
 ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo", "activo"]
-ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento", "activo"]
+ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "veterinario_id", "tratamiento", "activo"]
 ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "activo"]
 
 # Función para crear las matrices con datos de prueba
@@ -14,21 +14,21 @@ def crear_matrices():
         [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333", True]
     ]
     mascotas = [
-        [101, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho", True],
-        [102, "Luna", "Gato", "Siamés", 3, 1, 4.2, "Hembra", True],
-        [103, "Rocky", "Perro", "Bulldog", 4, 2, 20.0, "Macho", True],
-        [104, "Nina", "Gato", "Común europeo", 2, 3, 3.8, "Hembra", True]
+        [1, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho", True],
+        [2, "Luna", "Gato", "Siamés", 3, 1, 4.2, "Hembra", True],
+        [3, "Rocky", "Perro", "Bulldog", 4, 2, 20.0, "Macho", True],
+        [4, "Nina", "Gato", "Común europeo", 2, 3, 3.8, "Hembra", True]
     ]
     turnos = [
-        [1001, 101, "15-08-2025", "10:00", 23, "Extraccion", True],
-        [1002, 102, "16-08-2025", "11:30", 54, "Operacion", True],
-        [1003, 103, "16-08-2025", "10:00", 32, "Chequeo anual", True],
-        [1004, 104, "17-08-2025", "09:00", 65, "Triple gatuna", True]
+        [1, 1, "15-08-2025", "10:00", 1, "Extraccion", True],
+        [2, 2, "16-08-2025", "11:30", 3, "Operacion", True],
+        [3, 4, "16-08-2025", "10:00", 2, "Chequeo anual", True],
+        [4, 3, "17-08-2025", "09:00", 3, "Triple gatuna", True]
     ]
     veterinarios = [
-        [23, "Martín", "Herrera", "Clínico", "+54 11 5555-1111", True],
-        [54, "Camila", "Álvarez", "Cirujano", "+54 11 5555-2222", False],
-        [32, "Julián", "Duerte", "Farmacéutico", "+54 11 5555-3333", True]
+        [1, "Martín", "Herrera", "Clínico", "+54 11 5555-1111", True],
+        [2, "Camila", "Álvarez", "Cirujano", "+54 11 5555-2222", False],
+        [3, "Julián", "Duerte", "Farmacéutico", "+54 11 5555-3333", True]
     ]
 
     return duenos, mascotas, turnos, veterinarios
@@ -46,7 +46,23 @@ def imprimir_matriz(encabezado, matriz):
         for valor in fila:
             print(valor, end="\t")
         print()
+        
+def calcular_id(matriz):
+    return len(matriz) + 1
 
+def create_veterinarian(matriz_veterinarios):
+    veterinarian = []
+    for header in ENCAB_VETERINARIOS:
+        if header == "veterinario_id":
+            veterinarian.append(calcular_id(matriz_veterinarios))
+        elif header == "activo":
+            veterinarian.append(True)
+        else :
+            input_header = input(f'Ingresa {header}')
+            veterinarios.append(input_header)
+            
+    matriz_veterinarios.append(veterinarian)
+    return matriz_veterinarios
 
 # Programa principal
 
@@ -58,5 +74,10 @@ print("\nMASCOTAS")
 imprimir_matriz(ENCAB_MASCOTAS, mascotas)
 print("\nTURNOS")
 imprimir_matriz(ENCAB_TURNOS, turnos)
+print("\nVETERINARIOS")
+imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
+
+create_veterinarian(veterinarios)
+
 print("\nVETERINARIOS")
 imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
