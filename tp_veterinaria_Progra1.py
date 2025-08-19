@@ -1,19 +1,17 @@
 # TP - Programación 1 - Primera Entrega
 
 # Encabezados
-
-ENCAB_DUENOS = ["dueño_id", "nombre", "apellido", "email", "telefono", "activo"]
+ENCAB_DUENOS = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono", "activo"]
 ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo", "activo"]
 ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento", "activo"]
 ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "activo"]
 
 # Función para crear las matrices con datos de prueba
-
 def crear_matrices():
     duenos = [
-        [1, "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111", True],
-        [2, "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222", True],
-        [3, "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333"]
+        [1, "35125487", "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111", True],
+        [2, "45785126", "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222", True],
+        [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333", True]
     ]
     mascotas = [
         [101, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho", True],
