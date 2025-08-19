@@ -11,9 +11,9 @@ ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "a
 
 def crear_matrices():
     duenos = [
-        [1, "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111"],
-        [2, "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222"],
-        [3, "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333"]
+        [1, "35125487", "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111"],
+        [2, "45785126", "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222"],
+        [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333"]
     ]
     mascotas = [
         [101, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho"],
