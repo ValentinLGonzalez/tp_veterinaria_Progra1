@@ -4,7 +4,7 @@
 ENCAB_DUENOS = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono", "activo"]
 ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo", "activo"]
 ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "veterinario_id", "tratamiento", "activo"]
-ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "especialidad", "telefono", "activo"]
+ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "apellido", "matricula", "especialidad", "telefono", "activo"]
 
 # Función para crear las matrices con datos de prueba
 def crear_matrices():
@@ -62,6 +62,7 @@ def create_veterinarian(matriz_veterinarios):
             veterinarios.append(input_header)
             
     matriz_veterinarios.append(veterinarian)
+    
     return matriz_veterinarios
 
 # Programa principal
