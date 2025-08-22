@@ -67,6 +67,10 @@ def create_veterinarian(array_veterinarians):
     
     return array_veterinarians
 
+def read_veterinarian(veterinarian_id, array_veterinarians):
+    for veterinarian in array_veterinarians:
+        if(veterinarian[0] == veterinarian_id):
+            return veterinarian
 # Programa principal
 
 duenos, mascotas, turnos, veterinarios = crear_matrices()
@@ -80,7 +84,6 @@ imprimir_matriz(ENCAB_TURNOS, turnos)
 print("\nVETERINARIOS")
 imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
 
-create_veterinarian(veterinarios)
 
 print("\nVETERINARIOS")
 imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
