@@ -47,23 +47,25 @@ def imprimir_matriz(encabezado, matriz):
             print(valor, end="\t")
         print()
         
+# Entity helper function       
 def calcular_id(matriz):
     return len(matriz) + 1
 
-def create_veterinarian(matriz_veterinarios):
+# Veterinarian functions
+def create_veterinarian(array_veterinarians):
     veterinarian = []
     for header in ENCAB_VETERINARIOS:
         if header == "veterinario_id":
-            veterinarian.append(calcular_id(matriz_veterinarios))
+            veterinarian.append(calcular_id(array_veterinarians))
         elif header == "activo":
             veterinarian.append(True)
         else :
-            input_header = input(f'Ingresa {header}')
-            veterinarios.append(input_header)
-            
-    matriz_veterinarios.append(veterinarian)
+            input_header = input(f'Ingresa {header}: ')
+            veterinarian.append(input_header)
+    print(veterinarian)
+    array_veterinarians.append(veterinarian)
     
-    return matriz_veterinarios
+    return array_veterinarians
 
 # Programa principal
 
