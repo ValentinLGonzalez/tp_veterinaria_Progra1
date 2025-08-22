@@ -71,6 +71,13 @@ def read_veterinarian(veterinarian_id, array_veterinarians):
     for veterinarian in array_veterinarians:
         if(veterinarian[0] == veterinarian_id):
             return veterinarian
+              
+def delete_veterinarian(veterinarian_id, array_veterinarians):
+    current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
+    if(current_veterinarians_id.count(veterinarian_id)):
+        deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
+        array_veterinarians.pop(deleted_veterinarian_index)
+        
 # Programa principal
 
 duenos, mascotas, turnos, veterinarios = crear_matrices()
@@ -84,6 +91,6 @@ imprimir_matriz(ENCAB_TURNOS, turnos)
 print("\nVETERINARIOS")
 imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
 
-
+print(delete_veterinarian(1, veterinarios))
 print("\nVETERINARIOS")
 imprimir_matriz(ENCAB_VETERINARIOS, veterinarios)
