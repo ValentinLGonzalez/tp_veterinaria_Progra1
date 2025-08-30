@@ -1,13 +1,12 @@
-from Utils.arrayHelper import imprimir_matriz
-from Utils.constants import ENCAB_VETERINARIOS
-from Utils.entitiesHelper import calcular_id
-from Utils.menuHelper import mostrar_menu
+from utils.arrayHelper import print_array
+from utils.constants import ENCAB_VETERINARIOS
+from utils.entitiesHelper import calculate_id
 
 def create_veterinarian(array_veterinarians):
     new_veterinarian = []
     for header in ENCAB_VETERINARIOS:
         if header == "veterinario_id":
-            new_veterinarian.append(calcular_id(array_veterinarians))
+            new_veterinarian.append(calculate_id(array_veterinarians))
         elif header == "activo":
             new_veterinarian.append(True)
         else :
@@ -36,26 +35,16 @@ def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
         array_veterinarians.pop(deleted_veterinarian_index)
         
 def show_all_veterinarians(array_veterinarians): 
-    imprimir_matriz(ENCAB_VETERINARIOS, array_veterinarians)
+    print_array(ENCAB_VETERINARIOS, array_veterinarians)
     
-def show_veterinarian(veterinarians): 
-    imprimir_matriz(ENCAB_VETERINARIOS, veterinarians)
+def show_veterinarian(veterinarian): 
+    print()
+    print("Veterinario agregado correctamente.")
+    print()
+    print_array(ENCAB_VETERINARIOS, veterinarian)
 
-def add_veterinarian_menu(veterinarians):
+def add_veterinarian_action(veterinarians):
     print("Ingrese los datos del Veterinario: \n")
     new_veterinarian = create_veterinarian(veterinarians)
     show_veterinarian(new_veterinarian)
      
-def show_submenu_veterinarians(veterinarians): 
-    """
-    Veterinarians Controller
-    """
-    TITLE = "Bienvenidos al menu veterinarios"
-    OPTIONS = ["Agregar un Veterinario","Mostrar todos los Veterinarios", "Modificar un Veterinario por DNI", "Eliminar Veterinario por DNI"]
-    ACTIONS = [ 
-                add_veterinarian_menu(veterinarians),
-                show_all_veterinarians(veterinarians),
-                modify_veterinarian(),
-                remove_veterinarian()
-                ]
-    mostrar_menu(TITLE, OPTIONS, ACTIONS )

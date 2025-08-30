@@ -1,1 +1,1 @@
-from .veterinarians import ENCAB_VETERINARIOS
+from utils.arrayHelper import print_array

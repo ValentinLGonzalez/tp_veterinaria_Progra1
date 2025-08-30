@@ -1,67 +1,88 @@
 # TP - Programación 1 - Primera Entrega
-
-from Entities.appointments import ENCAB_TURNOS
-
-from Entities.veterinarians import show_submenu_veterinarians
-from Utils.arrayHelper import imprimir_matriz
-from Utils.menuHelper import mostrar_menu
-
-# Encabezados
-ENCAB_DUENOS = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono", "activo"]
-ENCAB_MASCOTAS = ["mascota_id", "nombre", "especie", "raza", "edad", "dueño_id", "peso", "sexo", "activo"]
-ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento", "veterinario_id", "activo"]
-
-# Función para crear las matrices con datos de prueba
-def crear_matrices():
-    duenos = [
-        [1, "35125487", "Ana", "Pérez", "ana.perez@example.com", "+54 11 5555-1111", True],
-        [2, "45785126", "Bruno", "Silva", "bruno.silva@example.com", "+54 11 5555-2222", True],
-        [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "+54 11 5555-3333", True]
-    ]
-    mascotas = [
-        [1, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho", True],
-        [2, "Luna", "Gato", "Siamés", 3, 1, 4.2, "Hembra", True],
-        [3, "Rocky", "Perro", "Bulldog", 4, 2, 20.0, "Macho", True],
-        [4, "Nina", "Gato", "Común europeo", 2, 3, 3.8, "Hembra", True]
-    ]
-    turnos = [
-        [1, 1, "15-08-2025", "10:00", "Extraccion", 1, True],
-        [2, 2, "16-08-2025", "11:30", "Operacion", 3, True],
-        [3, 4, "16-08-2025", "10:00", "Chequeo anual", 2, True],
-        [4, 3, "17-08-2025", "09:00", "Triple gatuna", 3, True]
-    ]
-    veterinarians = [
-        [1, "36485787", "Martín", "Herrera", "MN12345", "Clínico", "+54 11 5555-1111", True],
-        [2, "17456321", "Camila", "Álvarez", "MN54321", "Cirujano", "+54 11 5555-2222", False],
-        [3, "34125478", "Julián", "Duerte", "MN98765", "Farmacéutico", "+54 11 5555-3333", True]
-    ]
-
-    return duenos, mascotas, turnos, veterinarians
+from utils.entitiesHelper import create_arrays
+from entities.veterinarians import add_veterinarian_action
+def main():
+    #-------------------------------------------------
+    # Inicialización de variables
+    #----------------------------------------------------------------------------------------------
+    owners, pets, appointments, veterinarians = create_arrays()
 
 
-# Programa principal
-duenos, mascotas, turnos, veterinarians = crear_matrices()
+    #-------------------------------------------------
+    # Bloque de menú
+    #----------------------------------------------------------------------------------------------
+    while True:
+        while True:
+            opciones = 4
+            print()
+            print("---------------------------")
+            print("MENÚ PRINCIPAL")
+            print("---------------------------")
+            print("[1] Gestión de Veterinarios")
+            print("[2] Opción 2")
+            print("[3] Opción 3")
+            print("[4] Opción 4")
+            print("---------------------------")
+            print("[0] Salir del programa")
+            print("---------------------------")
+            print()
+            
+            opcion = input("Seleccione una opción: ")
+            if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                break
+            else:
+                input("Opción inválida. Presione ENTER para volver a seleccionar.")
+        print()
 
-print("DUEÑOS")
-print("\nMASCOTAS")
-print("\nTURNOS")
-print("\nVETERINARIOS")
+        if opcion == "0": # Opción salir del programa
+            exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
-def show_owners(): 
-    imprimir_matriz(ENCAB_DUENOS, duenos)
-def show_pets(): 
-    imprimir_matriz(ENCAB_MASCOTAS, mascotas)
-def show_appointments(): 
-    imprimir_matriz(ENCAB_TURNOS, turnos)
+        elif opcion == "1":   # Opción 1
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > MENÚ DE VETERINARIOS")
+                    print("---------------------------")
+                    print("[1] Agregar Veterinario")
+                    print("[2] Modificar un Veterinario por DNI")
+                    print("[3] Mostrar todos los Veterinarios")
+                    print("[4] Eliminar Veterinario por DNI")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcion = input("Seleccione una opción: ")
+                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcion == "0": # Opción salir del submenú
+                    break # No salimos del programa, volvemos al menú anterior
+                elif opcion == "1":   # Opción 1
+                    add_veterinarian_action(veterinarians)
+                    
+                elif opcion == "2":   # Opción 2
+                    ...
+                elif opcion == "3":   # Opción 3
+                    ...
+                elif opcion == "4":   # Opción 4
+                    ...
+
+        # elif opcion == "2":   # Opción 2
+        #     ...
+        # elif opcion == "3":   # Opción 3
+        #     ...
+        # elif opcion == "4":   # Opción 4
+        #     ...
+
+        input("\nPresione ENTER para volver al menú.")
+        print("\n\n")
 
 
-    
-TITLE = "Bienvenidos a la veterinaria"
-OPTIONS = ["Veterinarios","Mascotas", "Turnos", "Dueños"]
-ACTIONS = [ 
-            show_submenu_veterinarians,
-            show_pets,
-            show_appointments,
-            show_owners
-            ]
-mostrar_menu(TITLE, OPTIONS, ACTIONS )
+# Punto de entrada al programa
+main()

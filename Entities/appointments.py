@@ -1,8 +1,9 @@
 import random
-import Utils.helpers as helpers
+
+from utils.constants import ENCAB_TURNOS
+from utils.entitiesHelper import calculate_id
 
 # CONSTANTS
-ENCAB_TURNOS = ["turno_id", "mascota_id", "fecha", "hora", "tratamiento", "veterinario_id", "activo"]
 
 # CREATE
 def create_appointment(array_appointments, array_pets, array_veterinarians, array_owners):
@@ -10,7 +11,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
     
     for header in ENCAB_TURNOS:
         if header == "turno_id":
-            appointment.append(helpers.calculate_id(array_appointments))
+            appointment.append(calculate_id(array_appointments))
         elif header == "activo":
             appointment.append(True)
         elif header == "mascota_id":
