@@ -2,9 +2,8 @@
 
 from Entities.appointments import ENCAB_TURNOS
 
-from Entities.veterinarians import create_veterinarian, delete_veterinarian, read_veterinarian, show_veterinarians, update_veterinarian
+from Entities.veterinarians import show_submenu_veterinarians
 from Utils.arrayHelper import imprimir_matriz
-from Utils.constants import ENCAB_VETERINARIOS
 from Utils.menuHelper import mostrar_menu
 
 # Encabezados
@@ -32,66 +31,16 @@ def crear_matrices():
         [4, 3, "17-08-2025", "09:00", "Triple gatuna", 3, True]
     ]
     veterinarians = [
-        [1, "Martín", "Herrera", "MN12345", "Clínico", "+54 11 5555-1111", True],
-        [2, "Camila", "Álvarez", "MN54321", "Cirujano", "+54 11 5555-2222", False],
-        [3, "Julián", "Duerte", "MN98765", "Farmacéutico", "+54 11 5555-3333", True]
+        [1, "36485787", "Martín", "Herrera", "MN12345", "Clínico", "+54 11 5555-1111", True],
+        [2, "17456321", "Camila", "Álvarez", "MN54321", "Cirujano", "+54 11 5555-2222", False],
+        [3, "34125478", "Julián", "Duerte", "MN98765", "Farmacéutico", "+54 11 5555-3333", True]
     ]
 
-    return duenos, mascotas, turnos, veterinarios
+    return duenos, mascotas, turnos, veterinarians
 
-
-# Función para imprimir matrices
-
-def imprimir_matriz(encabezado, matriz):
-    # Encabezado
-    for titulo in encabezado: 
-        print(titulo, end="\t")
-    print()
-    # Filas
-    for fila in matriz:
-        for valor in fila:
-            print(valor, end="\t")
-        print()
-        
-# Entity helper function       
-def calcular_id(matriz):
-    return len(matriz) + 1
-
-# Veterinarian functions
-def create_veterinarian(array_veterinarians):
-    veterinarian = []
-    for header in ENCAB_VETERINARIOS:
-        if header == "veterinario_id":
-            veterinarian.append(calcular_id(array_veterinarians))
-        elif header == "activo":
-            veterinarian.append(True)
-        else :
-            input_header = input(f'Ingresa {header}: ')
-            veterinarian.append(input_header)
-    array_veterinarians.append(veterinarian)
-    return array_veterinarians
-
-def read_veterinarian(veterinarian_id, array_veterinarians):
-    for veterinarian in array_veterinarians:
-        if(veterinarian[0] == veterinarian_id):
-            return veterinarian
-              
-def update_veterinarian(updated_veterinarian, array_veterinarians):
-    current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
-    if(current_veterinarians_id.count(updated_veterinarian[0])):
-        updated_veterinarian_index = current_veterinarians_id.index(updated_veterinarian[0])
-        for i in range(len(array_veterinarians[updated_veterinarian_index])):
-            array_veterinarians[updated_veterinarian_index][i] = updated_veterinarian[i]
-    return array_veterinarians[updated_veterinarian_index]
-        
-def delete_veterinarian(veterinarian_id, array_veterinarians):
-    current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
-    if(current_veterinarians_id.count(veterinarian_id)):
-        deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
-        array_veterinarians.pop(deleted_veterinarian_index)
 
 # Programa principal
-duenos, mascotas, turnos, veterinarios = crear_matrices()
+duenos, mascotas, turnos, veterinarians = crear_matrices()
 
 print("DUEÑOS")
 print("\nMASCOTAS")
@@ -105,17 +54,7 @@ def show_pets():
 def show_appointments(): 
     imprimir_matriz(ENCAB_TURNOS, turnos)
 
-    
-def show_submenu_veterinarians(): 
-    TITLE = "Bienvenidos al menu veterinarios"
-    OPTIONS = ["Crear","Mostrar todos", "Modificar", "Eliminar"]
-    ACTIONS = [ 
-                create_veterinarian(veterinarios),
-                show_veterinarians(veterinarios),
-                update_veterinarian(),
-                delete_veterinarian()
-                ]
-    mostrar_menu(TITLE, OPTIONS, ACTIONS )
+
     
 TITLE = "Bienvenidos a la veterinaria"
 OPTIONS = ["Veterinarios","Mascotas", "Turnos", "Dueños"]

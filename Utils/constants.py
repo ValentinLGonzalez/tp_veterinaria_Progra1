@@ -1,1 +1,1 @@
-ENCAB_VETERINARIOS = ["veterinario_id", "nombre", "apellido", "matricula", "especialidad", "telefono", "activo"]
+ENCAB_VETERINARIOS = ["veterinario_id", "dni", "nombre", "apellido", "matricula", "especialidad", "telefono", "activo"]
