@@ -1,3 +1,4 @@
+from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
 from utils.constants import ENCAB_VETERINARIOS
 from utils.entitiesHelper import calculate_id
@@ -35,7 +36,7 @@ def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
         array_veterinarians.pop(deleted_veterinarian_index)
         
 def show_all_veterinarians(array_veterinarians): 
-    print_array(ENCAB_VETERINARIOS, array_veterinarians)
+    print_array_bidimensional(ENCAB_VETERINARIOS, array_veterinarians)
     
 def show_veterinarian(veterinarian): 
     print()
