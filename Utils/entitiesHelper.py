@@ -1,5 +1,5 @@
 # Entity helper function       
-def calculate_id(matriz):
+def get_next_id(matriz):
     return len(matriz) + 1
 
 # Función para crear las matrices con datos de prueba

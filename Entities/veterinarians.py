@@ -1,13 +1,13 @@
 from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
 from utils.constants import ENCAB_VETERINARIOS
-from utils.entitiesHelper import calculate_id
+from utils.entitiesHelper import get_next_id
 
 def create_veterinarian(array_veterinarians):
     new_veterinarian = []
     for header in ENCAB_VETERINARIOS:
         if header == "veterinario_id":
-            new_veterinarian.append(calculate_id(array_veterinarians))
+            new_veterinarian.append(get_next_id(array_veterinarians))
         elif header == "activo":
             new_veterinarian.append(True)
         else :

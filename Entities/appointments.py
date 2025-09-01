@@ -1,7 +1,7 @@
 import random
 
 from utils.constants import ENCAB_TURNOS
-from utils.entitiesHelper import calculate_id
+from utils.entitiesHelper import get_next_id
 
 # CONSTANTS
 
@@ -11,7 +11,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
     
     for header in ENCAB_TURNOS:
         if header == "turno_id":
-            appointment.append(calculate_id(array_appointments))
+            appointment.append(get_next_id(array_appointments))
         elif header == "activo":
             appointment.append(True)
         elif header == "mascota_id":
