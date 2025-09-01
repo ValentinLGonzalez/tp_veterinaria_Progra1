@@ -22,9 +22,9 @@ def create_arrays():
         [4, 3, "17-08-2025", "09:00", "Triple gatuna", 3, True]
     ]
     veterinarians = [
-        [1, "36485787", "Martín", "Herrera", "MN12345", "Clínico", "+54 11 5555-1111", True],
-        [2, "17456321", "Camila", "Álvarez", "MN54321", "Cirujano", "+54 11 5555-2222", False],
-        [3, "34125478", "Julián", "Duerte", "MN98765", "Farmacéutico", "+54 11 5555-3333", True]
+        [1, "36485787", "Martín", "Herrera", "MN12345", "Clínico", "1155551111", True],
+        [2, "17456321", "Camila", "Álvarez", "MN54321", "Cirujano", "1155552222", False],
+        [3, "34125478", "Julián", "Duerte", "MN98765", "Farmacéutico", "1155553333", True]
     ]
 
     return duenos, mascotas, turnos, veterinarians

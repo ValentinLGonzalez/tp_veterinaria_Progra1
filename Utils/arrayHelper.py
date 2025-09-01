@@ -6,7 +6,6 @@ def print_array_bidimensional(header, array):
     # Rows
     for row in array:
         for value in row:
-            print(value)
             print("{:<10}".format(value), end="\t")
         print()  
         
