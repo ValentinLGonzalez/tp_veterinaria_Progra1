@@ -20,7 +20,7 @@ def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
     for veterinarian in array_veterinarians:
         if(veterinarian[0] == veterinarian_id):
             return veterinarian
-              
+                  
 def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veterinarians):
     current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
     if(current_veterinarians_id.count(veterinarian_id)):
@@ -35,10 +35,6 @@ def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
     if(current_veterinarians_id.count(veterinarian_id)):
         deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
         array_veterinarians[deleted_veterinarian_index][ENCAB_VETERINARIOS.index("activo")] = False
-        
-def show_all_veterinarians_action(array_veterinarians): 
-    active_veterinarians = list(filter(lambda v: v[ENCAB_VETERINARIOS.index("activo")] == True, array_veterinarians))
-    print_array_bidimensional(ENCAB_VETERINARIOS, active_veterinarians)
     
 def show_veterinarian(veterinarian): 
     print()
@@ -66,6 +62,10 @@ def modify_veterinarian_action(veterinarians):
     updated_veterinarian = create_veterinarian(veterinarians)
     return update_veterinarian_by_id(updated_veterinarian[ENCAB_VETERINARIOS.index("veterinario_id")], updated_veterinarian, veterinarians)
 
+def show_all_veterinarians_action(array_veterinarians): 
+    active_veterinarians = list(filter(lambda v: v[ENCAB_VETERINARIOS.index("activo")] == True, array_veterinarians))
+    print_array_bidimensional(ENCAB_VETERINARIOS, active_veterinarians)
+    
 def delete_veterinarian_action(veterinarians):
     dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
     veterinarian_to_delete = get_veterinarian_by_dni(dni_input, veterinarians)
