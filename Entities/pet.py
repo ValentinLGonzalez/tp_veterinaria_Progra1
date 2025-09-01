@@ -1,7 +1,7 @@
-from Utils.arrayHelper import print_array_bidimensional
-from Utils.arrayHelper import print_array
-from Utils.entitiesHelper import get_next_id
-from Utils.constants import ENCAB_MASCOTAS
+from utils.arrayHelper import print_array_bidimensional
+from utils.arrayHelper import print_array
+from utils.entitiesHelper import get_next_id
+from utils.constants import ENCAB_MASCOTAS
 
 def create_pet(array_pets):
     new_pet = []
