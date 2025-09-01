@@ -1,6 +1,5 @@
-# TP - Programación 1 - Primera Entrega
 from utils.entitiesHelper import create_arrays
-from entities.veterinarians import add_veterinarian_action
+from entities.veterinarians import add_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 def main():
     #-------------------------------------------------
     # Inicialización de variables
@@ -65,11 +64,10 @@ def main():
                     break # No salimos del programa, volvemos al menú anterior
                 elif opcion == "1":   # Opción 1
                     add_veterinarian_action(veterinarians)
-                    
                 elif opcion == "2":   # Opción 2
-                    ...
+                    modify_veterinarian_action(veterinarians)
                 elif opcion == "3":   # Opción 3
-                    ...
+                    show_all_veterinarians_action(veterinarians)
                 elif opcion == "4":   # Opción 4
                     ...
 

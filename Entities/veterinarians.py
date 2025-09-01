@@ -28,6 +28,7 @@ def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veter
         for i in range(len(array_veterinarians[updated_veterinarian_index])):
             array_veterinarians[updated_veterinarian_index][i] = updated_veterinarian[i]
     return array_veterinarians[updated_veterinarian_index]
+
         
 def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
     current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
@@ -35,7 +36,7 @@ def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
         deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
         array_veterinarians.pop(deleted_veterinarian_index)
         
-def show_all_veterinarians(array_veterinarians): 
+def show_all_veterinarians_action(array_veterinarians): 
     print_array_bidimensional(ENCAB_VETERINARIOS, array_veterinarians)
     
 def show_veterinarian(veterinarian): 
@@ -44,8 +45,22 @@ def show_veterinarian(veterinarian):
     print()
     print_array(ENCAB_VETERINARIOS, veterinarian)
 
+def get_veterinarian_by_dni(dni, array_veterinarians):
+    for veterinarian in array_veterinarians:
+        if veterinarian[ENCAB_VETERINARIOS.index("dni")] == dni:
+            return veterinarian
+    return None
+
+# Actions
 def add_veterinarian_action(veterinarians):
     print("Ingrese los datos del Veterinario: \n")
     new_veterinarian = create_veterinarian(veterinarians)
     show_veterinarian(new_veterinarian)
      
+def modify_veterinarian_action(veterinarians):
+    dni_input = input("Ingrese el DNI del Veterinario que desea modificar: ")
+    veterinarian_to_update = get_veterinarian_by_dni(dni_input, veterinarians)
+    print(veterinarian_to_update)
+    show_veterinarian(veterinarian_to_update)
+    updated_veterinarian = create_veterinarian(veterinarians)
+    return update_veterinarian_by_id(updated_veterinarian[ENCAB_VETERINARIOS.index("veterinario_id")], updated_veterinarian, veterinarians)
