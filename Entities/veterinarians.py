@@ -18,7 +18,7 @@ def create_veterinarian(array_veterinarians):
 
 def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
     for veterinarian in array_veterinarians:
-        if(veterinarian[0] == veterinarian_id):
+        if(veterinarian[ENCAB_VETERINARIOS.index("veterinario_id")] == veterinarian_id and veterinarian[ENCAB_VETERINARIOS.index("activo") == True]):
             return veterinarian
                   
 def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veterinarians):
