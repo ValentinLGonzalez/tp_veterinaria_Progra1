@@ -1,6 +1,6 @@
 import random
 
-from utils.constants import ENCAB_TURNOS
+from utils.constants import HEADER_APPOINTMENT
 from utils.entitiesHelper import get_next_id
 
 # CONSTANTS
@@ -9,7 +9,7 @@ from utils.entitiesHelper import get_next_id
 def create_appointment(array_appointments, array_pets, array_veterinarians, array_owners):
     appointment = []
     
-    for header in ENCAB_TURNOS:
+    for header in HEADER_APPOINTMENT:
         if header == "turno_id":
             appointment.append(get_next_id(array_appointments))
         elif header == "activo":
@@ -74,8 +74,8 @@ def update_appointment(updated_appointment, array_appointments, array_pets, arra
     if updated_appointment[0] in current_appointments_id:
         updated_appointment_index = current_appointments_id.index(updated_appointment[0])
         
-        mascota_id_index = ENCAB_TURNOS.index("mascota_id")
-        veterinario_id_index = ENCAB_TURNOS.index("veterinario_id")
+        mascota_id_index = HEADER_APPOINTMENT.index("mascota_id")
+        veterinario_id_index = HEADER_APPOINTMENT.index("veterinario_id")
         
         if not any(mascota[0] == updated_appointment[mascota_id_index] for mascota in array_pets):
             print(f"No existe una mascota con ese ID")
