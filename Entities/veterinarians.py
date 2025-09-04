@@ -1,11 +1,11 @@
 from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
-from utils.constants import HEADER_OWNER
+from utils.constants import HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 
 def create_veterinarian(array_veterinarians):
     new_veterinarian = []
-    for header in HEADER_OWNER:
+    for header in HEADER_VETERINARIAN:
         if header == "veterinario_id":
             new_veterinarian.append(get_next_id(array_veterinarians))
         elif header == "activo":
@@ -18,11 +18,11 @@ def create_veterinarian(array_veterinarians):
 
 def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
     for veterinarian in array_veterinarians:
-        if(veterinarian[HEADER_OWNER.index("veterinario_id")] == veterinarian_id and veterinarian[HEADER_OWNER.index("activo") == True]):
+        if(veterinarian[HEADER_VETERINARIAN.index("veterinario_id")] == veterinarian_id and veterinarian[HEADER_VETERINARIAN.index("activo") == True]):
             return veterinarian
                   
 def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veterinarians):
-    current_veterinarians_id = [veterinarian[0] for veterinarian in array_veterinarians]
+    current_veterinarians_id = [veterinarian[HEADER_VETERINARIAN.index("veterinario_id")] for veterinarian in array_veterinarians]
     if(current_veterinarians_id.count(veterinarian_id)):
         updated_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
         for i in range(len(array_veterinarians[updated_veterinarian_index])):
@@ -31,20 +31,20 @@ def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veter
 
         
 def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
-    current_veterinarians_id = [veterinarian[HEADER_OWNER.index("veterinario_id")] for veterinarian in array_veterinarians]
+    current_veterinarians_id = [veterinarian[HEADER_VETERINARIAN.index("veterinario_id")] for veterinarian in array_veterinarians]
     if(current_veterinarians_id.count(veterinarian_id)):
         deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
-        array_veterinarians[deleted_veterinarian_index][HEADER_OWNER.index("activo")] = False
+        array_veterinarians[deleted_veterinarian_index][HEADER_VETERINARIAN.index("activo")] = False
     
 def show_veterinarian(veterinarian): 
     print()
     print("Veterinario agregado correctamente.")
     print()
-    print_array(HEADER_OWNER, veterinarian)
+    print_array(HEADER_VETERINARIAN, veterinarian)
 
 def get_veterinarian_by_dni(dni, array_veterinarians):
     for veterinarian in array_veterinarians:
-        if veterinarian[HEADER_OWNER.index("dni")] == dni:
+        if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni:
             return veterinarian
     return None
 
@@ -60,15 +60,15 @@ def modify_veterinarian_action(veterinarians):
     print(veterinarian_to_update)
     show_veterinarian(veterinarian_to_update)
     updated_veterinarian = create_veterinarian(veterinarians)
-    return update_veterinarian_by_id(updated_veterinarian[HEADER_OWNER.index("veterinario_id")], updated_veterinarian, veterinarians)
+    return update_veterinarian_by_id(updated_veterinarian[HEADER_VETERINARIAN.index("veterinario_id")], updated_veterinarian, veterinarians)
 
 def show_all_veterinarians_action(array_veterinarians): 
-    active_veterinarians = list(filter(lambda v: v[HEADER_OWNER.index("activo")] == True, array_veterinarians))
-    print_array_bidimensional(HEADER_OWNER, active_veterinarians)
+    active_veterinarians = list(filter(lambda v: v[HEADER_VETERINARIAN.index("activo")] == True, array_veterinarians))
+    print_array_bidimensional(HEADER_VETERINARIAN, active_veterinarians)
     
 def delete_veterinarian_action(veterinarians):
     dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
     veterinarian_to_delete = get_veterinarian_by_dni(dni_input, veterinarians)
     print(veterinarian_to_delete)
     show_veterinarian(veterinarian_to_delete)
-    delete_veterinarian_by_id(veterinarian_to_delete[HEADER_OWNER.index("veterinario_id")], veterinarians)
+    delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinario_id")], veterinarians)
