@@ -25,7 +25,7 @@ def create_arrays():
     veterinarians = [
         [1, "36485787", "Martín", "Herrera", "MN12345", "mherrera@gmail.com", "1155551111", True, "Qwerty123"],
         [2, "17456321", "Camila", "Álvarez", "MN54321", "calvare@gmail.com", "1155552222", False, "Qwerty123"],
-        [3, "34125478", "Julián", "Duerte", "MN98765", "jdurate@gmail.com", "1155553333", True, "Qwerty123"]
+        [3, "34125478", "Julián", "Duarte", "MN98765", "jdurate@gmail.com", "1155553333", True, "Qwerty123"]
     ]
 
     return owners, mascotas, turnos, veterinarians
