@@ -1,7 +1,6 @@
 # Entity helper function       
 def get_next_id(matriz):
     return len(matriz) + 1
-HEADER_OWNER = ["dueño_id", "dni", "nombre", "apellido", "email", "telefono", "activo", "password"]
 
 # Función para crear las matrices con datos de prueba
 def create_arrays():
