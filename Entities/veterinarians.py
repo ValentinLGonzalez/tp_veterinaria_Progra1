@@ -83,10 +83,25 @@ def update_veterinarian_by_id(updated_veterinarian, array_veterinarians):
 
         
 def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
+    """Soft deletes a veterinarian by ID.
+
+    Searches for a veterinarian by its unique ID in the list. If found,
+    the veterinarian is marked as inactive (sets the 'active' field to False).
+    This function does not remove the record from the list.
+
+    Args:
+        veterinarian_id (str): The ID of the veterinarian to be deleted.
+        array_veterinarians (list[list]): The list of veterinarians, where each
+            veterinarian is represented as a list of values.
+
+    Returns:
+        None: The list is modified in place.
+    """
     current_veterinarians_id = [veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] for veterinarian in array_veterinarians]
-    if(current_veterinarians_id.count(veterinarian_id)):
+    if(veterinarian_id in current_veterinarians_id):
         deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
         array_veterinarians[deleted_veterinarian_index][HEADER_VETERINARIAN.index("active")] = False
+    return None
     
 def show_veterinarian(veterinarian): 
     print()
@@ -135,8 +150,28 @@ def show_all_veterinarians_action(array_veterinarians):
     print_array_bidimensional(HEADER_VETERINARIAN, active_veterinarians)
     
 def delete_veterinarian_action(veterinarians):
-    dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
+    """Soft deletes a veterinarian by DNI after user confirmation.
+
+    Continuously prompts the user to enter a veterinarian's DNI until a valid
+    veterinarian is found. Once found, displays the veterinarian, deletes it
+    by marking it as inactive, and confirms the deletion.
+
+    Args:
+        veterinarians (list[list]): The list of veterinarians, where each
+            veterinarian is represented as a list of values.
+
+    Returns:
+        None: The list is modified in place.
+    """
+    is_valid_dni = False
+    while not is_valid_dni:
+        dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
+        veterinarian_to_update = get_veterinarian_by_dni(dni_input, veterinarians)
+        if veterinarian_to_update:
+            is_valid_dni = True
+            show_veterinarian(veterinarian_to_update)
+        else:
+            print("El DNI no corresponde a un veterinario existente.")
     veterinarian_to_delete = get_veterinarian_by_dni(dni_input, veterinarians)
-    print(veterinarian_to_delete)
-    show_veterinarian(veterinarian_to_delete)
+    print("\Veterinario dado de baja correctamente.\n")
     delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")], veterinarians)
