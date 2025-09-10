@@ -1,7 +1,7 @@
 import random
 
-from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
-from utils.entitiesHelper import get_next_id
+from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
+from utils.entitiesHelper import get_next_id, update_entity_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
 
@@ -200,16 +200,6 @@ def find_veterinarian_by_dni(array_veterinarians, dni):
         if (vet[HEADER_VETERINARIAN.index("dni")] == dni and vet[HEADER_VETERINARIAN.index("active")]):
             return vet
     return None
-
-def update_entity_data(entity, headers):
-    updated_entity = entity.copy()
-    for header in headers:
-        if header in EXCLUDED_PRINT_HEADERS:
-            continue
-        index = headers.index(header)
-        input_header = input(f'Ingresa {header}: ')
-        updated_entity[index] = input_header 
-    return updated_entity
 
 def get_readable_appointment(appointment, array_pets, array_veterinarians):
     pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]

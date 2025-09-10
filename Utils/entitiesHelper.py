@@ -1,4 +1,7 @@
 # Entity helper function       
+from utils.constants import EXCLUDED_PRINT_HEADERS
+
+
 def get_next_id(matriz):
     return len(matriz) + 1
 
@@ -28,3 +31,13 @@ def create_arrays():
     ]
 
     return owners, mascotas, turnos, veterinarians
+
+def update_entity_data(entity, headers):
+    updated_entity = entity.copy()
+    for header in headers:
+        if header in EXCLUDED_PRINT_HEADERS:
+            continue
+        index = headers.index(header)
+        input_header = input(f'Ingresa {header}: ')
+        updated_entity[index] = input_header 
+    return updated_entity
