@@ -1,11 +1,15 @@
 import random
 
-from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
+from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
 
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
+OPEN_WORK_HOUR = '08:00'
+CLOSE_WORK_HOUR = '20:00'
+
+horarios = {'08:00': True, '08:30': False}
 
 # CREATE
 def create_appointment(array_appointments, array_pets, array_veterinarians, array_owners):
@@ -113,7 +117,7 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
     if appointment_to_update:
         print("\nTurno encontrado:\n")
         show_appointment(appointment_to_update)
-        updated_appointment = update_appointment_data(appointment_to_update)
+        updated_appointment = update_entity_data(appointment_to_update, HEADER_APPOINTMENT)
         updated_appointment = update_appointment(updated_appointment, array_appointments, array_pets, array_veterinarians)
         if updated_appointment:
             print("\nTurno actualizado correctamente:\n")
@@ -197,15 +201,15 @@ def find_veterinarian_by_dni(array_veterinarians, dni):
             return vet
     return None
 
-def update_appointment_data(appointment):
-    updated_appointment = appointment.copy()
-    for header in HEADER_APPOINTMENT:
-        if header in ["pet_id", "veterinarian_id", "active", "appointment_id"]:
+def update_entity_data(entity, headers):
+    updated_entity = entity.copy()
+    for header in headers:
+        if header in EXCLUDED_PRINT_HEADERS:
             continue
-        index = HEADER_APPOINTMENT.index(header)
+        index = headers.index(header)
         input_header = input(f'Ingresa {header}: ')
-        updated_appointment[index] = input_header 
-    return updated_appointment
+        updated_entity[index] = input_header 
+    return updated_entity
 
 def get_readable_appointment(appointment, array_pets, array_veterinarians):
     pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]

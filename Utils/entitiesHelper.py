@@ -5,9 +5,9 @@ def get_next_id(matriz):
 # Función para crear las matrices con datos de prueba
 def create_arrays():
     owners = [
-        [1, "35125487", "Ana", "Pérez", "ana.perez@example.com", "1144441111", True,"Qwerty123"],
-        [2, "45785126", "Bruno", "Silva", "bruno.silva@example.com", "1144442222", True, "Qwerty123"],
-        [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "1144443333", True, "Qwerty123"]
+        [1, "35125487", "Ana", "Pérez", "ana.perez@example.com", "1144441111", True],
+        [2, "45785126", "Bruno", "Silva", "bruno.silva@example.com", "1144442222", True],
+        [3, "52654789", "Carla", "Gómez", "carla.gomez@example.com", "1144443333", True]
     ]
     mascotas = [
         [1, "Milo", "Perro", "Labrador", 5, 1, 23.5, "Macho", True],
@@ -22,9 +22,9 @@ def create_arrays():
         [4, 3, "17-08-2025", "09:00", "Triple gatuna", 3, True]
     ]
     veterinarians = [
-        [1, "36485787", "Martín", "Herrera", "MN12345", "mherrera@gmail.com", "1155551111", True, "Qwerty123"],
-        [2, "17456321", "Camila", "Álvarez", "MN54321", "calvare@gmail.com", "1155552222", False, "Qwerty123"],
-        [3, "34125478", "Julián", "Duarte", "MN98765", "jdurate@gmail.com", "1155553333", True, "Qwerty123"]
+        [1, "36485787", "Martín", "Herrera", "MN12345", "mherrera@gmail.com", "1155551111", True],
+        [2, "17456321", "Camila", "Álvarez", "MN54321", "calvare@gmail.com", "1155552222", False],
+        [3, "34125478", "Julián", "Duarte", "MN98765", "jdurate@gmail.com", "1155553333", True]
     ]
 
     return owners, mascotas, turnos, veterinarians
