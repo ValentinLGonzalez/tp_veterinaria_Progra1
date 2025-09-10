@@ -4,12 +4,37 @@ from utils.constants import HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 
 def create_veterinarian(array_veterinarians):
+    """Creates a new veterinarian and appends it to the existing list.
+
+    Iterates over the headers defined in HEADER_VETERINARIAN to build
+    a new veterinarian record:
+    - If the header is "veterinarian_id", it generates a unique ID with get_next_id.
+    - If the header is "active", it sets the value to True.
+    - If the header is "dni", it repeatedly asks the user to enter a valid DNI
+      until a unique value is provided (validated by get_veterinarian_by_dni).
+    - For all other headers, it asks the user to input the value via console.
+
+    Args:
+        array_veterinarians (list[list]): The current list of veterinarians,
+            where each veterinarian is represented as a list of values.
+
+    Returns:
+        list: The newly created veterinarian represented as a list of values.
+    """
     new_veterinarian = []
     for header in HEADER_VETERINARIAN:
         if header == "veterinarian_id":
             new_veterinarian.append(get_next_id(array_veterinarians))
         elif header == "active":
             new_veterinarian.append(True)
+        elif header == "dni":
+            is_valid_dni = False
+            while not is_valid_dni:
+                input_header = input(f'Ingresa un {header} válido: ')
+                if not get_veterinarian_by_dni(input_header, array_veterinarians):
+                    is_valid_dni = True
+                    new_veterinarian.append(input_header)
+                print("El veterinario ya existe, ingrese otro DNI.")
         else :
             input_header = input(f'Ingresa {header}: ')
             new_veterinarian.append(input_header)
