@@ -42,8 +42,22 @@ def create_veterinarian(array_veterinarians):
     return new_veterinarian
 
 def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
+    """Retrieves an active veterinarian by its ID.
+
+    Iterates through the list of veterinarians and returns the first one
+    that matches the given ID and is marked as active.
+
+    Args:
+        veterinarian_id (str): The ID of the veterinarian to look up.
+        array_veterinarians (list[list]): The list of veterinarians, where
+            each veterinarian is represented as a list of values.
+
+    Returns:
+        list | None: The veterinarian record if found and active,
+        otherwise None.
+    """
     for veterinarian in array_veterinarians:
-        if(veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] == veterinarian_id and veterinarian[HEADER_VETERINARIAN.index("active") == True]):
+        if(veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] == veterinarian_id and veterinarian[HEADER_VETERINARIAN.index("active")] == True):
             return veterinarian
                   
 def update_veterinarian_by_id(veterinarian_id, updated_veterinarian, array_veterinarians):
