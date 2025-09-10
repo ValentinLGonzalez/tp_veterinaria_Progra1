@@ -33,6 +33,19 @@ def create_arrays():
     return owners, mascotas, turnos, veterinarians
 
 def update_entity_data(entity, headers):
+    """Updates an entity's data based on user input for each field.
+
+    Iterates over the provided headers and prompts the user to input a new
+    value for each field, except those listed in EXCLUDED_PRINT_HEADERS.
+    Returns a new entity list with the updated values.
+
+    Args:
+        entity (list): The current entity record represented as a list of values.
+        headers (list[str]): The headers corresponding to the entity's fields.
+
+    Returns:
+        list: A new list representing the updated entity.
+    """
     updated_entity = entity.copy()
     for header in headers:
         if header in EXCLUDED_PRINT_HEADERS:
