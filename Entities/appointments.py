@@ -13,6 +13,25 @@ horarios = {'08:00': True, '08:30': False}
 
 # CREATE
 def create_appointment(array_appointments, array_pets, array_veterinarians, array_owners):
+    """Creates a new appointment and appends it to the list.
+
+    Iterates over the headers defined in HEADER_APPOINTMENT to build
+    a new appointment record:
+    - Generates a unique ID for "appointment_id".
+    - Sets "active" to True.
+    - Asks the user to input the owner's DNI and pet name, then validates them.
+    - Randomly assigns an active veterinarian.
+    - Prompts the user for the remaining values.
+
+    Args:
+        array_appointments (list[list]): The list of existing appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        array_owners (list[list]): The list of owners.
+
+    Returns:
+        list: The newly created appointment as a list of values.
+    """
     new_appointment = []
     
     for header in HEADER_APPOINTMENT:
@@ -21,21 +40,18 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
         elif header == "active":
             new_appointment.append(True)
         elif header == "pet_id":
-            # Search for the pet by it's name and owner's DNI
             owner_found = None
             pet_found = None
             while owner_found is None:
-                # Search for the owner by it's DNI
                 owner_dni = input("Ingrese el DNI del dueño: ")
                 owner_found = find_owner_by_dni(array_owners, owner_dni)
                 
                 if not owner_found:
-                    print("Error: No se encontró un dueño con ese DNI") # Proximamente esto llevara a la creacion de un dueño
+                    print("Error: No se encontró un dueño con ese DNI") 
                     break
 
             if owner_found:
                 while pet_found is None:
-                    # Search for the pet by it's name
                     pet_name = input("Ingrese el nombre de la mascota: ")
                     pet_found = find_pet_by_name_and_owner(array_pets, pet_name, owner_found[HEADER_OWNER.index("owner_id")])
                         
@@ -44,10 +60,9 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                         print(f"Mascota encontrada: {pet_found[HEADER_PET.index('nombre')]} {pet_found[HEADER_PET.index('especie')]} {pet_found[HEADER_PET.index('raza')]}")
                         break
                     else:
-                        print("Error: No se encontró una mascota activa con ese nombre para ese dueño") # Proximamente esto llevara a la creacion de la mascota
+                        print("Error: No se encontró una mascota activa con ese nombre para ese dueño") 
 
         elif header == "veterinarian_id":
-            # Randomly assign a veterinarian
             active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]] 
             random_veterinarian = random.choice(active_veterinarians)
             new_appointment.append(random_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")])  
@@ -62,6 +77,15 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
 
 # GET
 def get_appointment_by_id(appointment_id, array_appointments):
+    """Retrieves an active appointment by its ID.
+
+    Args:
+        appointment_id (str | int): The ID of the appointment to retrieve.
+        array_appointments (list[list]): The list of appointments.
+
+    Returns:
+        list | None: The appointment if found and active, otherwise None.
+    """
     for appointment in array_appointments:
         if (appointment[HEADER_APPOINTMENT.index("appointment_id")] == appointment_id and 
             appointment[HEADER_APPOINTMENT.index("active")]):
@@ -69,19 +93,25 @@ def get_appointment_by_id(appointment_id, array_appointments):
     return None
 
 # UPDATE
-def update_appointment(updated_appointment, array_appointments, array_pets, array_veterinarians):
+def update_appointment(updated_appointment, array_appointments):
+    """Updates an existing appointment by its ID.
+
+    Finds the appointment in the original array,
+    replaces its contents with `updated_appointment` and returns the updated record.
+
+    Args:
+        updated_appointment (list): The appointment with updated values.
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+
+    Returns:
+        list | None: The updated appointment if successful, otherwise None.
+    """
     current_appointments_id = [appointment[HEADER_APPOINTMENT.index("appointment_id")] for appointment in array_appointments if appointment[HEADER_APPOINTMENT.index("active")]]
     
     if updated_appointment[HEADER_APPOINTMENT.index("appointment_id")] in current_appointments_id:
         updated_appointment_index = current_appointments_id.index(updated_appointment[HEADER_APPOINTMENT.index("appointment_id")])
-        
-        # pet_id_index = HEADER_APPOINTMENT.index("pet_id")
-        # veterinarian_id_index = HEADER_APPOINTMENT.index("veterinarian_id")
-        
-        # if not any(pet[HEADER_PET.index("pet_id")] == updated_appointment[pet_id_index] for pet in array_pets):
-        #     print(f"No existe una mascota con ese ID")
-        # if not any(veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] == updated_appointment[veterinarian_id_index] for veterinarian in array_veterinarians):
-        #     print(f"No existe un veterinario con ese ID")
         
         for i in range(len(array_appointments[updated_appointment_index])):
             array_appointments[updated_appointment_index][i] = updated_appointment[i]
@@ -91,14 +121,34 @@ def update_appointment(updated_appointment, array_appointments, array_pets, arra
 
 # DELETE
 def delete_appointment_by_id(appointment_id, array_appointments):
+    """Soft deletes an appointment by ID.
+
+    Marks the appointment as inactive by setting its "active" field to False.
+
+    Args:
+        appointment_id (str | int): The ID of the appointment to delete.
+        array_appointments (list[list]): The list of appointments.
+
+    Returns:
+        list | None: The deactivated appointment if found, otherwise None.
+    """
     for appointment in array_appointments:
         if (appointment[HEADER_APPOINTMENT.index("appointment_id")] == appointment_id and appointment[HEADER_APPOINTMENT.index("active")]):  
             appointment[HEADER_APPOINTMENT.index("active")] = False  
-          #  return appointment  
-    #return None
+            return appointment  
 
 # SHOW AN APPOINTMENT
-def show_appointment(appointment, array_pets, array_veterinarians): 
+def show_appointment(appointment, array_pets, array_veterinarians):
+    """Displays the details of an appointment in a readable format.
+
+    Converts the raw appointment data into a human-readable form
+    (pet name, date, time, treatment, veterinarian) and prints it.
+
+    Args:
+        appointment (list): The appointment to display.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+    """
     print("\n=== Detalles del Turno ===")
     readable_appointment = get_readable_appointment(appointment, array_pets, array_veterinarians)
     print_array(READABLE_HEADER, readable_appointment)
@@ -106,12 +156,38 @@ def show_appointment(appointment, array_pets, array_veterinarians):
 
 # ACTIONS
 def add_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
+    """Adds a new appointment by prompting the user for input.
+
+    Calls `create_appointment`, appends it to the list, displays the new appointment,
+    and returns it.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        array_owners (list[list]): The list of owners.
+    """
     print("\n--- Ingrese el nuevo Turno ---\n")
     new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians, array_owners)
     print("\nTurno agregado correctamente.\n")
     show_appointment(new_appointment)
      
 def modify_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
+    """Modifies an existing appointment.
+
+    Prompts the user to search for an appointment using owner DNI, pet name,
+    and veterinarian DNI. If found, displays the appointment, collects new data,
+    updates the appointment in the array, and returns the updated record.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        array_owners (list[list]): The list of owners.
+
+    Returns:
+        list | None: The updated appointment if successful, otherwise None.
+    """
     print("\n--- Modificación de Turno ---\n")
     appointment_to_update = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_update:
@@ -128,6 +204,15 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
     return None
 
 def show_all_appointments_action(array_appointments, array_pets, array_veterinarians): 
+    """Displays all active appointments in a formatted table.
+
+    Filters active appointments and prints them in a human-readable format.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+    """
     print("\n--- Listado de Turnos Activos ---\n")
     active_appointments = list(filter(lambda v: v[HEADER_APPOINTMENT.index("active")] == True, array_appointments))
 
@@ -140,6 +225,20 @@ def show_all_appointments_action(array_appointments, array_pets, array_veterinar
     print("\n--- Fin del listado ---\n")
     
 def delete_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
+    """Soft deletes an appointment after user confirmation.
+
+    Prompts the user to search for an appointment using DNI and names,
+    then marks it as inactive if found and returns the deleted appointment.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        array_owners (list[list]): The list of owners.
+
+    Returns:
+        list | None: The deactivated appointment if successful, otherwise None.
+    """
     print("\n--- Baja de Turno ---\n")
     appointment_to_delete = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_delete:
@@ -152,6 +251,17 @@ def delete_appointment_action(array_appointments, array_pets, array_veterinarian
 
 # AUXILIARS
 def find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners):
+    """Finds an appointment by asking the user for owner DNI, pet name, and veterinarian DNI.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        array_owners (list[list]): The list of owners.
+
+    Returns:
+        list | None: The appointment if found, otherwise None.
+    """
     owner_dni = input("Ingrese el DNI del dueño: ")
     owner = find_owner_by_dni(array_owners, owner_dni)
     if not owner:
@@ -178,6 +288,16 @@ def find_appointment_by_user_input(array_appointments, array_pets, array_veterin
     return appointment
 
 def find_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id):
+    """Finds an active appointment by pet ID and veterinarian ID.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        pet_id (str | int): The ID of the pet.
+        veterinarian_id (str | int): The ID of the veterinarian.
+
+    Returns:
+        list | None: The appointment if found, otherwise None.
+    """
     for appointment in array_appointments:
         if (appointment[HEADER_APPOINTMENT.index("pet_id")] == pet_id and appointment[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and appointment[HEADER_APPOINTMENT.index("active")]):
             return appointment
