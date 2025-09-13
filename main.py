@@ -1,6 +1,7 @@
 from entities.veterinarians.controller import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 from utils.entitiesHelper import create_arrays
 from entities.appointments import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action, appointment_statistics
+from entities.pet import add_pet_action, delete_pet_action, modify_pet_action, show_all_pets_action
 
 def main():
     #-------------------------------------------------
@@ -22,7 +23,7 @@ def main():
             print("[1] Gestión de Veterinarios")
             print("[2] Gestion de Turnos")
             print("[3] Opción 3")
-            print("[4] Opción 4")
+            print("[4] Gestión de Mascotas")
             print("---------------------------")
             print("[0] Salir del programa")
             print("---------------------------")
@@ -114,6 +115,42 @@ def main():
 
         # elif opcion == "3":   # Opción 3
         #     ...
+
+
+        elif opcion == "4":   # Opción 1
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > MENÚ DE MASCOTAS")
+                    print("---------------------------")
+                    print("[1] Agregar Mascota")
+                    print("[2] Modificar un Mascota por nombre y dueño")
+                    print("[3] Mostrar todos los Mascota")
+                    print("[4] Eliminar Mascota por nombre y dueño")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcion = input("Seleccione una opción: ")
+                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcion == "0": # Opción salir del submenú
+                    break # No salimos del programa, volvemos al menú anterior
+                elif opcion == "1":   # Opción 1
+                    add_pet_action(pets, owners)
+                elif opcion == "2":   # Opción 2
+                    modify_pet_action(pets,owners)
+                elif opcion == "3":   # Opción 3
+                    show_all_pets_action(pets)
+                elif opcion == "4":   # Opción 4
+                    delete_pet_action(pets,owners)
         # elif opcion == "4":   # Opción 4
         #     ...
 

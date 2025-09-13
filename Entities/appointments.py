@@ -4,6 +4,13 @@ from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER
 from utils.entitiesHelper import get_next_id, update_entity_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
+from entities.owner import get_owner_by_dni
+from entities.pet import get_pet_by_name_and_owner
+from entities.veterinarians import get_veterinarian_by_dni
+
+
+
+
 
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 OPEN_WORK_HOUR = '08:00'
@@ -43,7 +50,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
             pet_found = None
             while owner_found is None:
                 owner_dni = input("Ingrese el DNI del dueño: ")
-                owner_found = find_owner_by_dni(array_owners, owner_dni)
+                owner_found = get_owner_by_dni(array_owners, owner_dni)
                 
                 if not owner_found:
                     print("Error: No se encontró un dueño con ese DNI") 
@@ -52,7 +59,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
             if owner_found:
                 while pet_found is None:
                     pet_name = input("Ingrese el nombre de la mascota: ")
-                    pet_found = find_pet_by_name_and_owner(array_pets, pet_name, owner_found[HEADER_OWNER.index("owner_id")])
+                    pet_found = get_pet_by_name_and_owner(array_pets, pet_name, owner_found[HEADER_OWNER.index("owner_id")])
                         
                     if pet_found:
                         new_appointment.append(pet_found[HEADER_PET.index("pet_id")]) 
@@ -304,19 +311,19 @@ def find_appointment_by_user_input(array_appointments, array_pets, array_veterin
         list | None: The appointment if found, otherwise None.
     """
     owner_dni = input("Ingrese el DNI del dueño: ")
-    owner = find_owner_by_dni(array_owners, owner_dni)
+    owner = get_owner_by_dni(array_owners, owner_dni)
     if not owner:
         print("No se encontró un dueño activo con ese DNI")
         return None
 
     pet_name = input("Ingrese el nombre de la mascota: ")
-    pet = find_pet_by_name_and_owner(array_pets, pet_name, owner[HEADER_OWNER.index("owner_id")])
+    pet = get_pet_by_name_and_owner(array_pets, pet_name, owner[HEADER_OWNER.index("owner_id")])
     if not pet:
         print("No se encontró una mascota activa con ese nombre para ese dueño")
         return None
 
     vet_dni = input("Ingrese el DNI del veterinario: ")
-    vet = find_veterinarian_by_dni(array_veterinarians, vet_dni)
+    vet = get_veterinarian_by_dni(array_veterinarians, vet_dni)
     if not vet:
         print("No se encontró un veterinario activo con ese DNI")
         return None
@@ -346,25 +353,7 @@ def find_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id)
             return appointment
     return None
 
-def find_owner_by_dni(array_owners, dni):
-    for owner in array_owners:
-        if (owner[HEADER_OWNER.index("dni")] == dni and owner[HEADER_OWNER.index("active")]):
-            return owner
-    return None
 
-def find_pet_by_name_and_owner(array_pets, pet_name, owner_id):
-    for pet in array_pets:
-        if (pet[HEADER_PET.index("nombre")].lower() == pet_name.lower() and 
-            pet[HEADER_PET.index("owner_id")] == owner_id and 
-            pet[HEADER_PET.index("active")]):
-            return pet
-    return None
-
-def find_veterinarian_by_dni(array_veterinarians, dni):
-    for vet in array_veterinarians:
-        if (vet[HEADER_VETERINARIAN.index("dni")] == dni and vet[HEADER_VETERINARIAN.index("active")]):
-            return vet
-    return None
 
 def get_readable_appointment(appointment, array_pets, array_veterinarians):
     pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]
