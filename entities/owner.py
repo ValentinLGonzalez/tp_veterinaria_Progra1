@@ -2,7 +2,7 @@ from utils.arrayHelper import print_array_bidimensional, print_array
 from utils.constants import HEADER_OWNER
 from utils.entitiesHelper import get_next_id
 
-# CREATE
+
 def create_owner(array_owners):
     new_owner = []
     for header in HEADER_OWNER:
@@ -16,7 +16,7 @@ def create_owner(array_owners):
     array_owners.append(new_owner)
     return new_owner
 
-# READ (por id)
+
 def read_owner_by_id(owner_id, array_owners):
     for owner in array_owners:
         if (owner[HEADER_OWNER.index("owner_id")] == owner_id and
@@ -24,7 +24,7 @@ def read_owner_by_id(owner_id, array_owners):
             return owner
     return None
 
-# READ (por DNI)
+
 def get_owner_by_dni(dni, array_owners):
     for owner in array_owners:
         if (owner[HEADER_OWNER.index("dni")] == dni and
@@ -32,7 +32,7 @@ def get_owner_by_dni(dni, array_owners):
             return owner
     return None
 
-# UPDATE
+
 def update_owner_by_id(owner_id, updated_owner, array_owners):
     current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in array_owners]
     if owner_id in current_owners_id:
@@ -42,19 +42,19 @@ def update_owner_by_id(owner_id, updated_owner, array_owners):
         return array_owners[updated_owner_index]
     return None
 
-# DELETE (baja lógica)
+
 def delete_owner_by_id(owner_id, array_owners):
     current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in array_owners]
     if owner_id in current_owners_id:
         deleted_owner_index = current_owners_id.index(owner_id)
         array_owners[deleted_owner_index][HEADER_OWNER.index("active")] = False
 
-# SHOW (uno)
+
 def show_owner(owner):
     print("\nDueño cargado/modificado correctamente.\n")
     print_array(HEADER_OWNER, owner)
 
-# ACTIONS (flujo de uso con inputs)
+
 def add_owner_action(owners):
     print("\n--- Ingrese los datos del Dueño ---\n")
     new_owner = create_owner(owners)
@@ -66,7 +66,7 @@ def modify_owner_action(owners):
     if owner_to_update:
         print("\nDueño encontrado:\n")
         show_owner(owner_to_update)
-        updated_owner = create_owner(owners)  # reusar carga estilo veterinario
+        updated_owner = create_owner(owners) 
         return update_owner_by_id(
             updated_owner[HEADER_OWNER.index("owner_id")],
             updated_owner,
@@ -94,3 +94,9 @@ def delete_owner_action(owners):
         print("\nDueño dado de baja correctamente.\n")
     else:
         print("\nNo se encontró un dueño activo con ese DNI.\n")
+
+def get_owner_by_dni(array_owners, dni):
+    for owner in array_owners:
+        if (owner[HEADER_OWNER.index("dni")] == dni and owner[HEADER_OWNER.index("active")]):
+            return owner
+    return None
