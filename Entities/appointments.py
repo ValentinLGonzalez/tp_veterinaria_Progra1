@@ -1,9 +1,8 @@
 import random
 
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
-from utils.entitiesHelper import get_next_id, update_entity_data
-from utils.arrayHelper import print_array_bidimensional
-from utils.arrayHelper import print_array
+from utils.entitiesHelper import get_next_id
+from utils.arrayHelper import print_array_bidimensional, print_array
 from entities.owner import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner
 from entities.veterinarians import get_veterinarian_by_dni
@@ -55,7 +54,6 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                 if not owner_found:
                     print("Error: No se encontró un dueño con ese DNI") 
                     break
-
             if owner_found:
                 while pet_found is None:
                     pet_name = input("Ingrese el nombre de la mascota: ")
@@ -237,11 +235,11 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
         list | None: The updated appointment if successful, otherwise None.
     """
     print("\n--- Modificación de Turno ---\n")
-    appointment_to_update = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
+    appointment_to_update = get_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_update:
         print("\nTurno encontrado:\n")
         show_appointment(appointment_to_update, array_pets, array_veterinarians)
-        updated_appointment = update_entity_data(appointment_to_update, HEADER_APPOINTMENT)
+        updated_appointment = update_appointment_data(appointment_to_update)
         updated_appointment = update_appointment(updated_appointment, array_appointments, array_pets, array_veterinarians)
         if updated_appointment:
             print("\nTurno actualizado correctamente:\n")
@@ -288,7 +286,7 @@ def delete_appointment_action(array_appointments, array_pets, array_veterinarian
         list | None: The deactivated appointment if successful, otherwise None.
     """
     print("\n--- Baja de Turno ---\n")
-    appointment_to_delete = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
+    appointment_to_delete = get_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_delete:
         print("\nTurno encontrado:\n")
         show_appointment(appointment_to_delete, array_pets, array_veterinarians)
@@ -297,8 +295,8 @@ def delete_appointment_action(array_appointments, array_pets, array_veterinarian
     else:
         print("\nNo se pudo dar de baja el turno.\n")
 
-# AUXILIARS
-def find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners):
+# GETTERS
+def get_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners):
     """Finds an appointment by asking the user for owner DNI, pet name, and veterinarian DNI.
 
     Args:
@@ -328,14 +326,14 @@ def find_appointment_by_user_input(array_appointments, array_pets, array_veterin
         print("No se encontró un veterinario activo con ese DNI")
         return None
 
-    appointment = find_appointment_by_pet_and_vet(array_appointments, pet[HEADER_PET.index("pet_id")], vet[HEADER_VETERINARIAN.index("veterinarian_id")])
+    appointment = get_appointment_by_pet_and_vet(array_appointments, pet[HEADER_PET.index("pet_id")], vet[HEADER_VETERINARIAN.index("veterinarian_id")])
     if not appointment:
         print("No se encontró un turno para esa mascota y veterinario")
         return None
 
     return appointment
 
-def find_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id):
+def get_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id):
     """Finds an active appointment by pet ID and veterinarian ID.
 
     Args:
@@ -353,9 +351,46 @@ def find_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id)
             return appointment
     return None
 
+#AUXILIAR UPDATE
+def update_appointment_data(appointment):
+    """Updates appointment data by prompting the user for new values.
+    
+    Args:
+        appointment (list): The appointment to update.
+        
+    Returns:
+        list: The updated appointment.
+    """
+    updated_appointment = appointment.copy()
+    for header in HEADER_APPOINTMENT:
+        if header in ["pet_id", "veterinarian_id", "active", "appointment_id"]:
+            continue
+        index = HEADER_APPOINTMENT.index(header)
+        if header == "hora":
+            valid_time = None
+            while valid_time is None:
+                input_time = input("Ingrese la hora (HH:MM): ")
+                if validate_appointment_time(input_time):
+                    valid_time = input_time
+                updated_appointment[index] = valid_time
+        else:
+            input_header = input(f'Ingresa {header}: ')
+            updated_appointment[index] = input_header 
+    return updated_appointment
 
 
+#FUNCTIONS FOR READABLE SHOWING
 def get_readable_appointment(appointment, array_pets, array_veterinarians):
+    """Converts an appointment to a readable format with pet and vet names.
+    
+    Args:
+        appointment (list): The appointment to convert.
+        array_pets (list[list]): The list of pets.
+        array_veterinarians (list[list]): The list of veterinarians.
+        
+    Returns:
+        list: The readable appointment format.
+    """
     pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]
     date = appointment[HEADER_APPOINTMENT.index("fecha")]
     time = appointment[HEADER_APPOINTMENT.index("hora")]
@@ -377,6 +412,34 @@ def get_readable_appointment(appointment, array_pets, array_veterinarians):
     readable_appointment = [pet_name, date, time, treatment, vet_name]
     return readable_appointment
 
+#VALID VETERINARIANS ASSIGNMENT
+def assign_veterinarian(array_appointments, array_veterinarians, date, time):
+    """Assigns an available veterinarian for a specific date and time.
+    
+    Args:
+        array_appointments (list[list]): List of existing appointments.
+        array_veterinarians (list[list]): List of veterinarians.
+        date (str): Appointment date (YYYY-MM-DD).
+        time (str): Appointment time (HH:MM).
+        
+    Returns:
+        list | None: The assigned veterinarian if available, None otherwise.
+    """
+    active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
+
+    available_veterinarians = []
+    for vet in active_veterinarians:
+        if not has_appointment_conflict(array_appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
+            available_veterinarians.append(vet)
+    
+    if not available_veterinarians:
+        print("Error: No hay veterinarios disponibles en esa fecha y hora")
+        return None
+        
+    random_veterinarian = random.choice(available_veterinarians)
+    return random_veterinarian
+
+#VALIDATIONS
 def validate_appointment_time(time_str):
     """Validates if a given time string is in HH:MM format, within work hours,
     and optionally available.
@@ -412,32 +475,6 @@ def validate_appointment_time(time_str):
         return False
 
     return True
-
-def assign_veterinarian(array_appointments, array_veterinarians, date, time):
-    """Assigns an available veterinarian for a specific date and time.
-    
-    Args:
-        array_appointments (list[list]): List of existing appointments.
-        array_veterinarians (list[list]): List of veterinarians.
-        date (str): Appointment date (YYYY-MM-DD).
-        time (str): Appointment time (HH:MM).
-        
-    Returns:
-        list | None: The assigned veterinarian if available, None otherwise.
-    """
-    active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
-
-    available_veterinarians = []
-    for vet in active_veterinarians:
-        if not has_appointment_conflict(array_appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
-            available_veterinarians.append(vet)
-    
-    if not available_veterinarians:
-        print("Error: No hay veterinarios disponibles en esa fecha y hora")
-        return None
-        
-    random_veterinarian = random.choice(available_veterinarians)
-    return random_veterinarian
 
 def has_appointment_conflict(array_appointments, veterinarian_id, date, time):
     """Checks if a veterinarian already has an appointment at the given date and time.
