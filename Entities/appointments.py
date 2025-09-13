@@ -9,8 +9,6 @@ READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 OPEN_WORK_HOUR = '08:00'
 CLOSE_WORK_HOUR = '20:00'
 
-horarios = {'08:00': True, '08:30': False}
-
 # CREATE
 def create_appointment(array_appointments, array_pets, array_veterinarians, array_owners):
     """Creates a new appointment and appends it to the list.
@@ -33,6 +31,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
         list: The newly created appointment as a list of values.
     """
     new_appointment = []
+    
     
     for header in HEADER_APPOINTMENT:
         if header == "appointment_id":
@@ -61,18 +60,22 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                         break
                     else:
                         print("Error: No se encontró una mascota activa con ese nombre para ese dueño") 
-
+        elif header == "fecha":
+            appointment_date = input(f'Ingresa {header} (YYYY-MM-DD): ')
+            new_appointment.append(appointment_date)
+        elif header == "hora":
+            valid_time = None
+            while valid_time is None:
+                input_time = input("Ingrese la hora (HH:MM): ")
+                if validate_appointment_time(input_time):
+                    valid_time = input_time
+                new_appointment.append(valid_time)
         elif header == "veterinarian_id":
-            active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]] 
-            random_veterinarian = random.choice(active_veterinarians)
-            new_appointment.append(random_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")])  
-            
-            print(f"Veterinario asignado: {random_veterinarian[HEADER_VETERINARIAN.index('nombre')]} {random_veterinarian[HEADER_VETERINARIAN.index('apellido')]} DNI({random_veterinarian[HEADER_VETERINARIAN.index('dni')]}) ({random_veterinarian[HEADER_VETERINARIAN.index('matricula')]})")
-        else:
-            input_header = input(f'Ingresa {header}: ')
-            new_appointment.append(input_header)
-    
-    array_appointments.append(new_appointment)
+            assigned_vet = assign_veterinarian(array_appointments, array_veterinarians, appointment_date, valid_time)  
+            if not assigned_vet:
+                return None                 
+            new_appointment.append(assigned_vet[HEADER_VETERINARIAN.index("veterinarian_id")])            
+            print(f"Veterinario asignado: {assigned_vet[HEADER_VETERINARIAN.index('nombre')]} {assigned_vet[HEADER_VETERINARIAN.index('apellido')]} DNI({assigned_vet[HEADER_VETERINARIAN.index('dni')]}) ({assigned_vet[HEADER_VETERINARIAN.index('matricula')]})")
     return new_appointment
 
 # GET
@@ -133,7 +136,8 @@ def delete_appointment_by_id(appointment_id, array_appointments):
         list | None: The deactivated appointment if found, otherwise None.
     """
     for appointment in array_appointments:
-        if (appointment[HEADER_APPOINTMENT.index("appointment_id")] == appointment_id and appointment[HEADER_APPOINTMENT.index("active")]):  
+        if (appointment[HEADER_APPOINTMENT.index("appointment_id")] == appointment_id and 
+            appointment[HEADER_APPOINTMENT.index("active")]):  
             appointment[HEADER_APPOINTMENT.index("active")] = False  
             return appointment  
 
@@ -154,6 +158,43 @@ def show_appointment(appointment, array_pets, array_veterinarians):
     print_array(READABLE_HEADER, readable_appointment)
     print("==========================\n")
 
+# STATISTICS
+def appointment_statistics(array_appointments, array_veterinarians):
+    """Generates statistics about appointments.
+
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        array_veterinarians (list[list]): The list of veterinarians.
+    """
+    print("\n--- Estadísticas de Turnos ---\n")
+
+    active_appointments = [a for a in array_appointments if a[HEADER_APPOINTMENT.index("active")]]
+    print(f"Total de turnos activos: {len(active_appointments)}")
+
+    appointments_by_date = {}
+    for appointment in active_appointments:
+        date = appointment[HEADER_APPOINTMENT.index("fecha")]
+        appointments_by_date[date] = appointments_by_date.get(date, 0) + 1
+    print("\nTurnos por día:")
+    for date, count in appointments_by_date.items():
+        print(f"  {date}: {count} turno(s)")
+
+    appointments_by_vet = {}
+    for appointment in active_appointments:
+        vet_id = appointment[HEADER_APPOINTMENT.index("veterinarian_id")]
+        vet_name = None
+        for vet in array_veterinarians:
+            if vet[HEADER_VETERINARIAN.index("veterinarian_id")] == vet_id:
+                vet_name = f"{vet[HEADER_VETERINARIAN.index('nombre')]} {vet[HEADER_VETERINARIAN.index('apellido')]} ({vet[HEADER_VETERINARIAN.index('dni')]})"
+                break
+        if vet_name:
+            appointments_by_vet[vet_name] = appointments_by_vet.get(vet_name, 0) + 1
+    print("\nTurnos por veterinario:")
+    for vet, count in appointments_by_vet.items():
+        print(f"  {vet}: {count} turno(s)")
+
+    print("\n--- Fin de estadísticas ---\n")
+
 # ACTIONS
 def add_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
     """Adds a new appointment by prompting the user for input.
@@ -170,7 +211,7 @@ def add_appointment_action(array_appointments, array_pets, array_veterinarians, 
     print("\n--- Ingrese el nuevo Turno ---\n")
     new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians, array_owners)
     print("\nTurno agregado correctamente.\n")
-    show_appointment(new_appointment)
+    show_appointment(new_appointment, array_pets, array_veterinarians)
      
 def modify_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
     """Modifies an existing appointment.
@@ -192,12 +233,12 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
     appointment_to_update = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_update:
         print("\nTurno encontrado:\n")
-        show_appointment(appointment_to_update)
+        show_appointment(appointment_to_update, array_pets, array_veterinarians)
         updated_appointment = update_entity_data(appointment_to_update, HEADER_APPOINTMENT)
         updated_appointment = update_appointment(updated_appointment, array_appointments, array_pets, array_veterinarians)
         if updated_appointment:
             print("\nTurno actualizado correctamente:\n")
-            show_appointment(updated_appointment)
+            show_appointment(updated_appointment, array_pets, array_veterinarians)
             return updated_appointment
     else:
         print("\nNo se pudo modificar el Turno.\n")
@@ -243,7 +284,7 @@ def delete_appointment_action(array_appointments, array_pets, array_veterinarian
     appointment_to_delete = find_appointment_by_user_input(array_appointments, array_pets, array_veterinarians, array_owners)
     if appointment_to_delete:
         print("\nTurno encontrado:\n")
-        show_appointment(appointment_to_delete)
+        show_appointment(appointment_to_delete, array_pets, array_veterinarians)
         delete_appointment_by_id(appointment_to_delete[HEADER_APPOINTMENT.index("appointment_id")], array_appointments)
         print("\nTurno dado de baja correctamente.\n")
     else:
@@ -299,7 +340,9 @@ def find_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id)
         list | None: The appointment if found, otherwise None.
     """
     for appointment in array_appointments:
-        if (appointment[HEADER_APPOINTMENT.index("pet_id")] == pet_id and appointment[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and appointment[HEADER_APPOINTMENT.index("active")]):
+        if (appointment[HEADER_APPOINTMENT.index("pet_id")] == pet_id and 
+            appointment[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and 
+            appointment[HEADER_APPOINTMENT.index("active")]):
             return appointment
     return None
 
@@ -311,7 +354,9 @@ def find_owner_by_dni(array_owners, dni):
 
 def find_pet_by_name_and_owner(array_pets, pet_name, owner_id):
     for pet in array_pets:
-        if (pet[HEADER_PET.index("nombre")].lower() == pet_name.lower() and pet[HEADER_PET.index("owner_id")] == owner_id and pet[HEADER_PET.index("active")]):
+        if (pet[HEADER_PET.index("nombre")].lower() == pet_name.lower() and 
+            pet[HEADER_PET.index("owner_id")] == owner_id and 
+            pet[HEADER_PET.index("active")]):
             return pet
     return None
 
@@ -343,3 +388,84 @@ def get_readable_appointment(appointment, array_pets, array_veterinarians):
     readable_appointment = [pet_name, date, time, treatment, vet_name]
     return readable_appointment
 
+def validate_appointment_time(time_str):
+    """Validates if a given time string is in HH:MM format, within work hours,
+    and optionally available.
+
+    Args:
+        time_str (str): The input time string (expected format 'HH:MM').
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+    if len(time_str) != 5 or time_str[2] != ":":
+        print("Error: el formato de hora debe ser HH:MM.")
+        return False
+    
+    hh, mm = time_str.split(":")
+
+    if not (hh.isdigit() and mm.isdigit()):
+        print("Error: la hora y minutos deben ser números.")
+        return False
+
+    hour, minute = int(hh), int(mm)
+
+    if not (0 <= hour <= 23 and 0 <= minute <= 59):
+        print("Error: hora o minutos fuera de rango.")
+        return False
+
+    open_hour, open_minute = map(int, OPEN_WORK_HOUR.split(":"))
+    close_hour, close_minute = map(int, CLOSE_WORK_HOUR.split(":"))
+
+    if not ((hour > open_hour or (hour == open_hour and minute >= open_minute)) and
+            (hour < close_hour or (hour == close_hour and minute <= close_minute))):
+        print(f"Error: el horario debe estar entre {OPEN_WORK_HOUR} y {CLOSE_WORK_HOUR}.")
+        return False
+
+    return True
+
+def assign_veterinarian(array_appointments, array_veterinarians, date, time):
+    """Assigns an available veterinarian for a specific date and time.
+    
+    Args:
+        array_appointments (list[list]): List of existing appointments.
+        array_veterinarians (list[list]): List of veterinarians.
+        date (str): Appointment date (YYYY-MM-DD).
+        time (str): Appointment time (HH:MM).
+        
+    Returns:
+        list | None: The assigned veterinarian if available, None otherwise.
+    """
+    active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
+
+    available_veterinarians = []
+    for vet in active_veterinarians:
+        if not has_appointment_conflict(array_appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
+            available_veterinarians.append(vet)
+    
+    if not available_veterinarians:
+        print("Error: No hay veterinarios disponibles en esa fecha y hora")
+        return None
+        
+    random_veterinarian = random.choice(available_veterinarians)
+    return random_veterinarian
+
+def has_appointment_conflict(array_appointments, veterinarian_id, date, time):
+    """Checks if a veterinarian already has an appointment at the given date and time.
+    
+    Args:
+        array_appointments (list[list]): The list of appointments.
+        veterinarian_id (str | int): The ID of the veterinarian to check.
+        date (str): The appointment date (YYYY-MM-DD).
+        time (str): The appointment time (HH:MM).
+        
+    Returns:
+        bool: True if there's a conflict, False otherwise.
+    """
+    for appointment in array_appointments:
+        if (appointment[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and
+            appointment[HEADER_APPOINTMENT.index("fecha")] == date and
+            appointment[HEADER_APPOINTMENT.index("hora")] == time and
+            appointment[HEADER_APPOINTMENT.index("active")]):
+            return True
+    return False

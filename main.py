@@ -1,6 +1,6 @@
 from utils.entitiesHelper import create_arrays
 from entities.veterinarians import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
-from entities.appointments import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action
+from entities.appointments import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action, appointment_statistics
 
 def main():
     #-------------------------------------------------
@@ -76,7 +76,7 @@ def main():
         elif opcion == "2":   # Opción 2
              while True:
                 while True:
-                    opciones = 4
+                    opciones = 5
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > MENÚ DE TURNOS")
@@ -85,6 +85,7 @@ def main():
                     print("[2] Modificar Turno")
                     print("[3] Mostrar todos los Turnos")
                     print("[4] Eliminar un Turno")
+                    print("[5] Estadisticas de Turnos")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -107,6 +108,9 @@ def main():
                     show_all_appointments_action(appointments, pets, veterinarians)
                 elif opcion == "4":   # Opción 4
                     delete_appointment_action(appointments, pets, veterinarians, owners)
+                elif opcion == "5":   # Opción 5
+                    appointment_statistics(appointments, veterinarians)
+
 
         # elif opcion == "3":   # Opción 3
         #     ...
