@@ -1,5 +1,5 @@
+from entities.veterinarians.controller import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 from utils.entitiesHelper import create_arrays
-from entities.veterinarians import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 from entities.appointments import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action, appointment_statistics
 
 def main():
