@@ -1,14 +1,12 @@
 def print_array_bidimensional(header, arrays):
     """
-    Imprime un arran bidimensional del tipo [[...],[...],[...]] 
-    header => Encabezados
-    arrays => Lista de entidades
+    Prints a bidimensional array of the type [[...],[...],[...]] 
+    header => Headers
+    arrays => List of entities
     """
-    # Header
     for row in header:
         print("{:10}".format(row), end="\t")
     print()
-    # Rows
     for row in arrays:
         for value in row:
             print("{:<10}".format(value), end="\t")
@@ -16,15 +14,13 @@ def print_array_bidimensional(header, arrays):
         
 def print_array(header, array):
     """
-    Imprime un unico array ["","",""]
-    header => Encabezados
-    array => Lista de valores de la entidad
+    Prints a single array ["","",""]
+    header => Headers
+    array => List of entity values
     """
-    # Header
     for row in header:
         print("{:10}".format(row), end="\t")
     print()  
-    # Row
     for value in array:
         print("{:<10}".format(value), end="\t")
     print()  

@@ -6,16 +6,26 @@ from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 from utils.validations import is_valid_dni, is_valid_email
 
+READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Matricula", "Email", "Teléfono"]
+
 def create_veterinarian(array_veterinarians):
     """Creates a new veterinarian and appends it to the existing list.
 
-    Iterates over the headers defined in HEADER_VETERINARIAN to build
-    a new veterinarian record:
-    - If the header is "veterinarian_id", it generates a unique ID with get_next_id.
-    - If the header is "active", it sets the value to True.
-    - If the header is "dni", it repeatedly asks the user to enter a valid DNI
-      until a unique value is provided (validated by get_veterinarian_by_dni).
-    - For all other headers, it asks the user to input the value via console.
+    This function guides the user through the process of creating a new
+    veterinarian record by iterating over the headers defined in HEADER_VETERINARIAN.
+    For each header, it performs specific actions:
+    - "veterinarian_id": Automatically generates a unique ID using get_next_id.
+    - "active": Sets the value to True by default.
+    - "dni": Prompts the user to enter a valid and unique DNI, ensuring it does
+      not already exist in the list (validated by get_veterinarian_by_dni and is_valid_dni).
+    - "matricula": Prompts the user to enter a valid matricula, ensuring it meets
+      the required format (validated by is_valid_matricula).
+    - "email": Prompts the user to enter a valid email address (validated by is_valid_email).
+    - "nombre" and "apellido": Prompts the user to enter a valid name and surname,
+      ensuring they contain only alphabetic characters (validated by is_valid_name).
+    - "telefono": Prompts the user to enter a phone number.
+
+    Once all fields are collected, the new veterinarian is appended to the list.
 
     Args:
         array_veterinarians (list[list]): The current list of veterinarians,
@@ -163,7 +173,8 @@ def show_veterinarian(veterinarian):
         None
     """
     print()
-    print_array(HEADER_VETERINARIAN, veterinarian)
+    readeable_veterinarian = get_readable_veterinarian(veterinarian)
+    print_array(READABLE_HEADER, readeable_veterinarian)
 
 def get_veterinarian_by_dni(dni, array_veterinarians):
     """Retrieves a veterinarian record by its DNI.
@@ -185,18 +196,18 @@ def get_veterinarian_by_dni(dni, array_veterinarians):
     return None
 
 def update_veterinarian_data(current_veterinarian):
-    """Updates an entity's data based on user input for each field.
+    """Updates a veterinarian's data based on user input for each field.
 
-    Iterates over the provided headers and prompts the user to input a new
+    Iterates over the HEADER_VETERINARIAN and prompts the user to input a new
     value for each field, except those listed in EXCLUDED_PRINT_HEADERS.
-    Returns a new entity list with the updated values.
+    Performs validation for specific fields such as DNI, matricula, email, name,
+    and surname. Returns a new list representing the updated veterinarian.
 
     Args:
-        entity (list): The current entity record represented as a list of values.
-        headers (list[str]): The headers corresponding to the entity's fields.
+        current_veterinarian (list): The current veterinarian record represented as a list of values.
 
     Returns:
-        list: A new list representing the updated entity.
+        list: A new list representing the updated veterinarian with the modified values.
     """
     updated_entity = current_veterinarian.copy()
     
@@ -318,7 +329,8 @@ def show_all_veterinarians_action(array_veterinarians):
         None
     """
     active_veterinarians = list(filter(lambda v: v[HEADER_VETERINARIAN.index("active")] == True, array_veterinarians))
-    print_array_bidimensional(HEADER_VETERINARIAN, active_veterinarians)
+    readeable_veterinarians = [get_readable_veterinarian(veterinarian) for veterinarian in active_veterinarians]
+    print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
     
 def delete_veterinarian_action(veterinarians):
     """Soft deletes a veterinarian by DNI after user confirmation.
@@ -346,10 +358,29 @@ def delete_veterinarian_action(veterinarians):
     veterinarian_to_delete = get_veterinarian_by_dni(dni_input, veterinarians)
     print("\Veterinario dado de baja correctamente.\n")
     delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")], veterinarians)
-    
-    import re
-# from utils.validations import is_not_a_number
 
+def get_readable_veterinarian(veterinarian):
+    """Converts a veterinarian's data into a readable format.
+
+    Extracts and formats specific fields from a veterinarian's record
+    to make it more human-readable.
+
+    Args:
+        veterinarian (list): The veterinarian's record to convert.
+
+    Returns:
+        tuple: A tuple containing the formatted veterinarian data, including
+        DNI, name, surname, matricula, email, and phone.
+    """
+    dni = veterinarian[HEADER_VETERINARIAN.index("dni")]
+    name = veterinarian[HEADER_VETERINARIAN.index("nombre")]
+    surname = veterinarian[HEADER_VETERINARIAN.index("apellido")]
+    matricula = veterinarian[HEADER_VETERINARIAN.index("matricula")]
+    email = veterinarian[HEADER_VETERINARIAN.index("email")]
+    phone = veterinarian[HEADER_VETERINARIAN.index("telefono")]
+
+    return (dni, name, surname, matricula, email, phone)
+#Validations
 def is_valid_matricula(matricula):
     """
         Validates if a text string has the matricula format (MN + 5 digits)
