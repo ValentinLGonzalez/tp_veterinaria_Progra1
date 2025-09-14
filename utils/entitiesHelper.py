@@ -28,12 +28,12 @@ def create_arrays():
     turnos = [
         [1, 1, "15-08-2025", "10:00", "Extraccion", 1, True],
         [2, 2, "16-08-2025", "11:30", "Operacion", 3, True],
-        [3, 4, "16-08-2025", "10:00", "Chequeo anual", 2, True],
+        [3, 4, "16-08-2025", "10:00", "Chequeo anual", 1, True],
         [4, 3, "17-08-2025", "09:00", "Triple gatuna", 3, True],
-        [5, 5, "18-08-2025", "14:00", "Control de peso", 1, True],
-        [6, 6, "18-08-2025", "15:30", "Vacunación", 2, True],
-        [7, 7, "19-08-2025", "11:00", "Radiografía", 3, True],
-        [8, 8, "19-08-2025", "12:00", "Chequeo de oídos", 1, True],
+        [5, 5, "18-08-2025", "14:00", "Operacion", 1, True],
+        [6, 6, "18-08-2025", "15:30", "Vacunación", 2, False],
+        [7, 7, "19-08-2025", "11:00", "Chequeo anual", 3, True],
+        [8, 8, "19-08-2025", "12:00", "Vacunación", 1, True],
     ]
     veterinarians = [
         [1, "36485787", "Martín", "Herrera", "MN12345", "mherrera@gmail.com", "1155551111", True],
@@ -41,7 +41,7 @@ def create_arrays():
         [3, "34125478", "Julián", "Duarte", "MN98765", "jdurate@gmail.com", "1155553333", True],
         [4, "40157896", "Sofía", "Castro", "MN78965", "scastro@gmail.com", "1155554444", True],
         [5, "25874123", "Pedro", "García", "MN45678", "pgarcia@gmail.com", "1155555555", True],
-        [6, "42154789", "Laura", "Díaz", "MN15975", "ldiaz@gmail.com", "1155556666", True],
+        [6, "42154789", "Laura", "Díaz", "MN15975", "ldiaz@gmail.com", "1155556666", False],
     ]
 
     return owners, mascotas, turnos, veterinarians
