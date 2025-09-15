@@ -60,7 +60,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                 
                 if not owner_found:
                     print("Error: No se encontró un dueño con ese DNI") 
-                    break
+                    return None
             if owner_found:
                 while pet_found is None:
                     pet_name = input("Ingrese el nombre de la mascota: ")
@@ -72,6 +72,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                         break
                     else:
                         print("Error: No se encontró una mascota activa con ese nombre para ese dueño") 
+                        return None
         elif header == "fecha":
             appointment_date = input(f'Ingresa {header} (YYYY-MM-DD): ')
             new_appointment.append(appointment_date)
@@ -196,10 +197,11 @@ def appointment_statistics(array_appointments, array_veterinarians):
         vet_id = appointment[HEADER_APPOINTMENT.index("veterinarian_id")]
         vet_name = None
         for vet in array_veterinarians:
-            if vet[HEADER_VETERINARIAN.index("veterinarian_id")] == vet_id:
+            if (vet[HEADER_VETERINARIAN.index("veterinarian_id")] == vet_id and 
+               vet[HEADER_VETERINARIAN.index("active")]):
                 vet_name = f"{vet[HEADER_VETERINARIAN.index('nombre')]} {vet[HEADER_VETERINARIAN.index('apellido')]} ({vet[HEADER_VETERINARIAN.index('dni')]})"
                 break
-        if vet_name:
+        if (vet_name):
             appointments_by_vet[vet_name] = appointments_by_vet.get(vet_name, 0) + 1
     print("\nTurnos por veterinario:")
     for vet, count in appointments_by_vet.items():
@@ -222,8 +224,11 @@ def add_appointment_action(array_appointments, array_pets, array_veterinarians, 
     """
     print("\n--- Ingrese el nuevo Turno ---\n")
     new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians, array_owners)
-    print("\nTurno agregado correctamente.\n")
-    show_appointment(new_appointment, array_pets, array_veterinarians)
+    if new_appointment:
+        print("\nTurno agregado correctamente.\n")
+        show_appointment(new_appointment, array_pets, array_veterinarians)
+    else:
+        print("\nError: No se pudo crear el turno.\n")
      
 def modify_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
     """Modifies an existing appointment.
@@ -247,7 +252,7 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
         print("\nTurno encontrado:\n")
         show_appointment(appointment_to_update, array_pets, array_veterinarians)
         updated_appointment = update_appointment_data(appointment_to_update)
-        updated_appointment = update_appointment(updated_appointment, array_appointments, array_pets, array_veterinarians)
+        updated_appointment = update_appointment(updated_appointment, array_appointments)
         if updated_appointment:
             print("\nTurno actualizado correctamente:\n")
             show_appointment(updated_appointment, array_pets, array_veterinarians)
@@ -328,7 +333,7 @@ def get_appointment_by_user_input(array_appointments, array_pets, array_veterina
         return None
 
     vet_dni = input("Ingrese el DNI del veterinario: ")
-    vet = get_veterinarian_by_dni(array_veterinarians, vet_dni)
+    vet = get_veterinarian_by_dni(vet_dni, array_veterinarians)
     if not vet:
         print("No se encontró un veterinario activo con ese DNI")
         return None
