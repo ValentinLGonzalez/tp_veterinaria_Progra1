@@ -47,4 +47,4 @@ def is_valid_gender(gender_text):
     return value == "HEMBRA" or value == "MACHO"
 
 def is_valid_phone(phone):
-    return bool(re.fullmatch(r'^15[0-9]{8}$', phone))
+    return bool(re.fullmatch(r'^11[0-9]{8}$', phone))
