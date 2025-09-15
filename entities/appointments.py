@@ -1,15 +1,12 @@
 import random
 
+from entities.treatments import TREATMENTS, is_valid_treatment, show_all_treatments
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 from utils.arrayHelper import print_array_bidimensional, print_array
 from entities.owner import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner
 from entities.veterinarians import get_veterinarian_by_dni
-
-
-
-
 
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 OPEN_WORK_HOUR = '08:00'
@@ -44,6 +41,16 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
             new_appointment.append(get_next_id(array_appointments))
         elif header == "active":
             new_appointment.append(True)
+        elif header == "treatment_id":
+            appointment_treatment = None
+            while appointment_treatment is None:
+                show_all_treatments(TREATMENTS)
+                treatment_id = int(input("Ingrese el id del tratamiento: "))
+                if is_valid_treatment(treatment_id):
+                    appointment_treatment = treatment_id
+                else:
+                    print("Ingrese un tratamiento válido.")
+            new_appointment.append(appointment_treatment)
         elif header == "pet_id":
             owner_found = None
             pet_found = None
@@ -394,7 +401,7 @@ def get_readable_appointment(appointment, array_pets, array_veterinarians):
     pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]
     date = appointment[HEADER_APPOINTMENT.index("fecha")]
     time = appointment[HEADER_APPOINTMENT.index("hora")]
-    treatment = appointment[HEADER_APPOINTMENT.index("tratamiento")]
+    treatment = appointment[HEADER_APPOINTMENT.index("treatment_id")]
     veterinarian_id = appointment[HEADER_APPOINTMENT.index("veterinarian_id")]
     
     pet_name = None
