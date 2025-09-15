@@ -19,3 +19,10 @@ def show_all_treatments(treatments):
 def is_valid_treatment(treatment_id):
     treatment_ids = [treatment['id'] for treatment in TREATMENTS]
     return treatment_id in treatment_ids
+
+def get_treatment_description_by_id(id):
+    treatment_description = None
+    for treatment in TREATMENTS:
+        if treatment['id'] == id:
+            treatment_description = treatment['description']
+    return treatment_description
