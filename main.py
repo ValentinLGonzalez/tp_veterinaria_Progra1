@@ -1,3 +1,4 @@
+from entities.owner import add_owner_action, delete_owner_action, modify_owner_action, show_all_owners_action
 from entities.veterinarians import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 from utils.entitiesHelper import create_arrays
 from entities.appointments import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action, appointment_statistics
@@ -22,7 +23,7 @@ def main():
             print("---------------------------")
             print("[1] Gestión de Veterinarios")
             print("[2] Gestion de Turnos")
-            print("[3] Opción 3")
+            print("[3] Gestion de Dueños")
             print("[4] Gestión de Mascotas")
             print("---------------------------")
             print("[0] Salir del programa")
@@ -113,9 +114,40 @@ def main():
                     appointment_statistics(appointments, veterinarians)
 
 
-        # elif opcion == "3":   # Opción 3
-        #     ...
+        elif opcion == "3":
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > MENÚ DE DUEÑOS")
+                    print("---------------------------")
+                    print("[1] Agregar Dueño")
+                    print("[2] Modificar un Dueño por DNI")
+                    print("[3] Mostrar todos los Dueños")
+                    print("[4] Eliminar Dueño por DNI")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcion = input("Seleccione una opción: ")
+                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
 
+                if opcion == "0": # Opción salir del submenú
+                    break # No salimos del programa, volvemos al menú anterior
+                elif opcion == "1":   # Opción 1
+                    add_owner_action(owners)
+                elif opcion == "2":   # Opción 2
+                    modify_owner_action(owners)
+                elif opcion == "3":   # Opción 3
+                    show_all_owners_action(owners)
+                elif opcion == "4":   # Opción 4
+                    delete_owner_action(owners)
 
         elif opcion == "4":   # Opción 1
             while True:
