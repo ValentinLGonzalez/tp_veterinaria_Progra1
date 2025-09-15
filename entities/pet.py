@@ -4,7 +4,6 @@ from utils.entitiesHelper import get_next_id
 from utils.constants import HEADER_PET
 from entities.owner import get_owner_by_dni, show_all_owners_action
 
-
 def create_pet(array_pets, array_owners):
     new_pet = []
     for header in HEADER_PET:
