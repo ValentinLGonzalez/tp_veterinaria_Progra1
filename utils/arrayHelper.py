@@ -5,11 +5,11 @@ def print_array_bidimensional(header, arrays):
     arrays => List of entities
     """
     for row in header:
-        print("{:20}".format(row), end="\t")
+        print("{:10}".format(row), end="\t")
     print()
     for row in arrays:
         for value in row:
-            print("{:22}".format(value), end="\t")
+            print("{:<10}".format(value), end="\t")
         print()  
         
 def print_array(header, array):
