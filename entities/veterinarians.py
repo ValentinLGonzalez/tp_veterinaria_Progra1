@@ -4,7 +4,7 @@ from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
 from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
-from utils.validations import is_valid_dni, is_valid_email
+from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Matricula", "Email", "Teléfono"]
 
@@ -87,14 +87,13 @@ def create_veterinarian(array_veterinarians):
                     print("El formato del apellido ingresado es inválido.")
         elif header == "telefono":        
             valid_phone = False
-            input_header = input(f'Ingresa un Telefono: ')
-            new_veterinarian.append(input_header)
-            # while not valid_phone:
-            #     input_header = input(f'Ingresa un Telefono: ')
-                # if is_valid_phone(input_header):
-                #     valid_phone = True
-                #     new_veterinarian.append(input_header)
-                # print("El formato del telefono ingresado es inválido.")
+            while not valid_phone:
+                input_header = input(f'Ingresa un Telefono: ')
+                if is_valid_phone(input_header):
+                    valid_phone = True
+                    new_veterinarian.append(input_header)
+                else:
+                    print("El formato del telefono ingresado es inválido.")
     array_veterinarians.append(new_veterinarian)
     return new_veterinarian
 
@@ -191,7 +190,7 @@ def get_veterinarian_by_dni(dni, array_veterinarians):
         list | None: The veterinarian record if found, otherwise None.
     """
     for veterinarian in array_veterinarians:
-        if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni:
+        if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni and veterinarian[HEADER_VETERINARIAN.index("active")] == True:
             return veterinarian
     return None
 
@@ -260,15 +259,14 @@ def update_veterinarian_data(current_veterinarian):
                 else:
                     print("El formato del apellido ingresado es inválido.")
         elif header == "telefono":        
-            input_header = input(f'Ingresa un Telefono: ')
-            updated_entity[HEADER_VETERINARIAN.index(header)] = input_header
-            # valid_phone = False
-            # while not valid_phone:
-            #     input_header = input(f'Ingresa un Telefono: ')
-                # if is_valid_phone(input_header):
-                #     valid_phone = True
-                #     new_veterinarian.append(input_header)
-                # print("El formato del telefono ingresado es inválido.")
+            valid_phone = False
+            while not valid_phone:
+                input_header = input(f'Ingresa un Telefono: ')
+                if is_valid_phone(input_header):
+                    valid_phone = True
+                    updated_entity[HEADER_VETERINARIAN.index(header)] = input_header
+                else:
+                    print("El formato del telefono ingresado es inválido.")
     return updated_entity
 
 def add_veterinarian_action(veterinarians):
