@@ -1,4 +1,5 @@
-from entities.veterinarians import get_veterinarian_by_dni, is_valid_name
+from entities.veterinarians.entity import get_veterinarian_by_dni
+from entities.veterinarians.validations import is_valid_name
 from utils.arrayHelper import print_array_bidimensional, print_array
 from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_OWNER
 from utils.entitiesHelper import get_next_id

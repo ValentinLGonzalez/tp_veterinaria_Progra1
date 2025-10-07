@@ -1,12 +1,12 @@
 import random
 
 from entities.treatments import TREATMENTS, get_treatment_description_by_id, is_valid_treatment, show_all_treatments
+from entities.veterinarians.entity import get_veterinarian_by_dni
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 from utils.arrayHelper import print_array_bidimensional, print_array
 from entities.owner import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner
-from entities.veterinarians import get_veterinarian_by_dni
 
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 OPEN_WORK_HOUR = '08:00'
