@@ -1,8 +1,6 @@
-from entities.appointments import READABLE_HEADER
-from entities.veterinarians.entity import create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
+from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.constants import HEADER_VETERINARIAN
-
 
 def add_veterinarian_action(veterinarians):
     """Adds a new veterinarian to the list after collecting user input.

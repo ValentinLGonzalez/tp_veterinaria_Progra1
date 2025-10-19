@@ -71,7 +71,7 @@ def read_owner_by_id(owner_id, array_owners):
     return None
 
 
-def get_owner_by_dni(dni, array_owners):
+def get_owner_by_dni(array_owners, dni):
     for owner in array_owners:
         if (owner[HEADER_OWNER.index("dni")] == dni and
             owner[HEADER_OWNER.index("active")] == True):

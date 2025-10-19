@@ -13,7 +13,7 @@ def show_all_treatments(treatments):
         print("{:8}".format(k), end="\t")
     print()
     for treatment in treatments:
-        print(f'{treatment['id']:<15} {treatment['description']:<10}', end="\t")
+        print(f"{treatment['id']:<15} {treatment['description']:<10}", end="\t")
         print()
         
 def is_valid_treatment(treatment_id):
