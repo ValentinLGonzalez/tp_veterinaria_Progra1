@@ -1,4 +1,5 @@
 import re
+
 def is_valid_matricula(matricula):
     """
         Validates if a text string has the matricula format (MN + 5 digits)

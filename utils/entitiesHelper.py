@@ -1,7 +1,6 @@
 # Entity helper function       
 from utils.constants import EXCLUDED_PRINT_HEADERS
 
-
 def get_next_id(matriz):
     return len(matriz) + 1
 
