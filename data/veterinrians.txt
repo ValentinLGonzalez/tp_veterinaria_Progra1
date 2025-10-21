@@ -1,2 +1,3 @@
-2;17456321;Camila;Álvarez;MN54321;calvare@gmail.com;1155552222;False
-1;36485787;Martín;Herrera;MN12345;mherrera@gmail.com;1155551111;True
+2,17456321,Camila,Álvarez,MN54321,calvare@gmail.com,1155552222,False
+1,36485787,Martín,Herrera,MN12345,mherrera@gmail.com,1155551111,True
+9,39485335,lucas,barbosa,MN12322,lucas@lucas.com,1154057166,True

@@ -1,3 +1,4 @@
+from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, save_data_veterinarian
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
@@ -43,7 +44,7 @@ def create_veterinarian(array_veterinarians):
             valid_dni = False
             while not valid_dni:
                 input_header = input(f'Ingresa un {header} válido: ')
-                if not get_veterinarian_by_dni(input_header, array_veterinarians) and is_valid_dni(input_header):
+                if not get_data_veterinarian_by_dni(input_header) and is_valid_dni(input_header):
                     valid_dni = True
                     new_veterinarian.append(input_header)
                 else:
@@ -93,10 +94,10 @@ def create_veterinarian(array_veterinarians):
                     new_veterinarian.append(input_header)
                 else:
                     print("El formato del telefono ingresado es inválido.")
-    array_veterinarians.append(new_veterinarian)
+    save_data_veterinarian(new_veterinarian)
     return new_veterinarian
 
-def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
+def read_veterinarian_by_id(veterinarian_id):
     """Retrieves an active veterinarian by its ID.
 
     Iterates through the list of veterinarians and returns the first one
@@ -111,10 +112,10 @@ def read_veterinarian_by_id(veterinarian_id, array_veterinarians):
         list | None: The veterinarian record if found and active,
         otherwise None.
     """
-    for veterinarian in array_veterinarians:
-        if(veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] == veterinarian_id and veterinarian[HEADER_VETERINARIAN.index("active")] == True):
-            return veterinarian
-    return None
+    try:
+        return get_data_veterinarian_by_id(veterinarian_id)
+    except:
+        raise Exception("Ocurrio un problema al intentar buscar el veterinario.")
                   
 def update_veterinarian_by_id(updated_veterinarian, array_veterinarians):
     """Updates a veterinarian in the list by its ID.
