@@ -1,8 +1,12 @@
 # Entity helper function       
 from utils.constants import EXCLUDED_PRINT_HEADERS
+from utils.filesHelper import read_last_line_with
 
 def get_next_id(matriz):
     return len(matriz) + 1
+
+def get_next_id_by_file(file_name):
+    return int(read_last_line_with(file_name)) + 1
 
 def create_arrays():
     owners = [

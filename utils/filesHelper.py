@@ -10,6 +10,19 @@ def read_file_csv_with(file_name, handler, condition):
         return entity_founded
     except OSError:
         print("No se puede abrir le archivo")
+
+def read_last_line_with(file_name):
+    last_id = 1
+    try:
+        with open(file_name,"r", encoding="UTF-8") as file:
+            for row in file:
+                row = row.strip().split(",")
+                last_id = row[0]
+        return last_id
+    except FileNotFoundError:
+        pass
+    except OSError:
+        print("No se puede abrir le archivo")
         
 def write_file(file_name, data, divider):
     try:

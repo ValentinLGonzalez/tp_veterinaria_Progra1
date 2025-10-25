@@ -1,9 +1,8 @@
-from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, save_data_veterinarian
+from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
 from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_VETERINARIAN
-from utils.entitiesHelper import get_next_id
 from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Matricula", "Email", "Teléfono"]
@@ -37,7 +36,7 @@ def create_veterinarian(array_veterinarians):
     new_veterinarian = []
     for header in HEADER_VETERINARIAN:
         if header == "veterinarian_id":
-            new_veterinarian.append(get_next_id(array_veterinarians))
+            new_veterinarian.append(get_next_veterinarian_id())
         elif header == "active":
             new_veterinarian.append(True)
         elif header == "dni":
