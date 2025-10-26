@@ -1,4 +1,5 @@
 import random
+from entities.appointments.data import get_next_appointment_id, save_data_appointment
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time, is_valid_appointment_date
 from entities.owner import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner
@@ -7,7 +8,7 @@ from entities.veterinarians.entity import get_veterinarian_by_dni
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id
 
-#CONSTANTS
+# CONSTANTS
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 
 # CREATE
@@ -20,7 +21,6 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
     - Sets "active" to True.
     - Asks the user to input the owner's DNI and pet name, then validates them.
     - Randomly assigns an active veterinarian.
-    - Prompts the user for the remaining values.
 
     Args:
         array_appointments (list[list]): The list of existing appointments.
@@ -32,10 +32,10 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
         list: The newly created appointment as a list of values.
     """
     new_appointment = []
-    
+
     for header in HEADER_APPOINTMENT:
         if header == "appointment_id":
-            new_appointment.append(get_next_id(array_appointments))
+            new_appointment.append(get_next_appointment_id())
         elif header == "active":
             new_appointment.append(True)
         elif header == "treatment_id":
@@ -54,7 +54,6 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
             while owner_found is None:
                 owner_dni = input("Ingrese el DNI del dueño: ")
                 owner_found = get_owner_by_dni(array_owners, owner_dni)
-                
                 if not owner_found:
                     print("Error: No se encontró un dueño con ese DNI") 
                     return None
@@ -92,7 +91,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians, arra
                 return None                 
             new_appointment.append(assigned_vet[HEADER_VETERINARIAN.index("veterinarian_id")])            
             print(f"Veterinario asignado: {assigned_vet[HEADER_VETERINARIAN.index('nombre')]} {assigned_vet[HEADER_VETERINARIAN.index('apellido')]} DNI({assigned_vet[HEADER_VETERINARIAN.index('dni')]}) ({assigned_vet[HEADER_VETERINARIAN.index('matricula')]})")
-    array_appointments.append(new_appointment)
+    save_data_appointment(new_appointment)
     return new_appointment
 
 # GET
@@ -119,7 +118,7 @@ def update_appointment(updated_appointment, array_appointments):
     Finds the appointment in the original array,
     replaces its contents with `updated_appointment` and returns the updated record.
 
-    Args:
+    Args: 
         updated_appointment (list): The appointment with updated values.
         array_appointments (list[list]): The list of appointments.
         array_pets (list[list]): The list of pets.
@@ -132,10 +131,7 @@ def update_appointment(updated_appointment, array_appointments):
     
     if updated_appointment[HEADER_APPOINTMENT.index("appointment_id")] in current_appointments_id:
         updated_appointment_index = current_appointments_id.index(updated_appointment[HEADER_APPOINTMENT.index("appointment_id")])
-        
-        for i in range(len(array_appointments[updated_appointment_index])):
-            array_appointments[updated_appointment_index][i] = updated_appointment[i]
-        
+        array_appointments[updated_appointment_index] = updated_appointment
         return array_appointments[updated_appointment_index]
     return None
 
@@ -152,55 +148,59 @@ def update_appointment_data(appointment, array_appointments, array_veterinarians
     Returns:
         list: The updated appointment.
     """
-    updated_appointment = appointment.copy()
 
-    old_date = appointment[HEADER_APPOINTMENT.index("fecha")]
-    old_time = appointment[HEADER_APPOINTMENT.index("hora")]
+    try:
+        updated_appointment = appointment.copy()
+        old_date = appointment[HEADER_APPOINTMENT.index("fecha")]
+        old_time = appointment[HEADER_APPOINTMENT.index("hora")]
 
-    for header in HEADER_APPOINTMENT:
-        if header in ["pet_id", "veterinarian_id", "active", "appointment_id"]:
-            continue
-        index = HEADER_APPOINTMENT.index(header)
-        if header == "hora":
-            valid_time = None
-            while valid_time is None:
-                input_time = input("Ingrese la hora (HH:MM): ")
-                if is_valid_appointment_time(input_time):
-                    valid_time = input_time
-                updated_appointment[index] = valid_time
-        elif header == "fecha":
-            valid_date = None
-            while valid_date is None:
-                input_date = input("Ingrese la fecha (YYYY-MM-DD): ")
-                if is_valid_appointment_date(input_date):
-                    valid_date = input_date
-                    updated_appointment[index] = valid_date
-                else:
-                    print("Error: La fecha es inválida.")
-        elif header == "treatment_id":
-            appointment_treatment = None
-            while appointment_treatment is None:
-                show_all_treatments(TREATMENTS)
-                treatment_id = int(input("Ingrese el id del tratamiento: "))
-                if is_valid_treatment(treatment_id):
-                    appointment_treatment = treatment_id
-                else:
-                    print("Ingrese un tratamiento válido.")
-            updated_appointment[index] = appointment_treatment
+        for header in HEADER_APPOINTMENT:
+            if header in ["pet_id", "veterinarian_id", "active", "appointment_id"]:
+                continue
+            index = HEADER_APPOINTMENT.index(header)
+            if header == "hora":
+                valid_time = None
+                while valid_time is None:
+                    input_time = input("Ingrese la hora (HH:MM): ")
+                    if is_valid_appointment_time(input_time):
+                        valid_time = input_time
+                    updated_appointment[index] = valid_time
+            elif header == "fecha":
+                valid_date = None
+                while valid_date is None:
+                    input_date = input("Ingrese la fecha (YYYY-MM-DD): ")
+                    if is_valid_appointment_date(input_date):
+                        valid_date = input_date
+                        updated_appointment[index] = valid_date
+                    else:
+                        print("Error: La fecha es inválida.")
+            elif header == "treatment_id":
+                appointment_treatment = None
+                while appointment_treatment is None:
+                    show_all_treatments(TREATMENTS)
+                    treatment_id = int(input("Ingrese el id del tratamiento: "))
+                    if is_valid_treatment(treatment_id):
+                        appointment_treatment = treatment_id
+                    else:
+                        print("Ingrese un tratamiento válido.")
+                updated_appointment[index] = appointment_treatment
 
-    new_date = updated_appointment[HEADER_APPOINTMENT.index("fecha")]
-    new_time = updated_appointment[HEADER_APPOINTMENT.index("hora")]
+        new_date = updated_appointment[HEADER_APPOINTMENT.index("fecha")]
+        new_time = updated_appointment[HEADER_APPOINTMENT.index("hora")]
 
-    if new_date != old_date or new_time != old_time:
-        print("\nReasignando veterinario...")
-        new_vet = assign_veterinarian(array_appointments, array_veterinarians, new_date, new_time)
-        if new_vet:
-            updated_appointment[HEADER_APPOINTMENT.index("veterinarian_id")] = new_vet[HEADER_VETERINARIAN.index("veterinarian_id")]
-            print(f"Nuevo veterinario: {new_vet[HEADER_VETERINARIAN.index('nombre')]} {new_vet[HEADER_VETERINARIAN.index('apellido')]}")
-        else:
-            print("No hay veterinarios disponibles. El turno será cancelado.")
-            updated_appointment[HEADER_APPOINTMENT.index("active")] = False
-    return updated_appointment
+        if new_date != old_date or new_time != old_time:
+            print("\nReasignando veterinario...")
+            new_vet = assign_veterinarian(array_appointments, array_veterinarians, new_date, new_time)
+            if new_vet:
+                updated_appointment[HEADER_APPOINTMENT.index("veterinarian_id")] = new_vet[HEADER_VETERINARIAN.index("veterinarian_id")]
+                print(f"Nuevo veterinario: {new_vet[HEADER_VETERINARIAN.index('nombre')]} {new_vet[HEADER_VETERINARIAN.index('apellido')]}")
+            else:
+                print("No hay veterinarios disponibles. El turno será cancelado.")
+                updated_appointment[HEADER_APPOINTMENT.index("active")] = False
+        return updated_appointment
+    except Exception as e:
+        print(f"Error al modificar los datos del turno: {e}")
+        return appointment
 
 # DELETE
 def delete_appointment_by_id(appointment_id, array_appointments):
@@ -267,30 +267,34 @@ def get_appointment_by_user_input(array_appointments, array_pets, array_veterina
     Returns:
         list | None: The appointment if found, otherwise None.
     """
-    owner_dni = input("Ingrese el DNI del dueño: ")
-    owner = get_owner_by_dni(array_owners, owner_dni)
-    if not owner:
-        print("No se encontró un dueño activo con ese DNI")
-        return None
 
-    pet_name = input("Ingrese el nombre de la mascota: ")
-    pet = get_pet_by_name_and_owner(array_pets, pet_name, owner[HEADER_OWNER.index("owner_id")])
-    if not pet:
-        print("No se encontró una mascota activa con ese nombre para ese dueño")
-        return None
+    try:
+        owner_dni = input("Ingrese el DNI del dueño: ")
+        owner = get_owner_by_dni(array_owners, owner_dni)
+        if not owner:
+            print("No se encontró un dueño activo con ese DNI")
+            return None
 
-    vet_dni = input("Ingrese el DNI del veterinario: ")
-    vet = get_veterinarian_by_dni(vet_dni, array_veterinarians)
-    if not vet:
-        print("No se encontró un veterinario activo con ese DNI")
-        return None
+        pet_name = input("Ingrese el nombre de la mascota: ")
+        pet = get_pet_by_name_and_owner(array_pets, pet_name, owner[HEADER_OWNER.index("owner_id")])
+        if not pet:
+            print("No se encontró una mascota activa con ese nombre para ese dueño")
+            return None
 
-    appointment = get_appointment_by_pet_and_vet(array_appointments, pet[HEADER_PET.index("pet_id")], vet[HEADER_VETERINARIAN.index("veterinarian_id")])
-    if not appointment:
-        print("No se encontró un turno para esa mascota y veterinario")
-        return None
+        vet_dni = input("Ingrese el DNI del veterinario: ")
+        vet = get_veterinarian_by_dni(vet_dni, array_veterinarians)
+        if not vet:
+            print("No se encontró un veterinario activo con ese DNI")
+            return None
 
-    return appointment
+        appointment = get_appointment_by_pet_and_vet(array_appointments, pet[HEADER_PET.index("pet_id")], vet[HEADER_VETERINARIAN.index("veterinarian_id")])
+        if not appointment:
+            print("No se encontró un turno para esa mascota y veterinario")
+            return None
+        return appointment
+    except Exception as e:
+            print(f"Error al buscar turno: {e}")
+            return None
 
 def get_appointment_by_pet_and_vet(array_appointments, pet_id, veterinarian_id):
     """Finds an active appointment by pet ID and veterinarian ID.
