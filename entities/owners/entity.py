@@ -1,24 +1,23 @@
-from entities.veterinarians.entity import get_veterinarian_by_dni
-from entities.veterinarians.validations import is_valid_name
+from entities.owners.data import get_data_owner_by_dni, get_next_owner_id, save_data_owner, get_all_owners, save_all_owners, get_data_owner_by_id
+from entities.owners.validations import is_valid_name
 from utils.arrayHelper import print_array_bidimensional, print_array
 from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_OWNER
-from utils.entitiesHelper import get_next_id
 from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Email", "Teléfono"]
 
-def create_owner(array_owners):
+def create_owner():
     new_owner = []
     for header in HEADER_OWNER:
         if header == "owner_id":
-            new_owner.append(get_next_id(array_owners))
+            new_owner.append(get_next_owner_id())
         elif header == "active":
             new_owner.append(True)
         elif header == "dni":
             valid_dni = False
             while not valid_dni:
                 input_header = input(f'Ingresa un {header} válido: ')
-                if not get_veterinarian_by_dni(input_header, array_owners) and is_valid_dni(input_header):
+                if not get_data_owner_by_dni(input_header) and is_valid_dni(input_header):
                     valid_dni = True
                     new_owner.append(input_header)
                 else:
@@ -59,33 +58,27 @@ def create_owner(array_owners):
                     new_owner.append(input_header)
                 else:
                     print("El formato del telefono ingresado es inválido.")
-    array_owners.append(new_owner)
+    save_data_owner(new_owner)
     return new_owner
 
 
-def read_owner_by_id(owner_id, array_owners):
-    for owner in array_owners:
-        if (owner[HEADER_OWNER.index("owner_id")] == owner_id and
-            owner[HEADER_OWNER.index("active")] == True):
-            return owner
-    return None
+def read_owner_by_id(owner_id):
+    return get_data_owner_by_id(owner_id)
 
 
-def get_owner_by_dni(array_owners, dni):
-    for owner in array_owners:
-        if (owner[HEADER_OWNER.index("dni")] == dni and
-            owner[HEADER_OWNER.index("active")] == True):
-            return owner
-    return None
+def get_owner_by_dni(dni):
+    return get_data_owner_by_dni(dni)
 
 
-def update_owner_by_id(updated_owner, array_owners):
-    current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in array_owners]
+def update_owner_by_id(updated_owner):
+    all_owners = get_all_owners()
+    current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in all_owners]
     updated_owner_id = updated_owner[HEADER_OWNER.index("owner_id")]
     if(updated_owner_id in current_owners_id):
         updated_owner_index = current_owners_id.index(updated_owner_id)
-        array_owners[updated_owner_index] = updated_owner
-        return array_owners[updated_owner_index]
+        all_owners[updated_owner_index] = updated_owner
+        save_all_owners(all_owners)
+        return all_owners[updated_owner_index]
     return None
 
 def update_owner_data(current_owner):
@@ -141,43 +134,14 @@ def update_owner_data(current_owner):
                     print("El formato del telefono ingresado es inválido.")
     return updated_entity
 
-def delete_owner_by_id(owner_id, array_owners):
-    current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in array_owners]
+def delete_owner_by_id(owner_id):
+    all_owners = get_all_owners()
+    current_owners_id = [owner[HEADER_OWNER.index("owner_id")] for owner in all_owners]
     if owner_id in current_owners_id:
         deleted_owner_index = current_owners_id.index(owner_id)
-        array_owners[deleted_owner_index][HEADER_OWNER.index("active")] = False
+        all_owners[deleted_owner_index][HEADER_OWNER.index("active")] = False
+        save_all_owners(all_owners)
 
-def show_owner(owner):
-    print("\nDueño cargado/modificado correctamente.\n")
-    print_array(READABLE_HEADER, get_readable_owner(owner))
-
-def add_owner_action(owners):
-    print("\n--- Ingrese los datos del Dueño ---\n")
-    new_owner = create_owner(owners)
-    show_owner(new_owner)
-
-def modify_owner_action(owners):
-    is_valid_dni = False
-    while not is_valid_dni:
-        dni_input = input("Ingrese el DNI del Dueño que desea modificar: ")
-        owner_to_update = get_owner_by_dni(dni_input, owners)
-        if owner_to_update:
-            is_valid_dni = True
-            show_owner(owner_to_update)
-        else:
-            print("El DNI no corresponde a un dueño existente.")
-    updated_veterinarian = update_owner_data(owner_to_update)
-    return update_owner_by_id(updated_veterinarian, owners)
-
-def show_all_owners_action(array_owners):
-    print("\n--- Listado de Dueños Activos ---\n")
-    active_owners = list(
-        filter(lambda o: o[HEADER_OWNER.index("active")] == True, array_owners)
-    )
-    readable_owners = [get_readable_owner(owner) for owner in active_owners]
-    print_array_bidimensional(READABLE_HEADER, readable_owners)
-    print("\n--- Fin del listado ---\n")
-    
 def get_readable_owner(owner):
     
     dni = owner[HEADER_OWNER.index("dni")]
@@ -187,15 +151,4 @@ def get_readable_owner(owner):
     phone = owner[HEADER_OWNER.index("telefono")]
 
     return (dni, name, surname, email, phone)
-
-def delete_owner_action(owners):
-    dni_input = input("Ingrese el DNI del Dueño que desea dar de baja: ")
-    owner_to_delete = get_owner_by_dni(dni_input, owners)
-    if owner_to_delete:
-        print("\nDueño encontrado:\n")
-        show_owner(owner_to_delete)
-        delete_owner_by_id(owner_to_delete[HEADER_OWNER.index("owner_id")], owners)
-        print("\nDueño dado de baja correctamente.\n")
-    else:
-        print("\nNo se encontró un dueño activo con ese DNI.\n")
 

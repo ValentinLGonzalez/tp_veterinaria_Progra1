@@ -2,7 +2,8 @@ from utils.arrayHelper import print_array_bidimensional
 from utils.arrayHelper import print_array
 from utils.entitiesHelper import get_next_id
 from utils.constants import HEADER_PET
-from entities.owner import get_owner_by_dni, show_all_owners_action
+from entities.owners.controller import show_all_owners_action
+from entities.owners.entity import get_owner_by_dni
 
 def create_pet(array_pets, array_owners):
     new_pet = []

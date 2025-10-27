@@ -1,6 +1,6 @@
 from entities.appointments.controller import add_appointment_action, delete_appointment_action, modify_appointment_action, show_all_appointments_action
 from entities.appointments.statistics import appointment_statistics
-from entities.owner import add_owner_action, delete_owner_action, modify_owner_action, show_all_owners_action
+from entities.owners.controller import add_owner_action, delete_owner_action, modify_owner_action, show_all_owners_action
 from entities.veterinarians.controller import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 from utils.entitiesHelper import create_arrays
 from entities.pet import add_pet_action, delete_pet_action, modify_pet_action, show_all_pets_action
@@ -141,13 +141,13 @@ def main():
                 if opcion == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif opcion == "1":   # Opción 1
-                    add_owner_action(owners)
+                    add_owner_action()
                 elif opcion == "2":   # Opción 2
-                    modify_owner_action(owners)
+                    modify_owner_action()
                 elif opcion == "3":   # Opción 3
-                    show_all_owners_action(owners)
+                    show_all_owners_action()
                 elif opcion == "4":   # Opción 4
-                    delete_owner_action(owners)
+                    delete_owner_action()
 
         elif opcion == "4":   # Opción 1
             while True:

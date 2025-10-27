@@ -43,3 +43,24 @@ def append_line_to_file(file_name, handler, data):
         print("No se puede abrir le archivo")
     finally:
         file.close()
+
+def read_all_file_csv(file_name):
+    data = []
+    try:
+        with open(file_name,"r", encoding="UTF-8") as file:
+            for row in file:
+                entity_row = row.strip().split(",")
+                data.append(entity_row)
+        return data
+    except FileNotFoundError:
+        return []
+    except OSError:
+        print("No se puede abrir le archivo")
+
+def save_all_to_file(file_name, handler, data):
+    try:
+        with open(file_name, "w", encoding = "UTF-8") as file:
+            for row in data:
+                file.write(handler(row) + '\n')
+    except OSError:
+        print("No se puede abrir le archivo")

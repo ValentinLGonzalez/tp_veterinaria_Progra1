@@ -1,7 +1,7 @@
 import random
 from entities.appointments.data import get_next_appointment_id, save_data_appointment
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time, is_valid_appointment_date
-from entities.owner import get_owner_by_dni
+from entities.owners.entity import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner
 from entities.treatments import TREATMENTS, get_treatment_description_by_id, is_valid_treatment, show_all_treatments
 from entities.veterinarians.entity import get_veterinarian_by_dni
