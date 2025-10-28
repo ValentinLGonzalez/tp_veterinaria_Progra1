@@ -1,6 +1,6 @@
 from utils.constants import HEADER_VETERINARIAN
 from utils.entitiesHelper import get_next_id_by_file
-from utils.filesHelper import append_line_to_file, read_file_csv_with, update_file_csv_with_temp
+from utils.filesHelper import append_line_to_file, read_all_file_csv, read_file_csv_with, update_file_csv_with_temp
 file_name = "./data/veterinarians.txt"
 
 def veterinarian_read_handler(entity, condition):
@@ -17,6 +17,10 @@ def get_data_veterinarian_by_id(_id):
 
 def get_next_veterinarian_id():
     return get_next_id_by_file(file_name)
+
+def get_all_veterinarians_with():
+    return read_all_file_csv(file_name) 
+
 
 def veterinarian_append_handler(entity):
     veterinarian_id, dni, nombre, apellido, matricula, email, telefono, active = entity

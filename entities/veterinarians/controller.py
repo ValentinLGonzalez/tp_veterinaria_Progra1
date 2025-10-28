@@ -1,9 +1,9 @@
 from entities.veterinarians.data import get_data_veterinarian_by_dni
-from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
+from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_all_veterinarians_active, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.constants import HEADER_VETERINARIAN
 
-def add_veterinarian_action(veterinarians):
+def add_veterinarian_action():
     """Adds a new veterinarian to the list after collecting user input.
 
     Prompts the user to enter the data for a new veterinarian, creates
@@ -18,13 +18,13 @@ def add_veterinarian_action(veterinarians):
     """
     try:
         print("\nIngrese los datos del Veterinario: \n")
-        new_veterinarian = create_veterinarian(veterinarians)
+        new_veterinarian = create_veterinarian()
         print("\nVeterinario agregado correctamente.\n")
         show_veterinarian(new_veterinarian)
     except:
         print("[ERROR] Controller - add_veterinarian_action {error}")
      
-def modify_veterinarian_action(veterinarians):
+def modify_veterinarian_action():
     """Modifies an existing veterinarian by searching with DNI.
 
     Continuously prompts the user to enter a veterinarian's DNI until a valid
@@ -47,10 +47,9 @@ def modify_veterinarian_action(veterinarians):
             show_veterinarian(veterinarian_to_update)
         else:
             print("El DNI no corresponde a un veterinario existente.")
-    updated_veterinarian = update_veterinarian_data(veterinarian_to_update)
-    return update_veterinarian_by_id(updated_veterinarian, veterinarians) #TODO: Pasar a modificar archivos
+    return update_veterinarian_data(veterinarian_to_update)
 
-def show_all_veterinarians_action(array_veterinarians): 
+def show_all_veterinarians_action(): 
     """Displays all active veterinarians in a formatted table.
 
     Filters the list of veterinarians to include only those marked as active,
@@ -63,8 +62,7 @@ def show_all_veterinarians_action(array_veterinarians):
     Returns:
         None
     """
-    active_veterinarians = list(filter(lambda v: v[HEADER_VETERINARIAN.index("active")] == True, array_veterinarians))
-    readeable_veterinarians = [get_readable_veterinarian(veterinarian) for veterinarian in active_veterinarians]
+    readeable_veterinarians = show_all_veterinarians_active()
     print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
     
 def delete_veterinarian_action(veterinarians):

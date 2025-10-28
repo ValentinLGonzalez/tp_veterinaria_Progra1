@@ -1,6 +1,4 @@
 import os
-
-
 DIVIDER_CSV = ','
 def read_file_csv_with(file_name, handler, condition):
     entity_founded = False

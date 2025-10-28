@@ -67,11 +67,11 @@ def main():
                 if opcion == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif opcion == "1":   # Opción 1
-                    add_veterinarian_action(veterinarians)
+                    add_veterinarian_action()
                 elif opcion == "2":   # Opción 2
-                    modify_veterinarian_action(veterinarians)
+                    modify_veterinarian_action()
                 elif opcion == "3":   # Opción 3
-                    show_all_veterinarians_action(veterinarians)
+                    show_all_veterinarians_action()
                 elif opcion == "4":   # Opción 4
                     delete_veterinarian_action(veterinarians)
 

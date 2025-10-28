@@ -1,4 +1,4 @@
-from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
+from entities.veterinarians.data import get_all_veterinarians_with, get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
@@ -7,7 +7,7 @@ from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Matricula", "Email", "Teléfono"]
 
-def create_veterinarian(array_veterinarians):
+def create_veterinarian():
     """Creates a new veterinarian and appends it to the existing list.
 
     This function guides the user through the process of creating a new
@@ -211,7 +211,6 @@ def update_veterinarian_data(current_veterinarian):
         list: A new list representing the updated veterinarian with the modified values.
     """
     updated_entity = current_veterinarian.copy()
-    
     for header in HEADER_VETERINARIAN:
         if header in EXCLUDED_PRINT_HEADERS:
             continue
@@ -293,3 +292,8 @@ def get_readable_veterinarian(veterinarian):
     phone = veterinarian[HEADER_VETERINARIAN.index("telefono")]
 
     return (dni, name, surname, matricula, email, phone)
+
+def show_all_veterinarians_active():
+    veterinarians = get_all_veterinarians_with()
+    veterinarians_active = list(filter(lambda v: bool(v[HEADER_VETERINARIAN.index("active")]) == True, veterinarians))
+    return [get_readable_veterinarian(veterinarian) for veterinarian in veterinarians_active]
