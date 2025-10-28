@@ -97,48 +97,7 @@ def create_veterinarian():
         save_data_veterinarian(new_veterinarian)
         return new_veterinarian
     except:
-        raise 
-
-def read_veterinarian_by_id(veterinarian_id):
-    """Retrieves an active veterinarian by its ID.
-
-    Iterates through the list of veterinarians and returns the first one
-    that matches the given ID and is marked as active.
-
-    Args:
-        veterinarian_id (str): The ID of the veterinarian to look up.
-        array_veterinarians (list[list]): The list of veterinarians, where
-            each veterinarian is represented as a list of values.
-
-    Returns:
-        list | None: The veterinarian record if found and active,
-        otherwise None.
-    """
-    try:
-        return get_data_veterinarian_by_id(veterinarian_id)
-    except:
-        raise Exception("Ocurrio un problema al intentar buscar el veterinario.")
-                  
-def update_veterinarian_by_id(updated_veterinarian, array_veterinarians):
-    """Updates a veterinarian in the list by its ID.
-
-    Searches for the veterinarian with the same ID as `updated_veterinarian`
-    and replaces the old record with the new one. If the ID does not exist,
-    the function returns None.
-
-    Args:
-        updated_veterinarian (list): The veterinarian record with updated values.
-        array_veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
-    """
-    current_veterinarians_id = [veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] for veterinarian in array_veterinarians]
-    updated_veterinarian_id = updated_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")]
-    if(updated_veterinarian_id in current_veterinarians_id):
-        updated_veterinarian_index = current_veterinarians_id.index(updated_veterinarian_id)
-        array_veterinarians[updated_veterinarian_index] = updated_veterinarian
-        return array_veterinarians[updated_veterinarian_index]
-    return None
-
+        raise                 
         
 def delete_veterinarian_by_id(veterinarian_id):
     """Soft deletes a veterinarian by ID.
@@ -178,24 +137,8 @@ def show_veterinarian(veterinarian):
     readeable_veterinarian = get_readable_veterinarian(veterinarian)
     print_array(READABLE_HEADER, readeable_veterinarian)
 
-def get_veterinarian_by_dni(dni, array_veterinarians):
-    """Retrieves a veterinarian record by its DNI.
-
-    Iterates through the list of veterinarians and returns the first record
-    that matches the provided DNI. If no match is found, returns None.
-
-    Args:
-        dni (str): The DNI of the veterinarian to search for.
-        array_veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
-
-    Returns:
-        list | None: The veterinarian record if found, otherwise None.
-    """
-    for veterinarian in array_veterinarians:
-        if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni and veterinarian[HEADER_VETERINARIAN.index("active")] == True:
-            return veterinarian
-    return None
+def get_veterinarian_by_dni(_dni):
+    return get_data_veterinarian_by_dni(_dni)
 
 def update_veterinarian_data(current_veterinarian):
     """Updates a veterinarian's data based on user input for each field.

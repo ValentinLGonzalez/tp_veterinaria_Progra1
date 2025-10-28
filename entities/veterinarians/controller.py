@@ -1,5 +1,5 @@
 from entities.veterinarians.data import get_data_veterinarian_by_dni
-from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_all_veterinarians_active, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
+from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, show_all_veterinarians_active, show_veterinarian, update_veterinarian_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.constants import HEADER_VETERINARIAN
 
