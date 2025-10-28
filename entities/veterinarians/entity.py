@@ -1,4 +1,4 @@
-from entities.veterinarians.data import get_all_veterinarians_with, get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
+from entities.veterinarians.data import delete_data_veterinarian, get_all_veterinarians_with, get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
@@ -140,7 +140,7 @@ def update_veterinarian_by_id(updated_veterinarian, array_veterinarians):
     return None
 
         
-def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
+def delete_veterinarian_by_id(veterinarian_id):
     """Soft deletes a veterinarian by ID.
 
     Searches for a veterinarian by its unique ID in the list. If found,
@@ -155,10 +155,11 @@ def delete_veterinarian_by_id(veterinarian_id, array_veterinarians):
     Returns:
         None: The list is modified in place.
     """
-    current_veterinarians_id = [veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")] for veterinarian in array_veterinarians]
-    if(veterinarian_id in current_veterinarians_id):
-        deleted_veterinarian_index = current_veterinarians_id.index(veterinarian_id)
-        array_veterinarians[deleted_veterinarian_index][HEADER_VETERINARIAN.index("active")] = False
+    veterinarian_found = get_data_veterinarian_by_id(veterinarian_id)
+    if(veterinarian_found):
+        veterinarian_found[HEADER_VETERINARIAN.index('active')] = 'False'
+        delete_data_veterinarian(veterinarian_found)
+
     return None
     
 def show_veterinarian(veterinarian): 
@@ -295,5 +296,5 @@ def get_readable_veterinarian(veterinarian):
 
 def show_all_veterinarians_active():
     veterinarians = get_all_veterinarians_with()
-    veterinarians_active = list(filter(lambda v: bool(v[HEADER_VETERINARIAN.index("active")]) == True, veterinarians))
+    veterinarians_active = list(filter(lambda v: v[HEADER_VETERINARIAN.index("active")] == 'True', veterinarians))
     return [get_readable_veterinarian(veterinarian) for veterinarian in veterinarians_active]

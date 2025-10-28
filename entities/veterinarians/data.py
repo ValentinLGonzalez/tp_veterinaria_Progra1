@@ -33,3 +33,8 @@ def update_data_veterinarian(updated_veterinarian):
     _id = updated_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")]
     update_file_csv_with_temp(file_name, lambda v: v[HEADER_VETERINARIAN.index("veterinarian_id")] == _id and bool(v[HEADER_VETERINARIAN.index("active")]) == True, updated_veterinarian)
     return updated_veterinarian
+
+def delete_data_veterinarian(updated_veterinarian):
+    _id = updated_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")]
+    update_file_csv_with_temp(file_name, lambda v: v[HEADER_VETERINARIAN.index("veterinarian_id")] == _id, updated_veterinarian)
+    return updated_veterinarian

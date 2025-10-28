@@ -65,7 +65,7 @@ def show_all_veterinarians_action():
     readeable_veterinarians = show_all_veterinarians_active()
     print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
     
-def delete_veterinarian_action(veterinarians):
+def delete_veterinarian_action():
     """Soft deletes a veterinarian by DNI after user confirmation.
 
     Continuously prompts the user to enter a veterinarian's DNI until a valid
@@ -82,12 +82,12 @@ def delete_veterinarian_action(veterinarians):
     is_valid_dni = False
     while not is_valid_dni:
         dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
-        veterinarian_to_update = get_veterinarian_by_dni(dni_input, veterinarians)
+        veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
         if veterinarian_to_update:
             is_valid_dni = True
             show_veterinarian(veterinarian_to_update)
         else:
             print("El DNI no corresponde a un veterinario existente.")
-    veterinarian_to_delete = get_veterinarian_by_dni(dni_input, veterinarians)
-    print("\Veterinario dado de baja correctamente.\n")
-    delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")], veterinarians)
+    veterinarian_to_delete = get_data_veterinarian_by_dni(dni_input)
+    print("Veterinario dado de baja correctamente.\n")
+    delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")])

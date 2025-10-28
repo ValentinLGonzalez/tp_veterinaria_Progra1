@@ -73,7 +73,7 @@ def main():
                 elif opcion == "3":   # Opción 3
                     show_all_veterinarians_action()
                 elif opcion == "4":   # Opción 4
-                    delete_veterinarian_action(veterinarians)
+                    delete_veterinarian_action()
 
         elif opcion == "2":   # Opción 2
              while True:
