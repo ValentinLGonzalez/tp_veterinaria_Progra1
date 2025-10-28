@@ -1,10 +1,14 @@
+import os
+
+
+DIVIDER_CSV = ','
 def read_file_csv_with(file_name, handler, condition):
     entity_founded = False
     try:
         with open(file_name,"r", encoding="UTF-8") as file:
             row = file.readline()
             while row and entity_founded == False:
-                entity_row = row.strip().split(",")
+                entity_row = row.strip().split(DIVIDER_CSV)
                 entity_founded = handler(entity_row, condition)
                 row = file.readline()
         return entity_founded
@@ -24,7 +28,7 @@ def read_last_line_with(file_name):
     except OSError:
         print("No se puede abrir le archivo")
         
-def write_file(file_name, data, divider):
+def write_file_csv(file_name, data, divider):
     try:
         file = open(file_name, "w", encoding = "UTF-8")
         for row in data:
@@ -43,3 +47,36 @@ def append_line_to_file(file_name, handler, data):
         print("No se puede abrir le archivo")
     finally:
         file.close()
+
+def update_file_csv_with_temp(file_name, condition, data):
+    file_temp_name = "./data/temp"
+    updated_success = False
+    try:
+        temp_file = open(file_temp_name, 'wt', encoding="UTF-8")
+        current_file = open(file_name, 'rt', encoding="UTF-8")
+        for rows in current_file:
+            row = rows.strip().split(DIVIDER_CSV)
+            if condition(row):
+                temp_file.write(DIVIDER_CSV.join(data) + '\n')
+            else:
+                temp_file.write(DIVIDER_CSV.join(row) + '\n')
+        updated_success = True
+    except OSError as e:
+        print("No se puede abrir le archivo")
+        print(e)
+    finally:
+        try:
+            temp_file.close()
+            current_file.close()
+        except:
+            print("Error en el cierre del archivo:")
+            
+    if updated_success:
+        try:
+            os.remove(file_name)
+            os.rename(file_temp_name, file_name)
+        except OSError as error:
+            print("Error al reemplazar el archivo:", error)
+    else:
+        os.remove(file_temp_name)
+        print(f"No se pudo actualizar le archivo.")

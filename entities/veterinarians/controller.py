@@ -1,3 +1,4 @@
+from entities.veterinarians.data import get_data_veterinarian_by_dni
 from entities.veterinarians.entity import READABLE_HEADER, create_veterinarian, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_dni, show_veterinarian, update_veterinarian_by_id, update_veterinarian_data
 from utils.arrayHelper import print_array_bidimensional
 from utils.constants import HEADER_VETERINARIAN
@@ -15,10 +16,13 @@ def add_veterinarian_action(veterinarians):
     Returns:
         list: The newly created veterinarian record.
     """
-    print("\nIngrese los datos del Veterinario: \n")
-    new_veterinarian = create_veterinarian(veterinarians)
-    print("\nVeterinario agregado correctamente.\n")
-    show_veterinarian(new_veterinarian)
+    try:
+        print("\nIngrese los datos del Veterinario: \n")
+        new_veterinarian = create_veterinarian(veterinarians)
+        print("\nVeterinario agregado correctamente.\n")
+        show_veterinarian(new_veterinarian)
+    except:
+        print("[ERROR] Controller - add_veterinarian_action {error}")
      
 def modify_veterinarian_action(veterinarians):
     """Modifies an existing veterinarian by searching with DNI.
@@ -37,14 +41,14 @@ def modify_veterinarian_action(veterinarians):
     is_valid_dni = False
     while not is_valid_dni:
         dni_input = input("Ingrese el DNI del Veterinario que desea modificar: ")
-        veterinarian_to_update = get_veterinarian_by_dni(dni_input, veterinarians)
+        veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
         if veterinarian_to_update:
             is_valid_dni = True
             show_veterinarian(veterinarian_to_update)
         else:
             print("El DNI no corresponde a un veterinario existente.")
     updated_veterinarian = update_veterinarian_data(veterinarian_to_update)
-    return update_veterinarian_by_id(updated_veterinarian, veterinarians)
+    return update_veterinarian_by_id(updated_veterinarian, veterinarians) #TODO: Pasar a modificar archivos
 
 def show_all_veterinarians_action(array_veterinarians): 
     """Displays all active veterinarians in a formatted table.

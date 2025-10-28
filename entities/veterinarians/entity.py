@@ -1,4 +1,4 @@
-from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian
+from entities.veterinarians.data import get_data_veterinarian_by_dni, get_data_veterinarian_by_id, get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.arrayHelper import print_array
@@ -33,68 +33,71 @@ def create_veterinarian(array_veterinarians):
     Returns:
         list: The newly created veterinarian represented as a list of values.
     """
-    new_veterinarian = []
-    for header in HEADER_VETERINARIAN:
-        if header == "veterinarian_id":
-            new_veterinarian.append(get_next_veterinarian_id())
-        elif header == "active":
-            new_veterinarian.append(True)
-        elif header == "dni":
-            valid_dni = False
-            while not valid_dni:
-                input_header = input(f'Ingresa un {header} válido: ')
-                if not get_data_veterinarian_by_dni(input_header) and is_valid_dni(input_header):
-                    valid_dni = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El veterinario ya existe, ingrese otro DNI.")
-        elif header == "matricula":
-            valid_matricula = False
-            while not valid_matricula:
-                input_header = input(f'Ingresa una Matrícula válida: ')
-                if is_valid_matricula(input_header):
-                    valid_matricula = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El número de matrícula es inválido.")
-        elif header == "email":
-            valid_email = False
-            while not valid_email:
-                input_header = input(f'Ingresa un Email: ')
-                if is_valid_email(input_header):
-                    valid_email = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El formato del email es inválido.")
-        elif header == "nombre":
-            valid_name = False
-            while not valid_name:
-                input_header = input(f'Ingresa un Nombre: ')
-                if is_valid_name(input_header):
-                    valid_name = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El formato del nombre ingresado es inválido.")
-        elif header == "apellido":
-            valid_surname = False
-            while not valid_surname:
-                input_header = input(f'Ingresa un Apellido: ')
-                if is_valid_name(input_header):
-                    valid_surname = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El formato del apellido ingresado es inválido.")
-        elif header == "telefono":        
-            valid_phone = False
-            while not valid_phone:
-                input_header = input(f'Ingresa un Telefono: ')
-                if is_valid_phone(input_header):
-                    valid_phone = True
-                    new_veterinarian.append(input_header)
-                else:
-                    print("El formato del telefono ingresado es inválido.")
-    save_data_veterinarian(new_veterinarian)
-    return new_veterinarian
+    try:
+        new_veterinarian = []
+        for header in HEADER_VETERINARIAN:
+            if header == "veterinarian_id":
+                new_veterinarian.append(get_next_veterinarian_id())
+            elif header == "active":
+                new_veterinarian.append(True)
+            elif header == "dni":
+                valid_dni = False
+                while not valid_dni:
+                    input_header = input(f'Ingresa un {header} válido: ')
+                    if not get_data_veterinarian_by_dni(input_header) and is_valid_dni(input_header):
+                        valid_dni = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El veterinario ya existe, ingrese otro DNI.")
+            elif header == "matricula":
+                valid_matricula = False
+                while not valid_matricula:
+                    input_header = input(f'Ingresa una Matrícula válida: ')
+                    if is_valid_matricula(input_header):
+                        valid_matricula = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El número de matrícula es inválido.")
+            elif header == "email":
+                valid_email = False
+                while not valid_email:
+                    input_header = input(f'Ingresa un Email: ')
+                    if is_valid_email(input_header):
+                        valid_email = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El formato del email es inválido.")
+            elif header == "nombre":
+                valid_name = False
+                while not valid_name:
+                    input_header = input(f'Ingresa un Nombre: ')
+                    if is_valid_name(input_header):
+                        valid_name = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El formato del nombre ingresado es inválido.")
+            elif header == "apellido":
+                valid_surname = False
+                while not valid_surname:
+                    input_header = input(f'Ingresa un Apellido: ')
+                    if is_valid_name(input_header):
+                        valid_surname = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El formato del apellido ingresado es inválido.")
+            elif header == "telefono":        
+                valid_phone = False
+                while not valid_phone:
+                    input_header = input(f'Ingresa un Telefono: ')
+                    if is_valid_phone(input_header):
+                        valid_phone = True
+                        new_veterinarian.append(input_header)
+                    else:
+                        print("El formato del telefono ingresado es inválido.")
+        save_data_veterinarian(new_veterinarian)
+        return new_veterinarian
+    except:
+        raise 
 
 def read_veterinarian_by_id(veterinarian_id):
     """Retrieves an active veterinarian by its ID.
@@ -266,6 +269,7 @@ def update_veterinarian_data(current_veterinarian):
                     updated_entity[HEADER_VETERINARIAN.index(header)] = input_header
                 else:
                     print("El formato del telefono ingresado es inválido.")
+    update_data_veterinarian(updated_entity)
     return updated_entity
 
 def get_readable_veterinarian(veterinarian):
