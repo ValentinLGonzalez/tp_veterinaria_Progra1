@@ -7,7 +7,7 @@ from utils.constants import HEADER_APPOINTMENT
 def add_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
     """Adds a new appointment by prompting the user for input.
 
-    Calls `create_appointment`, appends it to the list, displays the new appointment,
+    Calls `create_appointment` and displays the new appointment,
     and returns it.
 
     Args:
@@ -17,13 +17,16 @@ def add_appointment_action(array_appointments, array_pets, array_veterinarians, 
         array_owners (list[list]): The list of owners.
     """
     print("\n--- Ingrese el nuevo Turno ---\n")
-    new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians, array_owners)
-    if new_appointment:
-        print("\nTurno agregado correctamente.\n")
-        show_appointment(new_appointment, array_pets, array_veterinarians)
-    else:
-        print("\nError: No se pudo crear el turno.\n")
-     
+    try:
+        new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians, array_owners)
+        if new_appointment:
+            print("\nTurno agregado correctamente.\n")
+            show_appointment(new_appointment, array_pets, array_veterinarians)
+        else:
+            print("\nError: No se pudo crear el turno.\n")
+    except Exception as e:
+        print(f"\nError al crear el turno: {e}\n")
+      
 def modify_appointment_action(array_appointments, array_pets, array_veterinarians, array_owners):
     """Modifies an existing appointment.
 
