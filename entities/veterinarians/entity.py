@@ -178,7 +178,7 @@ def show_veterinarian(veterinarian):
     readeable_veterinarian = get_readable_veterinarian(veterinarian)
     print_array(READABLE_HEADER, readeable_veterinarian)
 
-def get_veterinarian_by_dni(dni, array_veterinarians):
+def get_veterinarian_by_dni(dni):
     """Retrieves a veterinarian record by its DNI.
 
     Iterates through the list of veterinarians and returns the first record
@@ -192,10 +192,11 @@ def get_veterinarian_by_dni(dni, array_veterinarians):
     Returns:
         list | None: The veterinarian record if found, otherwise None.
     """
-    for veterinarian in array_veterinarians:
-        if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni and veterinarian[HEADER_VETERINARIAN.index("active")] == True:
-            return veterinarian
-    return None
+    # for veterinarian in array_veterinarians:
+    #     if veterinarian[HEADER_VETERINARIAN.index("dni")] == dni and veterinarian[HEADER_VETERINARIAN.index("active")] == True:
+    #         return veterinarian
+    # return None
+    return get_data_veterinarian_by_dni(dni)
 
 def update_veterinarian_data(current_veterinarian):
     """Updates a veterinarian's data based on user input for each field.

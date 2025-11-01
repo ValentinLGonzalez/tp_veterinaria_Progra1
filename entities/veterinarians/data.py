@@ -21,7 +21,6 @@ def get_next_veterinarian_id():
 def get_all_veterinarians_with():
     return read_all_file_csv(file_name) 
 
-
 def veterinarian_append_handler(entity):
     veterinarian_id, dni, nombre, apellido, matricula, email, telefono, active = entity
     return f'{veterinarian_id},{dni},{nombre},{apellido},{matricula},{email},{telefono},{active}'
