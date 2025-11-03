@@ -44,7 +44,18 @@ def create_arrays():
         [9, 1, "22.08.2025", "11:00", 3, 1, True]
     ]
 
-    return owners, mascotas, turnos
+    veterinarians = [
+        [1, "36485787", "Martín", "Herrera", "MN12345", "mherrera@gmail.com", "1155551111", True],
+        [2, "17456321", "Camila", "Álvarez", "MN54321", "calvare@gmail.com", "1155552222", False],
+        [3, "34125478", "Julián", "Duarte", "MN98765", "jdurate@gmail.com", "1155553333", True],
+        [4, "28765432", "Laura", "Méndez", "MN24680", "laura.mendez@example.com", "1155554444", True],
+        [5, "31234567", "Nicolás", "Romero", "MN13579", "nico.romero@example.com", "1155555555", True],
+        [6, "29876543", "Olivia", "Suárez", "MN11223", "olivia.suarez@example.com", "1155556666", False],
+        [7, "32654321", "Pablo", "Castillo", "MN44556", "pablo.castillo@example.com", "1155557777", True],
+        [8, "27654321", "Rebeca", "Ortega", "MN77889", "rebeca.ortega@example.com", "1155558888", True]
+    ]
+
+    return owners, mascotas, turnos, veterinarians
 
 def update_entity_data(entity, headers):
     """Updates an entity's data based on user input for each field.
