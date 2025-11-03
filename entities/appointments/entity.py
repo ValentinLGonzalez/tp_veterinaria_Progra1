@@ -3,7 +3,8 @@ from entities.appointments.data import get_all_appointments_with, get_data_appoi
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time, is_valid_appointment_date
 from entities.owners.entity import get_owner_by_dni
 from entities.pet import get_pet_by_name_and_owner, read_pet_by_id
-from entities.treatments import TREATMENTS, get_treatment_description_by_id, is_valid_treatment, show_all_treatments
+from entities.treatments.data import TREATMENTS, get_treatment_description_by_id, show_all_treatments
+from entities.treatments.validations import is_valid_treatment
 from entities.veterinarians.entity import get_veterinarian_by_dni, read_veterinarian_by_id
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 

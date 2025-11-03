@@ -1,3 +1,4 @@
+import json
 import os
 
 DIVIDER_CSV = ','
@@ -99,5 +100,15 @@ def save_all_to_file(file_name, handler, data):
         with open(file_name, "w", encoding = "UTF-8") as file:
             for row in data:
                 file.write(handler(row) + '\n')
+    except OSError:
+        print("No se puede abrir le archivo")
+        
+def read_all_file_json(file_name):
+    try:
+        with open(file_name,"r", encoding="UTF-8") as file:
+            print(file)
+            return json.load(file)
+    except FileNotFoundError:
+        return []
     except OSError:
         print("No se puede abrir le archivo")
