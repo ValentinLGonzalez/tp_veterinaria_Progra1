@@ -9,7 +9,7 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #---------------------------------------------------------------- ------------------------------
-    owners, pets, appointments, veterinarians = create_arrays()
+    owners, pets, appointments = create_arrays()
 
     #-------------------------------------------------
     # Bloque de menú
@@ -103,15 +103,15 @@ def main():
                 if opcion == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif opcion == "1":   # Opción 1
-                    add_appointment_action(appointments, pets, veterinarians, owners)
+                    add_appointment_action(appointments, pets, owners)
                 elif opcion == "2":   # Opción 2
-                    modify_appointment_action(appointments, pets, veterinarians, owners)
+                    modify_appointment_action(appointments, pets, owners)
                 elif opcion == "3":   # Opción 3
-                    show_all_appointments_action(appointments, pets, veterinarians)
+                    show_all_appointments_action(appointments, pets)
                 elif opcion == "4":   # Opción 4
-                    delete_appointment_action(appointments, pets, veterinarians, owners)
+                    delete_appointment_action(appointments, pets, owners)
                 elif opcion == "5":   # Opción 5
-                    appointment_statistics(appointments, veterinarians)
+                    appointment_statistics(appointments)
 
 
         elif opcion == "3":
