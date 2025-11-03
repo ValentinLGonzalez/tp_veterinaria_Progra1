@@ -95,7 +95,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians):
         return new_appointment
     except Exception as e:
         print(f"Error al crear el turno: {e}")
-        return None
+        return None #None sacarlo
 
 # GET
 def get_appointment_by_id(appointment_id):

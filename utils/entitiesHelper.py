@@ -2,9 +2,6 @@
 from utils.constants import EXCLUDED_PRINT_HEADERS
 from utils.filesHelper import read_last_line_with
 
-def get_next_id(matriz):
-    return len(matriz) + 1
-
 def get_next_id_by_file(file_name):
     return int(read_last_line_with(file_name)) + 1
 
@@ -56,26 +53,3 @@ def create_arrays():
     ]
 
     return owners, mascotas, turnos, veterinarians
-
-def update_entity_data(entity, headers):
-    """Updates an entity's data based on user input for each field.
-
-    Iterates over the provided headers and prompts the user to input a new
-    value for each field, except those listed in EXCLUDED_PRINT_HEADERS.
-    Returns a new entity list with the updated values.
-
-    Args:
-        entity (list): The current entity record represented as a list of values.
-        headers (list[str]): The headers corresponding to the entity's fields.
-
-    Returns:
-        list: A new list representing the updated entity.
-    """
-    updated_entity = entity.copy()
-    for header in headers:
-        if header in EXCLUDED_PRINT_HEADERS:
-            continue
-        index = headers.index(header)
-        input_header = input(f'Ingresa {header}: ')
-        updated_entity[index] = input_header 
-    return updated_entity
