@@ -1,6 +1,8 @@
+from entities.owners.controller import show_all_owners_action
+from entities.owners.entity import get_owner_by_dni
+from entities.pets.entity import create_pet, delete_pet_by_id, get_pet_by_name_and_owner, show_pet
 from utils.constants import HEADER_PET
 from utils.arrayHelper import print_array_bidimensional
-from pets.entity import create_pet,show_pet, show_all_owners_action, get_owner_by_dni, get_pet_by_name_and_owner, delete_pet_by_id
 def add_pet_action(pets, owners):
     print("Ingrese los datos de la Mascota: \n")
     new_pet = create_pet(pets, owners)

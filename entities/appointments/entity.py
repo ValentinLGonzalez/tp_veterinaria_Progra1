@@ -3,16 +3,17 @@ from entities.appointments.data import get_all_appointments_with, get_data_appoi
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time, is_valid_appointment_date
 from entities.owners.entity import get_owner_by_dni
 from entities.pets.entity import get_pet_by_name_and_owner, read_pet_by_id
-from entities.treatments.data import TREATMENTS, get_treatment_description_by_id, show_all_treatments
+from entities.treatments.entity import get_treatment_description_by_id, show_all_treatments
 from entities.treatments.validations import is_valid_treatment
-from entities.veterinarians.entity import get_veterinarian_by_dni, read_veterinarian_by_id
+from entities.veterinarians.data import get_all_veterinarians
+from entities.veterinarians.entity import get_veterinarian_by_dni, get_veterinarian_by_id
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 
 # CONSTANTS
 READABLE_HEADER = ["Mascota", "Fecha", "Hora", "Tratamiento", "Veterinario"]
 
 # CREATE
-def create_appointment(array_appointments, array_pets, array_veterinarians):
+def create_appointment():
     """Creates a new appointment and appends it to the file.
 
     Iterates over the headers defined in HEADER_APPOINTMENT to build
@@ -41,7 +42,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians):
             elif header == "treatment_id":
                 appointment_treatment = None
                 while appointment_treatment is None:
-                    show_all_treatments(TREATMENTS)
+                    show_all_treatments()
                     treatment_id = int(input("Ingrese el id del tratamiento: "))
                     if is_valid_treatment(treatment_id):
                         appointment_treatment = treatment_id
@@ -60,7 +61,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians):
                 if owner_found:
                     while pet_found is None:
                         pet_name = input("Ingrese el nombre de la mascota: ")
-                        pet_found = get_pet_by_name_and_owner(array_pets, pet_name, owner_found[HEADER_OWNER.index("owner_id")])
+                        pet_found = get_pet_by_name_and_owner(pet_name, owner_found[HEADER_OWNER.index("owner_id")])
                             
                         if pet_found:
                             new_appointment.append(pet_found[HEADER_PET.index("pet_id")]) 
@@ -86,7 +87,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians):
                         valid_time = input_time
                         new_appointment.append(valid_time)
             elif header == "veterinarian_id":
-                assigned_vet = assign_veterinarian(array_appointments, array_veterinarians, valid_date, valid_time)  
+                assigned_vet = assign_veterinarian(valid_date, valid_time)  
                 if not assigned_vet:
                     return None                 
                 new_appointment.append(assigned_vet[HEADER_VETERINARIAN.index("veterinarian_id")])            
@@ -94,8 +95,7 @@ def create_appointment(array_appointments, array_pets, array_veterinarians):
         save_data_appointment(new_appointment)
         return new_appointment
     except Exception as e:
-        print(f"Error al crear el turno: {e}")
-        return None #None sacarlo
+        raise Exception(f'Error al crear el turno: {e}')
 
 # GET
 def get_appointment_by_id(appointment_id):
@@ -154,7 +154,7 @@ def update_appointment(appointment, array_appointments, array_veterinarians):
             elif header == "treatment_id":
                 appointment_treatment = None
                 while appointment_treatment is None:
-                    show_all_treatments(TREATMENTS)
+                    show_all_treatments()
                     treatment_id = int(input("Ingrese el id del tratamiento: "))
                     if is_valid_treatment(treatment_id):
                         appointment_treatment = treatment_id
@@ -204,7 +204,7 @@ def delete_appointment_by_id(appointment_id):
         return None
         
 #FUNCTIONS FOR READABLE SHOWING
-def get_readable_appointment(appointment, array_pets):
+def get_readable_appointment(appointment):
     """Converts an appointment to a readable format with pet and vet names.
     
     Args:
@@ -222,8 +222,8 @@ def get_readable_appointment(appointment, array_pets):
         treatment = get_treatment_description_by_id(appointment[HEADER_APPOINTMENT.index("treatment_id")])
         veterinarian_id = appointment[HEADER_APPOINTMENT.index("veterinarian_id")]
         
-        pet = read_pet_by_id(pet_id, array_pets)
-        veterinarian = read_veterinarian_by_id(veterinarian_id)
+        pet = read_pet_by_id(pet_id)
+        veterinarian = get_veterinarian_by_id(veterinarian_id)
             
         pet_name = pet[HEADER_PET.index("nombre")] if pet else "Mascota no encontrada"
         vet_name = f"{veterinarian[HEADER_VETERINARIAN.index('nombre')]} {veterinarian[HEADER_VETERINARIAN.index('apellido')]}"
@@ -294,7 +294,7 @@ def get_appointment_by_pet_and_vet(pet_id, veterinarian_id):
         return None
 
 #VALID VETERINARIANS ASSIGNMENT
-def assign_veterinarian(array_appointments, array_veterinarians, date, time):
+def assign_veterinarian(date, time):
     """Assigns an available veterinarian for a specific date and time.
     
     Args:
@@ -306,11 +306,13 @@ def assign_veterinarian(array_appointments, array_veterinarians, date, time):
     Returns:
         list | None: The assigned veterinarian if available, None otherwise.
     """
-    active_veterinarians = [vet for vet in array_veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
+    veterinarians = get_all_veterinarians()
+    appointments = get_all_appointments_with()
+    active_veterinarians = [vet for vet in veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
 
     available_veterinarians = []
     for vet in active_veterinarians:
-        if not has_appointment_conflict(array_appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
+        if not has_appointment_conflict(appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
             available_veterinarians.append(vet)
     
     if not available_veterinarians: 

@@ -7,12 +7,14 @@ file_name = "./data/owners.txt"
 def owner_read_handler(entity, condition):
     if condition(entity):
         return entity
+    else:
+        return False
 
 def get_data_owner_by_dni(_dni):
-    return read_file_csv_with(file_name, owner_read_handler, lambda o: o[HEADER_OWNER.index("dni")] == _dni and o[HEADER_OWNER.index("active")] == "True")
+    return read_file_csv_with(file_name, owner_read_handler, lambda o: o[HEADER_OWNER.index("dni")] == _dni and bool(o[HEADER_OWNER.index("active")]) == True)
 
 def get_data_owner_by_id(_id):
-    return read_file_csv_with(file_name, owner_read_handler, lambda o: o[HEADER_OWNER.index("owner_id")] == _id and o[HEADER_OWNER.index("active")] == "True")
+    return read_file_csv_with(file_name, owner_read_handler, lambda o: o[HEADER_OWNER.index("owner_id")] == _id and bool(o[HEADER_OWNER.index("active")]) == True)
 
 def get_next_owner_id():
     return get_next_id_by_file(file_name)

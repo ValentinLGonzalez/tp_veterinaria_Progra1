@@ -140,6 +140,9 @@ def show_veterinarian(veterinarian):
 def get_veterinarian_by_dni(_dni):
     return get_data_veterinarian_by_dni(_dni)
 
+def get_veterinarian_by_id(_id):
+    return get_data_veterinarian_by_id(_id)
+
 def update_veterinarian_data(current_veterinarian):
     """Updates a veterinarian's data based on user input for each field.
 

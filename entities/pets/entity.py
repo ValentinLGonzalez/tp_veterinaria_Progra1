@@ -1,13 +1,14 @@
-from entities.pets.data import get_data_pet_by_id, get_data_pet_by_name, get_next_pet_id, save_data_pet
+from entities.pets.data import get_data_pet_by_id, get_data_pet_by_name, get_data_pet_by_owner_id_and_pet_name, get_next_pet_id, save_data_pet
 from entities.owners.controller import show_all_owners_action
 from entities.owners.entity import get_owner_by_dni
+from entities.pets.validations import is_valid_pet_age, is_valid_pet_weigth
+from entities.veterinarians.validations import is_valid_name
 from utils.constants import HEADER_PET, EXCLUDED_PRINT_HEADERS, HEADER_OWNER
 from utils.arrayHelper import print_array
-from utils.validations import is_valid_name, is_valid_float, is_valid_integer
 
 READABLE_HEADER = ["Nombre", "Tipo", "Raza", "Edad", "Dueño", "Peso", "Sexo"]
 
-def create_pet(array_pets, array_owners):
+def create_pet(array_owners):
     new_pet = []
     for header in HEADER_PET:
         if header == "pet_id":
@@ -38,7 +39,7 @@ def create_pet(array_pets, array_owners):
             valid_age = False
             while not valid_age:
                 input_age = input("Ingresa la edad de la mascota: ")
-                if is_valid_integer(input_age):
+                if is_valid_pet_age(input_age):
                     valid_age = True
                     new_pet.append(int(input_age))
                 else:
@@ -47,7 +48,7 @@ def create_pet(array_pets, array_owners):
             valid_weight = False
             while not valid_weight:
                 input_weight = input("Ingresa el peso de la mascota: ")
-                if is_valid_float(input_weight):
+                if is_valid_pet_weigth(input_weight):
                     valid_weight = True
                     new_pet.append(float(input_weight))
                 else:
@@ -90,13 +91,11 @@ def show_pet(pet):
     print_array(READABLE_HEADER, readable_pet)
 
 
-def get_pet_by_name_and_owner(pet_name, owner_id, array_pets):
-    for pet in array_pets:
-        if (pet[HEADER_PET.index("nombre")].lower() == pet_name.lower() and
-            pet[HEADER_PET.index("owner_id")] == owner_id and
-            pet[HEADER_PET.index("active")] == True):
-            return pet
-    return None
+def get_pet_by_name_and_owner(pet_name, owner_id):
+    print(owner_id)
+    print(pet_name)
+    pet_found = get_data_pet_by_owner_id_and_pet_name(owner_id, pet_name)
+    return pet_found
 
 
 def update_pet_data(current_pet):
@@ -118,7 +117,7 @@ def update_pet_data(current_pet):
             valid_age = False
             while not valid_age:
                 input_age = input("Ingresa una nueva edad: ")
-                if is_valid_integer(input_age):
+                if is_valid_pet_age(input_age):
                     valid_age = True
                     updated_entity[HEADER_PET.index(header)] = int(input_age)
                 else:
@@ -127,7 +126,7 @@ def update_pet_data(current_pet):
             valid_weight = False
             while not valid_weight:
                 input_weight = input("Ingresa un nuevo peso: ")
-                if is_valid_float(input_weight):
+                if is_valid_pet_weigth(input_weight):
                     valid_weight = True
                     updated_entity[HEADER_PET.index(header)] = float(input_weight)
                 else:

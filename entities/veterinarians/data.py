@@ -37,3 +37,6 @@ def delete_data_veterinarian(updated_veterinarian):
     _id = updated_veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")]
     update_file_csv_with_temp(file_name, lambda v: v[HEADER_VETERINARIAN.index("veterinarian_id")] == _id, updated_veterinarian)
     return updated_veterinarian
+
+def get_all_veterinarians():
+    return read_all_file_csv(file_name)

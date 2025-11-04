@@ -4,7 +4,7 @@ from utils.arrayHelper import print_array, print_array_bidimensional
 from utils.constants import HEADER_APPOINTMENT
 
 # ACTIONS
-def add_appointment_action(array_appointments, array_pets, array_veterinarians):
+def add_appointment_action():
     """Adds a new appointment by prompting the user for input.
 
     Calls `create_appointment` and displays the new appointment,
@@ -18,14 +18,14 @@ def add_appointment_action(array_appointments, array_pets, array_veterinarians):
     """
     print("\n--- Ingrese el nuevo Turno ---\n")
     try:
-        new_appointment = create_appointment(array_appointments, array_pets, array_veterinarians)
+        new_appointment = create_appointment()
         if new_appointment:
             print("\nTurno agregado correctamente.\n")
-            show_appointment(new_appointment, array_pets, array_veterinarians)
+            show_appointment(new_appointment)
         else:
             print("\nError: No se pudo crear el turno.\n")
     except Exception as e:
-        print(f"\nError al crear el turno: {e}\n")
+        raise Exception(f"\nError al crear el turno: {e}\n")
       
 def modify_appointment_action(array_appointments, array_pets, array_veterinarians):
     """Modifies an existing appointment.
@@ -61,7 +61,7 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
         print(f"\nError al modificar el turno: {e}\n")
         return None
 
-def show_appointment(appointment, array_pets, array_veterinarians):
+def show_appointment(appointment):
     """Displays the details of an appointment in a readable format.
 
     Converts the raw appointment data into a readable form
@@ -74,7 +74,7 @@ def show_appointment(appointment, array_pets, array_veterinarians):
     """
     try:
         print("\n=== Detalles del Turno ===")
-        readable_appointment = get_readable_appointment(appointment, array_pets, array_veterinarians)
+        readable_appointment = get_readable_appointment(appointment)
         print_array(READABLE_HEADER, readable_appointment)
         print("==========================\n")
     except Exception as e:
