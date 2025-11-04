@@ -80,19 +80,14 @@ def show_appointment(appointment):
     except Exception as e:
         print(f"Error al mostrar el turno: {e}")
 
-def show_all_appointments_action(array_pets): 
+def show_all_appointments_action(): 
     """Displays all active appointments in a formatted table.
 
     Filters active appointments and prints them in a readable format.
-
-    Args:
-        array_appointments (list[list]): The list of appointments.
-        array_pets (list[list]): The list of pets.
-        array_veterinarians (list[list]): The list of veterinarians.
     """
     try:
         print("\n--- Listado de Turnos Activos ---\n")
-        readable_appointments = show_all_appointments_active(array_pets)
+        readable_appointments = show_all_appointments_active()
         print_array_bidimensional(READABLE_HEADER, readable_appointments)
         print("\n--- Fin del listado ---\n")
     except Exception as e:

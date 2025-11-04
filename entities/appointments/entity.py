@@ -2,6 +2,7 @@ import random
 from entities.appointments.data import get_all_appointments_with, get_data_appointment_by_id, get_data_appointment_by_pet_and_vet, get_next_appointment_id, save_data_appointment, update_data_appointment
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time, is_valid_appointment_date
 from entities.owners.entity import get_owner_by_dni
+from entities.pets.data import get_all_pets
 from entities.pets.entity import get_pet_by_name_and_owner, read_pet_by_id
 from entities.treatments.entity import get_treatment_description_by_id, show_all_treatments
 from entities.treatments.validations import is_valid_treatment
@@ -342,7 +343,7 @@ def has_appointment_conflict(array_appointments, veterinarian_id, date, time):
             return True
     return False
 
-def show_all_appointments_active(array_pets):
+def show_all_appointments_active():
     appointments = get_all_appointments_with()
     appointments_active = list(filter(lambda v: v[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
-    return [get_readable_appointment(apt, array_pets) for apt in appointments_active]
+    return [get_readable_appointment(apt) for apt in appointments_active]

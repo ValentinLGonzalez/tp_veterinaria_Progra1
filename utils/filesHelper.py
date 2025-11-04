@@ -106,7 +106,6 @@ def save_all_to_file(file_name, handler, data):
 def read_all_file_json(file_name):
     try:
         with open(file_name,"r", encoding="UTF-8") as file:
-            print(file)
             return json.load(file)
     except FileNotFoundError:
         return []

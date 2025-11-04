@@ -15,6 +15,6 @@ def get_treatment_description_by_id(id):
     treatment_description = None
     treatments = get_all_treatments()
     for treatment in treatments:
-        if treatment['id'] == id:
+        if treatment['id'] == int(id):
             treatment_description = treatment['description']
     return treatment_description

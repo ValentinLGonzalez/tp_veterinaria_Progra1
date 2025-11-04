@@ -1,6 +1,6 @@
 from utils.constants import HEADER_PET
 from utils.entitiesHelper import get_next_id_by_file
-from utils.filesHelper import append_line_to_file, read_file_csv_with
+from utils.filesHelper import append_line_to_file, read_all_file_csv, read_file_csv_with
 file_name = "./data/pets.txt"
 
 def pet_read_handler(entity, condition):
@@ -35,3 +35,6 @@ def pet_append_handler(entity):
 
 def save_data_pet(new_pet):
     return append_line_to_file(file_name, pet_append_handler, new_pet)
+
+def get_all_pets():
+    return read_all_file_csv(file_name)
