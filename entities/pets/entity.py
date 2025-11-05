@@ -6,24 +6,24 @@ from entities.veterinarians.validations import is_valid_name
 from utils.constants import HEADER_PET, EXCLUDED_PRINT_HEADERS, HEADER_OWNER
 from utils.arrayHelper import print_array
 
-READABLE_HEADER = ["Nombre", "Tipo", "Raza", "Edad", "Dueño", "Peso", "Sexo"]
+READABLE_HEADER = ["Nombre", "Raza", "Edad", "Dueño", "Peso", "Sexo"]
 
-def create_pet(array_owners):
-    new_pet = []
+def create_pet():
+    new_pet = []    
     for header in HEADER_PET:
         if header == "pet_id":
             new_pet.append(get_next_pet_id())
         elif header == "active":
             new_pet.append(True)
         elif header == "owner_id":
-            show_all_owners_action(array_owners)
+            show_all_owners_action()
             valid_owner = False
             while not valid_owner:
                 input_dni = input("Ingresa el DNI del dueño: ")
-                owner = get_owner_by_dni(array_owners, input_dni)
+                owner = get_owner_by_dni(input_dni)
                 if owner:
                     valid_owner = True
-                    new_pet.append(owner[HEADER_OWNER.index(id)])
+                    new_pet.append(owner[HEADER_OWNER.index('owner_id')])
                 else:
                     print("No se encontró un dueño con ese DNI.")
         elif header == "nombre":
@@ -146,11 +146,10 @@ def update_pet_data(current_pet):
 
 def get_readable_pet(pet):
     nombre = pet[HEADER_PET.index("nombre")]
-    tipo = pet[HEADER_PET.index("tipo")]
     raza = pet[HEADER_PET.index("raza")]
     edad = pet[HEADER_PET.index("edad")]
     duenio = pet[HEADER_PET.index("owner_id")]
     peso = pet[HEADER_PET.index("peso")]
     sexo = pet[HEADER_PET.index("sexo")]
 
-    return (nombre, tipo, raza, edad, duenio, peso, sexo)
+    return (nombre, raza, edad, duenio, peso, sexo)

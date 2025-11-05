@@ -176,11 +176,11 @@ def main():
                 if opcion == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif opcion == "1":   # Opción 1
-                    add_pet_action(pets, owners)
+                    add_pet_action()
                 elif opcion == "2":   # Opción 2
                     modify_pet_action(pets,owners)
                 elif opcion == "3":   # Opción 3
-                    show_all_pets_action(pets)
+                    show_all_pets_action()
                 elif opcion == "4":   # Opción 4
                     delete_pet_action(pets,owners)
         # elif opcion == "4":   # Opción 4

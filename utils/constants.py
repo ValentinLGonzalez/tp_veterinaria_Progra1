@@ -1,5 +1,5 @@
 HEADER_VETERINARIAN = ["veterinarian_id", "dni", "nombre", "apellido", "matricula", "email", "telefono", "active"]
 HEADER_OWNER = ["owner_id", "dni", "nombre", "apellido", "email", "telefono", "active"]
-HEADER_PET = ["pet_id", "nombre", "especie", "raza", "edad", "owner_id", "peso", "género", "active"]
+HEADER_PET = ["pet_id", "nombre", "especie", "raza", "edad", "owner_id", "peso", "sexo", "active"]
 HEADER_APPOINTMENT = ["appointment_id", "pet_id", "fecha", "hora", "treatment_id", "veterinarian_id", "active"]
 EXCLUDED_PRINT_HEADERS = ["pet_id", "veterinarian_id", "active", "appointment_id, owner_id"]
