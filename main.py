@@ -3,14 +3,8 @@ from entities.appointments.statistics import appointment_statistics
 from entities.owners.controller import add_owner_action, delete_owner_action, modify_owner_action, show_all_owners_action
 from entities.pets.controller import add_pet_action, modify_pet_action, show_all_pets_action,delete_pet_action
 from entities.veterinarians.controller import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
-from utils.entitiesHelper import create_arrays
-
 
 def main():
-    #-------------------------------------------------
-    # Inicialización de variables
-    #---------------------------------------------------------------- ------------------------------
-    owners, pets, appointments, veterinarians = create_arrays()
 
     #-------------------------------------------------
     # Bloque de menú
@@ -178,11 +172,11 @@ def main():
                 elif opcion == "1":   # Opción 1
                     add_pet_action()
                 elif opcion == "2":   # Opción 2
-                    modify_pet_action(pets,owners)
+                    modify_pet_action()
                 elif opcion == "3":   # Opción 3
                     show_all_pets_action()
                 elif opcion == "4":   # Opción 4
-                    delete_pet_action(pets,owners)
+                    delete_pet_action()
         # elif opcion == "4":   # Opción 4
         #     ...
 

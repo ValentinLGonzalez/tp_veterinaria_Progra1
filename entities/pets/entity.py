@@ -1,4 +1,4 @@
-from entities.pets.data import get_data_pet_by_id, get_data_pet_by_name, get_data_pet_by_owner_id_and_pet_name, get_next_pet_id, save_data_pet
+from entities.pets.data import delete_data_pets, get_data_pet_by_id, get_data_pet_by_name, get_data_pet_by_owner_id_and_pet_name, get_next_pet_id, save_data_pet
 from entities.owners.controller import show_all_owners_action
 from entities.owners.entity import get_owner_by_dni
 from entities.pets.validations import is_valid_pet_age, is_valid_pet_weigth
@@ -77,12 +77,10 @@ def update_pet_by_id(updated_pet, array_pets):
     return None
 
 
-def delete_pet_by_id(pet_id, array_pets):
-    current_pets_id = [pet[HEADER_PET.index("pet_id")] for pet in array_pets]
-    if pet_id in current_pets_id:
-        deleted_pet_index = current_pets_id.index(pet_id)
-        array_pets[deleted_pet_index][HEADER_PET.index("active")] = False
-    return None
+def delete_pet_by_id(pet_to_delete):
+    print()
+    pet_to_delete[HEADER_PET.index('active')] = 'False'
+    delete_data_pets(pet_to_delete)
 
 
 def show_pet(pet):

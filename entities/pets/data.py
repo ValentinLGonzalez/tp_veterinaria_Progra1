@@ -1,6 +1,6 @@
 from utils.constants import HEADER_PET
 from utils.entitiesHelper import get_next_id_by_file
-from utils.filesHelper import append_line_to_file, read_all_file_csv, read_file_csv_with
+from utils.filesHelper import append_line_to_file, read_all_file_csv, read_file_csv_with, update_file_csv_with_temp
 file_name = "./data/pets.txt"
 
 def pet_read_handler(entity, condition):
@@ -38,3 +38,13 @@ def save_data_pet(new_pet):
 
 def get_all_pets():
     return read_all_file_csv(file_name)
+
+def update_data_pets(updated_pet):
+    id = updated_pet[HEADER_PET.index("pet_id")]
+    update_file_csv_with_temp(file_name, lambda v: v[HEADER_PET.index("pet_id")] == id and bool(v[HEADER_PET.index("active")]) == True, updated_pet)
+    return updated_pet
+
+def delete_data_pets(deleted_pet):
+    id = deleted_pet[HEADER_PET.index("pet_id")]
+    update_file_csv_with_temp(file_name, lambda v: v[HEADER_PET.index("pet_id")] == id, deleted_pet)
+    return deleted_pet
