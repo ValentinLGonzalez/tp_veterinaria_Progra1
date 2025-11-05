@@ -110,7 +110,7 @@ def main():
                 elif opcion == "3":   # Opción 3
                     show_all_appointments_action()
                 elif opcion == "4":   # Opción 4
-                    delete_appointment_action(appointments, pets, veterinarians)
+                    delete_appointment_action()
                 elif opcion == "5":   # Opción 5
                     appointment_statistics(appointments, veterinarians)
 

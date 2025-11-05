@@ -93,28 +93,22 @@ def show_all_appointments_action():
     except Exception as e:
         print(f"Error al mostrar todos los turnos: {e}")
     
-def delete_appointment_action(array_appointments, array_pets, array_veterinarians):
+def delete_appointment_action():
     """Soft deletes an appointment after user confirmation.
 
     Prompts the user to search for an appointment using DNI and names,
     then marks it as inactive if found and returns the deleted appointment.
-
-    Args:
-        array_appointments (list[list]): The list of appointments.
-        array_pets (list[list]): The list of pets.
-        array_veterinarians (list[list]): The list of veterinarians.
-        array_owners (list[list]): The list of owners.
-
+    
     Returns:
         list | None: The deactivated appointment if successful, otherwise None.
     """
     try:
         print("\n--- Baja de Turno ---\n")
-        appointment_to_delete = get_appointment_by_user_input(array_pets)
+        appointment_to_delete = get_appointment_by_user_input()
         if appointment_to_delete:
             print("\nTurno encontrado:\n")
-            show_appointment(appointment_to_delete, array_pets, array_veterinarians)
-            delete_appointment_by_id(appointment_to_delete[HEADER_APPOINTMENT.index("appointment_id")], array_appointments)
+            show_appointment(appointment_to_delete)
+            delete_appointment_by_id(appointment_to_delete[HEADER_APPOINTMENT.index("appointment_id")])
             print("\nTurno dado de baja correctamente.\n")
         else:
             print("\nNo se pudo dar de baja el turno.\n")

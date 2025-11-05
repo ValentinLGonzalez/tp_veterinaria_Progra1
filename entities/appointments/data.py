@@ -18,7 +18,7 @@ def get_data_appointment_by_id(_id):
     Retrieves an active appointment by its ID.
 
     """
-    return read_file_csv_with(file_name, appointment_read_handler, lambda a: a[HEADER_APPOINTMENT.index("appointment_id")] == _id and a[HEADER_APPOINTMENT.index("active")] == "True")
+    return read_file_csv_with(file_name, appointment_read_handler, lambda a: a[HEADER_APPOINTMENT.index("appointment_id")] == _id and bool(a[HEADER_APPOINTMENT.index("active")]) == True)
 
 def get_next_appointment_id():
     """
