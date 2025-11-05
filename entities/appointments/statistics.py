@@ -1,20 +1,19 @@
+from entities.appointments.data import get_all_appointments_with
+from entities.veterinarians.data import get_all_veterinarians_with
 from utils.constants import HEADER_APPOINTMENT, HEADER_VETERINARIAN
 from functools import reduce
 
 # STATISTICS
-def appointment_statistics(array_appointments, array_veterinarians):
+def appointment_statistics():
     """Generates statistics about appointments.
 
-    Args:
-        array_appointments (list[list]): The list of appointments.
-        array_veterinarians (list[list]): The list of veterinarians.
     """
     print("\n--- Estadísticas de Turnos ---\n")
-
-    total_active_appointments = reduce(lambda total, apt: total + (1 if apt[HEADER_APPOINTMENT.index("active")] else 0), array_appointments, 0)
+    appointments = get_all_appointments_with()
+    veterinarians = get_all_veterinarians_with()
+    total_active_appointments = reduce(lambda total, apt: total + (1 if apt[HEADER_APPOINTMENT.index("active")] else 0), appointments, 0)
     print(f"Total de turnos activos: {total_active_appointments}")
-
-    active_appointments = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")], array_appointments))
+    active_appointments = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")], appointments))
 
     appointments_by_date = {}
     for appointment in active_appointments:
@@ -29,9 +28,9 @@ def appointment_statistics(array_appointments, array_veterinarians):
     for appointment in active_appointments:
         vet_id = appointment[HEADER_APPOINTMENT.index("veterinarian_id")]
         vet_name = None
-        for vet in array_veterinarians:
+        for vet in veterinarians:
             if (vet[HEADER_VETERINARIAN.index("veterinarian_id")] == vet_id and 
-               vet[HEADER_VETERINARIAN.index("active")]):
+               bool(vet[HEADER_VETERINARIAN.index("active")])):
                 vet_name = f"{vet[HEADER_VETERINARIAN.index('nombre')]} {vet[HEADER_VETERINARIAN.index('apellido')]} ({vet[HEADER_VETERINARIAN.index('dni')]})"
                 break
         if (vet_name):

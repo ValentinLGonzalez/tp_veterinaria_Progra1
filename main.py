@@ -112,7 +112,7 @@ def main():
                 elif opcion == "4":   # Opción 4
                     delete_appointment_action()
                 elif opcion == "5":   # Opción 5
-                    appointment_statistics(appointments, veterinarians)
+                    appointment_statistics()
 
         elif opcion == "3":
             while True:
