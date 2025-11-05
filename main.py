@@ -106,7 +106,7 @@ def main():
                 elif opcion == "1":   # Opción 1
                     add_appointment_action()
                 elif opcion == "2":   # Opción 2
-                    modify_appointment_action(appointments, pets, veterinarians)
+                    modify_appointment_action()
                 elif opcion == "3":   # Opción 3
                     show_all_appointments_action()
                 elif opcion == "4":   # Opción 4

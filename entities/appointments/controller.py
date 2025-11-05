@@ -27,7 +27,7 @@ def add_appointment_action():
     except Exception as e:
         raise Exception(f"\nError al crear el turno: {e}\n")
       
-def modify_appointment_action(array_appointments, array_pets, array_veterinarians):
+def modify_appointment_action():
     """Modifies an existing appointment.
 
     Prompts the user to search for an appointment using owner DNI, pet name,
@@ -45,14 +45,14 @@ def modify_appointment_action(array_appointments, array_pets, array_veterinarian
     """
     print("\n--- Modificación de Turno ---\n")
     try:
-        appointment_to_update = get_appointment_by_user_input(array_pets)
+        appointment_to_update = get_appointment_by_user_input()
         if appointment_to_update:
             print("\nTurno encontrado:\n")
-            show_appointment(appointment_to_update, array_pets, array_veterinarians)
-            updated_appointment = update_appointment(appointment_to_update, array_appointments, array_veterinarians)
+            show_appointment(appointment_to_update)
+            updated_appointment = update_appointment(appointment_to_update)
             if updated_appointment:
                 print("\nTurno actualizado correctamente:\n")
-                show_appointment(updated_appointment, array_pets, array_veterinarians)
+                show_appointment(updated_appointment)
                 return updated_appointment
         else:
             print("\nNo se pudo modificar el Turno.\n")

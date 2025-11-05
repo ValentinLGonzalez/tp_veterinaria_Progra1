@@ -115,7 +115,7 @@ def get_appointment_by_id(appointment_id):
         return None
 
 #UPDATE
-def update_appointment(appointment, array_appointments, array_veterinarians):
+def update_appointment(appointment):
     """Updates appointment data by prompting the user for new values.
 
     If the appointment's date or time changes, automatically reassigns
@@ -158,7 +158,7 @@ def update_appointment(appointment, array_appointments, array_veterinarians):
                     show_all_treatments()
                     treatment_id = int(input("Ingrese el id del tratamiento: "))
                     if is_valid_treatment(treatment_id):
-                        appointment_treatment = treatment_id
+                        appointment_treatment = str(treatment_id)
                     else:
                         print("Ingrese un tratamiento válido.")
                 updated_appointment[index] = appointment_treatment
@@ -168,7 +168,7 @@ def update_appointment(appointment, array_appointments, array_veterinarians):
 
         if new_date != old_date or new_time != old_time:
             print("\nReasignando veterinario...")
-            new_vet = assign_veterinarian(array_appointments, array_veterinarians, new_date, new_time)
+            new_vet = assign_veterinarian(new_date, new_time)
             if new_vet:
                 updated_appointment[HEADER_APPOINTMENT.index("veterinarian_id")] = new_vet[HEADER_VETERINARIAN.index("veterinarian_id")]
                 print(f"Nuevo veterinario: {new_vet[HEADER_VETERINARIAN.index('nombre')]} {new_vet[HEADER_VETERINARIAN.index('apellido')]}")
@@ -236,7 +236,7 @@ def get_readable_appointment(appointment):
         return None
 
 # GETTERS
-def get_appointment_by_user_input(array_pets):
+def get_appointment_by_user_input():
     """Finds an appointment by asking the user for owner DNI, pet name, and veterinarian DNI.
 
     Args:
@@ -257,7 +257,7 @@ def get_appointment_by_user_input(array_pets):
             return None
 
         pet_name = input("Ingrese el nombre de la mascota: ")
-        pet = get_pet_by_name_and_owner(array_pets, pet_name, owner[HEADER_OWNER.index("owner_id")])
+        pet = get_pet_by_name_and_owner(pet_name, owner[HEADER_OWNER.index("owner_id")])
         if not pet:
             print("No se encontró una mascota activa con ese nombre para ese dueño")
             return None

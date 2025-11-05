@@ -92,8 +92,6 @@ def show_pet(pet):
 
 
 def get_pet_by_name_and_owner(pet_name, owner_id):
-    print(owner_id)
-    print(pet_name)
     pet_found = get_data_pet_by_owner_id_and_pet_name(owner_id, pet_name)
     return pet_found
 
