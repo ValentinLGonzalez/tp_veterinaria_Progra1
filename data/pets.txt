@@ -2,7 +2,7 @@
 2,Luna,Gato,Siamés,3,1,4.2,Hembra,True
 3,Rocky,Perro,Bulldog,4,2,20.0,Macho,True
 4,Nina,Gato,Comúneuropeo,2,3,3.8,Hembra,True
-5,Max,Perro,GoldenRetriever,2,4,18.0,Macho,True
+5,Max,Perro,Golden,2,4,18.0,Macho,True
 6,Bella,Perro,Chihuahua,1,5,2.5,Hembra,True
 7,Simba,Gato,Persa,4,7,5.1,Macho,True
 8,Coco,Perro,Caniche,3,8,6.8,Macho,True
