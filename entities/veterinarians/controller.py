@@ -21,8 +21,8 @@ def add_veterinarian_action():
         new_veterinarian = create_veterinarian()
         print("\nVeterinario agregado correctamente.\n")
         show_veterinarian(new_veterinarian)
-    except:
-        print("[ERROR] Controller - add_veterinarian_action {error}")
+    except Exception as e:
+        print(f'[ERROR] Controller - add_veterinarian_action {e}')
      
 def modify_veterinarian_action():
     """Modifies an existing veterinarian by searching with DNI.
@@ -38,16 +38,19 @@ def modify_veterinarian_action():
     Returns:
         list: The updated veterinarian record.
     """
-    is_valid_dni = False
-    while not is_valid_dni:
-        dni_input = input("Ingrese el DNI del Veterinario que desea modificar: ")
-        veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
-        if veterinarian_to_update:
-            is_valid_dni = True
-            show_veterinarian(veterinarian_to_update)
-        else:
-            print("El DNI no corresponde a un veterinario existente.")
-    return update_veterinarian_data(veterinarian_to_update)
+    try:
+        is_valid_dni = False
+        while not is_valid_dni:
+            dni_input = input("Ingrese el DNI del Veterinario que desea modificar: ")
+            veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
+            if veterinarian_to_update:
+                is_valid_dni = True
+                show_veterinarian(veterinarian_to_update)
+            else:
+                print("El DNI no corresponde a un veterinario existente.")
+        return update_veterinarian_data(veterinarian_to_update)
+    except Exception as e:
+        print(f'[ERROR] Controller - modify_veterinarian_action {e}')
 
 def show_all_veterinarians_action(): 
     """Displays all active veterinarians in a formatted table.
@@ -62,8 +65,11 @@ def show_all_veterinarians_action():
     Returns:
         None
     """
-    readeable_veterinarians = show_all_veterinarians_active()
-    print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
+    try:
+        readeable_veterinarians = show_all_veterinarians_active()
+        print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
+    except Exception as e:
+        print(f'[ERROR] Controller - show_all_veterinarians_action {e}')
     
 def delete_veterinarian_action():
     """Soft deletes a veterinarian by DNI after user confirmation.
@@ -79,15 +85,19 @@ def delete_veterinarian_action():
     Returns:
         None: The list is modified in place.
     """
-    is_valid_dni = False
-    while not is_valid_dni:
-        dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
-        veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
-        if veterinarian_to_update:
-            is_valid_dni = True
-            show_veterinarian(veterinarian_to_update)
-        else:
-            print("El DNI no corresponde a un veterinario existente.")
-    veterinarian_to_delete = get_data_veterinarian_by_dni(dni_input)
-    print("Veterinario dado de baja correctamente.\n")
-    delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")])
+    
+    try:
+        is_valid_dni = False
+        while not is_valid_dni:
+            dni_input = input("Ingrese el DNI del Veterinario que desea dar de baja: ")
+            veterinarian_to_update = get_data_veterinarian_by_dni(dni_input)
+            if veterinarian_to_update:
+                is_valid_dni = True
+                show_veterinarian(veterinarian_to_update)
+            else:
+                print("El DNI no corresponde a un veterinario existente.")
+        veterinarian_to_delete = get_data_veterinarian_by_dni(dni_input)
+        print("Veterinario dado de baja correctamente.\n")
+        delete_veterinarian_by_id(veterinarian_to_delete[HEADER_VETERINARIAN.index("veterinarian_id")])
+    except Exception as e:
+        print(f'[ERROR] Controller - delete_veterinarian_action {e}')        
