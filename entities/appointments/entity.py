@@ -111,8 +111,7 @@ def get_appointment_by_id(appointment_id):
     try:
         return get_data_appointment_by_id(appointment_id)
     except Exception as e:
-        print(f"Error al obtener turno: {e}")
-        return None
+        raise Exception(f"Error al obtener turno: {e}")
 
 #UPDATE
 def update_appointment(appointment):
@@ -178,8 +177,7 @@ def update_appointment(appointment):
         update_data_appointment(updated_appointment)
         return updated_appointment
     except Exception as e:
-        print(f"Error al modificar los datos del turno: {e}")
-        return appointment
+        raise Exception(f"Error al modificar los datos del turno: {e}")
 
 # DELETE
 def delete_appointment_by_id(appointment_id):
@@ -201,8 +199,7 @@ def delete_appointment_by_id(appointment_id):
             return appointment_found
         return None
     except Exception as e:
-        print(f"Error al eliminar turno: {e}")
-        return None
+        raise Exception(f"Error al eliminar turno: {e}")
         
 #FUNCTIONS FOR READABLE SHOWING
 def get_readable_appointment(appointment):
@@ -232,8 +229,7 @@ def get_readable_appointment(appointment):
         readable_appointment = [pet_name, date, time, treatment, vet_name]
         return readable_appointment
     except Exception as e:
-        print(f"Error al convertir appointment a formato legible: {e}")
-        return None
+        raise Exception(f"Error al convertir appointment a formato legible: {e}")
 
 # GETTERS
 def get_appointment_by_user_input():
@@ -274,8 +270,7 @@ def get_appointment_by_user_input():
             return None
         return appointment
     except Exception as e:
-            print(f"Error al buscar turno: {e}")
-            return None
+        raise Exception(f"Error al buscar turno: {e}")
 
 def get_appointment_by_pet_and_vet(pet_id, veterinarian_id):
     """Finds an active appointment by pet ID and veterinarian ID.
@@ -291,9 +286,8 @@ def get_appointment_by_pet_and_vet(pet_id, veterinarian_id):
     try:
         return get_data_appointment_by_pet_and_vet(pet_id, veterinarian_id)
     except Exception as e:
-        print(f"Error inesperado al buscar appointment por mascota y veterinario: {e}")
-        return None
-
+        raise Exception(f"Error al buscar turno por mascota y veterinario: {e}")
+    
 #VALID VETERINARIANS ASSIGNMENT
 def assign_veterinarian(date, time):
     """Assigns an available veterinarian for a specific date and time.
@@ -309,11 +303,12 @@ def assign_veterinarian(date, time):
     """
     veterinarians = get_all_veterinarians()
     appointments = get_all_appointments_with()
-    active_veterinarians = [vet for vet in veterinarians if vet[HEADER_VETERINARIAN.index("active")]]
+    active_appointments = list(filter(lambda apt: bool(apt[HEADER_APPOINTMENT.index("active")]) == True, appointments))
+    active_veterinarians = list(filter(lambda vet: bool(vet[HEADER_APPOINTMENT.index("active")]) == True, veterinarians))
 
     available_veterinarians = []
     for vet in active_veterinarians:
-        if not has_appointment_conflict(appointments, vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
+        if not has_appointment_conflict(active_appointments , vet[HEADER_VETERINARIAN.index("veterinarian_id")], date, time):
             available_veterinarians.append(vet)
     
     if not available_veterinarians: 
@@ -344,6 +339,15 @@ def has_appointment_conflict(array_appointments, veterinarian_id, date, time):
     return False
 
 def show_all_appointments_active():
+    """
+    Returns all active appointments in a readable format.
+
+    Loads all appointments, filters those marked as active,
+    and formats them using `get_readable_appointment()`.
+
+    Returns:
+        list[str]: A list of formatted active appointments.
+    """
     appointments = get_all_appointments_with()
-    appointments_active = list(filter(lambda v: v[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
+    appointments_active = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
     return [get_readable_appointment(apt) for apt in appointments_active]

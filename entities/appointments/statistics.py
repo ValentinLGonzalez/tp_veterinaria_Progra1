@@ -12,7 +12,7 @@ def appointment_statistics():
     appointments = get_all_appointments_with()
     veterinarians = get_all_veterinarians_with()
 
-    active_appointments = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
+    active_appointments = list(filter(lambda apt: bool(apt[HEADER_APPOINTMENT.index("active")]) == True, appointments))
     print(f"Total de turnos activos: {len(active_appointments)}")
 
     appointments_by_date = {}
@@ -46,7 +46,7 @@ def print_appointment_statistics(dict, keys=None, index=0):
     Base case: Stops when index reaches the lenght of keys.
 
     Recursive case:  Prints current key and value, then calls itself with index + 1.
-    
+
     """
     if keys is None:
         keys = list(dict.keys())
