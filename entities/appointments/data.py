@@ -11,7 +11,7 @@ def appointment_read_handler(entity, condition):
     if condition(entity):
         return entity
     else:
-        False
+        return False
     
 def get_data_appointment_by_id(_id):
     """
@@ -41,8 +41,8 @@ def get_data_appointment_by_pet_and_vet(pet_id, veterinarian_id):
     """
     return read_file_csv_with(file_name, appointment_read_handler, 
         lambda a: (a[HEADER_APPOINTMENT.index("pet_id")] == pet_id and 
-                   a[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and 
-                   bool(a[HEADER_APPOINTMENT.index("active")]) == True)
+                  a[HEADER_APPOINTMENT.index("veterinarian_id")] == veterinarian_id and 
+                  bool(a[HEADER_APPOINTMENT.index("active")]) == True)
     )
 
 def appointment_append_handler(entity):
