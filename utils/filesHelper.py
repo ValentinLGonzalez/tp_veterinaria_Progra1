@@ -14,7 +14,7 @@ def read_file_csv_with(file_name, handler, condition):
                 row = file.readline()
         return entity_founded
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
 
 def read_last_line_with(file_name):
     last_id = 1
@@ -27,7 +27,7 @@ def read_last_line_with(file_name):
     except FileNotFoundError:
         pass
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
         
 def write_file_csv(file_name, data, divider):
     try:
@@ -35,7 +35,7 @@ def write_file_csv(file_name, data, divider):
         for row in data:
             file.write(row.join(divider) + '\n')
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
     finally:
         file.close()
         
@@ -45,7 +45,7 @@ def append_line_to_file(file_name, handler, data):
         file.write(handler(data) + '\n')
         return True
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
     finally:
         file.close()
 
@@ -63,7 +63,7 @@ def update_file_csv_with_temp(file_name, condition, data):
                 temp_file.write(DIVIDER_CSV.join(row) + '\n')
         updated_success = True
     except OSError as e:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
         print(e)
     finally:
         try:
@@ -80,7 +80,7 @@ def update_file_csv_with_temp(file_name, condition, data):
             print("Error al reemplazar el archivo:", error)
     else:
         os.remove(file_temp_name)
-        print(f"No se pudo actualizar le archivo.")
+        print(f"No se pudo actualizar el archivo.")
         
 def read_all_file_csv(file_name):
     data = []
@@ -93,7 +93,7 @@ def read_all_file_csv(file_name):
     except FileNotFoundError:
         return []
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
 
 def save_all_to_file(file_name, handler, data):
     try:
@@ -101,7 +101,7 @@ def save_all_to_file(file_name, handler, data):
             for row in data:
                 file.write(handler(row) + '\n')
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")
         
 def read_all_file_json(file_name):
     try:
@@ -110,4 +110,4 @@ def read_all_file_json(file_name):
     except FileNotFoundError:
         return []
     except OSError:
-        print("No se puede abrir le archivo")
+        print("No se puede abrir el archivo")

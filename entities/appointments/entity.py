@@ -226,7 +226,7 @@ def get_readable_appointment(appointment):
         pet = read_pet_by_id(pet_id)
         veterinarian = get_veterinarian_by_id(veterinarian_id)
             
-        pet_name = pet[HEADER_PET.index("nombre")] if pet else "Mascota no encontrada"
+        pet_name = pet[HEADER_PET.index("nombre")] #if pet else "Mascota no encontrada"
         vet_name = f"{veterinarian[HEADER_VETERINARIAN.index('nombre')]} {veterinarian[HEADER_VETERINARIAN.index('apellido')]}"
         
         readable_appointment = [pet_name, date, time, treatment, vet_name]
