@@ -1,1 +1,0 @@
-from entities.appointments.entity import create_appointment

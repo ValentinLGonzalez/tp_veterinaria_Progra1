@@ -11,9 +11,9 @@ def appointment_statistics():
     print("\n--- Estadísticas de Turnos ---\n")
     appointments = get_all_appointments_with()
     veterinarians = get_all_veterinarians_with()
-    total_active_appointments = reduce(lambda total, apt: total + (1 if apt[HEADER_APPOINTMENT.index("active")] else 0), appointments, 0)
-    print(f"Total de turnos activos: {total_active_appointments}")
-    active_appointments = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")], appointments))
+
+    active_appointments = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
+    print(f"Total de turnos activos: {len(active_appointments)}")
 
     appointments_by_date = {}
     for appointment in active_appointments:
@@ -21,8 +21,7 @@ def appointment_statistics():
         appointments_by_date[date] = appointments_by_date.get(date, 0) + 1
         
     print("\nTurnos por día:")
-    for date, count in appointments_by_date.items():
-        print(f"  {date}: {count} turno(s)")
+    print_appointment_statistics(appointments_by_date)
 
     appointments_by_vet = {}
     for appointment in active_appointments:
@@ -37,7 +36,22 @@ def appointment_statistics():
             appointments_by_vet[vet_name] = appointments_by_vet.get(vet_name, 0) + 1
 
     print("\nTurnos por veterinario:")
-    for vet, count in appointments_by_vet.items():
-        print(f"  {vet}: {count} turno(s)")
+    print_appointment_statistics(appointments_by_vet)
 
     print("\n--- Fin de estadísticas ---\n")
+
+def print_appointment_statistics(dict, keys=None, index=0):
+    """Recursively prints key-value pairs from a dictionary.
+
+    Base case: Stops when index reaches the lenght of keys.
+
+    Recursive case:  Prints current key and value, then calls itself with index + 1.
+    
+    """
+    if keys is None:
+        keys = list(dict.keys())
+    if index == len(keys):
+        return 0
+    key = keys[index]
+    print(f"  {key}: {dict[key]} turno(s)")
+    print_appointment_statistics(dict, keys, index + 1) 
