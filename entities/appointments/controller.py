@@ -58,8 +58,7 @@ def modify_appointment_action():
             print("\nNo se pudo modificar el Turno.\n")
         return None
     except Exception as e:
-        print(f"\nError al modificar el turno: {e}\n")
-        return None
+        raise Exception(f"\nError al modificar el turno: {e}\n")
 
 def show_appointment(appointment):
     """Displays the details of an appointment in a readable format.
@@ -91,7 +90,7 @@ def show_all_appointments_action():
         print_array_bidimensional(READABLE_HEADER, readable_appointments)
         print("\n--- Fin del listado ---\n")
     except Exception as e:
-        print(f"Error al mostrar todos los turnos: {e}")
+        raise Exception(f"Error al mostrar todos los turnos: {e}")
     
 def delete_appointment_action():
     """Soft deletes an appointment after user confirmation.
@@ -113,6 +112,5 @@ def delete_appointment_action():
         else:
             print("\nNo se pudo dar de baja el turno.\n")
     except Exception as e:
-        print(f"\nError al eliminar el turno: {e}\n")
-        return None
+        raise Exception(f"\nError al eliminar el turno: {e}\n")
 
