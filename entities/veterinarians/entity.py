@@ -26,10 +26,6 @@ def create_veterinarian():
 
     Once all fields are collected, the new veterinarian is appended to the list.
 
-    Args:
-        array_veterinarians (list[list]): The current list of veterinarians,
-            where each veterinarian is represented as a list of values.
-
     Returns:
         list: The newly created veterinarian represented as a list of values.
     """
@@ -108,8 +104,6 @@ def delete_veterinarian_by_id(veterinarian_id):
 
     Args:
         veterinarian_id (str): The ID of the veterinarian to be deleted.
-        array_veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
 
     Returns:
         None: The list is modified in place.
@@ -241,6 +235,9 @@ def get_readable_veterinarian(veterinarian):
     return (dni, name, surname, matricula, email, phone)
 
 def show_all_veterinarians_active():
-    veterinarians = get_all_veterinarians_with()
-    veterinarians_active = list(filter(lambda v: v[HEADER_VETERINARIAN.index("active")] == 'True', veterinarians))
-    return [get_readable_veterinarian(veterinarian) for veterinarian in veterinarians_active]
+    try:
+        veterinarians = get_all_veterinarians_with()
+        veterinarians_active = list(filter(lambda v: v[HEADER_VETERINARIAN.index("active")] == 'True', veterinarians))
+        return [get_readable_veterinarian(veterinarian) for veterinarian in veterinarians_active]
+    except Exception as e:
+        raise Exception(f'[ERROR] Action - show_all_veterinarians_active {e}')

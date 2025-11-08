@@ -83,18 +83,25 @@ def update_file_csv_with_temp(file_name, condition, data):
         print(f"No se pudo actualizar el archivo.")
         
 def read_all_file_csv(file_name):
-    data = []
     try:
+        data = []
         with open(file_name,"r", encoding="UTF-8") as file:
-            for row in file:
-                entity_row = row.strip().split(",")
-                data.append(entity_row)
+            data = read_file_recursively(file, data)
         return data
     except FileNotFoundError:
         return []
     except OSError:
         print("No se puede abrir el archivo")
-
+        
+def read_file_recursively(file, data):
+    row = file.readline()
+    if row:
+        process_row = row.strip().split(DIVIDER_CSV)
+        data.append(process_row)
+        return read_file_recursively(file, data)
+    else:
+        return data
+    
 def save_all_to_file(file_name, handler, data):
     try:
         with open(file_name, "w", encoding = "UTF-8") as file:

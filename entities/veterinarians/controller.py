@@ -9,10 +9,6 @@ def add_veterinarian_action():
     Prompts the user to enter the data for a new veterinarian, creates
     the veterinarian record, appends it to the list, and displays it.
 
-    Args:
-        veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
-
     Returns:
         list: The newly created veterinarian record.
     """
@@ -30,10 +26,6 @@ def modify_veterinarian_action():
     Continuously prompts the user to enter a veterinarian's DNI until a valid
     veterinarian is found. Once found, the veterinarian's details are displayed,
     updated with user input, and saved back into the list.
-
-    Args:
-        veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
 
     Returns:
         list: The updated veterinarian record.
@@ -58,10 +50,6 @@ def show_all_veterinarians_action():
     Filters the list of veterinarians to include only those marked as active,
     then prints them using a bidimensional array format.
 
-    Args:
-        array_veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
-
     Returns:
         None
     """
@@ -77,10 +65,6 @@ def delete_veterinarian_action():
     Continuously prompts the user to enter a veterinarian's DNI until a valid
     veterinarian is found. Once found, displays the veterinarian, deletes it
     by marking it as inactive, and confirms the deletion.
-
-    Args:
-        veterinarians (list[list]): The list of veterinarians, where each
-            veterinarian is represented as a list of values.
 
     Returns:
         None: The list is modified in place.
