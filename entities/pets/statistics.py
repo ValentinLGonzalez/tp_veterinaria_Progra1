@@ -1,0 +1,39 @@
+from entities.pets.data import get_all_pets
+from utils.constants import HEADER_PET
+
+def pet_statistics():
+    print("\n--- Estadísticas de Mascotas ---\n")
+    
+    pets = get_all_pets()
+
+    all_pets_set = { tuple(p) for p in pets }
+    active_pets = { tuple(p) for p in pets if p[HEADER_PET.index("active")] == 'True' }
+    inactive_pets = all_pets_set - active_pets
+
+
+    print(f"Total de mascotas activas: {len(active_pets)}\n")
+    print(f"Total de mascotas no activas: {len(inactive_pets)}\n")
+
+    species = {
+        p[HEADER_PET.index("especie")]
+        for p in active_pets
+    }
+
+    print("Especies registradas:", species)
+
+    breeds_by_species = {}
+    for sp in species:
+        breeds_by_species[sp] = { p[HEADER_PET.index("raza")] for p in active_pets if p[HEADER_PET.index("especie")] == sp }
+
+    print("Razas por especie:")
+    for sp, breeds in breeds_by_species.items():
+        print(f"  {sp}: {breeds}")
+    print()
+
+    breeds_active = { p[HEADER_PET.index("raza")] for p in active_pets }
+    breeds_inactive = { p[HEADER_PET.index("raza")] for p in inactive_pets }
+
+    if breeds_active.issubset(breeds_active | breeds_inactive):
+        print("Todas las razas activas existen en el historial.")
+
+    print("\n--- Fin de estadísticas de mascotas ---\n")

@@ -2,6 +2,7 @@ from entities.appointments.controller import add_appointment_action, delete_appo
 from entities.appointments.statistics import appointment_statistics
 from entities.owners.controller import add_owner_action, delete_owner_action, modify_owner_action, show_all_owners_action
 from entities.pets.controller import add_pet_action, modify_pet_action, show_all_pets_action,delete_pet_action
+from entities.pets.statistics import pet_statistics
 from entities.veterinarians.controller import add_veterinarian_action, delete_veterinarian_action, modify_veterinarian_action, show_all_veterinarians_action
 
 def main():
@@ -146,7 +147,7 @@ def main():
         elif opcion == "4":   # Opción 1
             while True:
                 while True:
-                    opciones = 4
+                    opciones = 5
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > MENÚ DE MASCOTAS")
@@ -155,6 +156,7 @@ def main():
                     print("[2] Modificar un Mascota por nombre y dueño")
                     print("[3] Mostrar todos los Mascota")
                     print("[4] Eliminar Mascota por nombre y dueño")
+                    print("[5] Estadisticas de Mascotas")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -177,8 +179,9 @@ def main():
                     show_all_pets_action()
                 elif opcion == "4":   # Opción 4
                     delete_pet_action()
-        # elif opcion == "4":   # Opción 4
-        #     ...
+                elif opcion == "5":   # Opción 5
+                    pet_statistics()
+
 
         input("\nPresione ENTER para volver al menú.")
         print("\n\n")

@@ -197,7 +197,6 @@ def delete_appointment_by_id(appointment_id):
             appointment_found[HEADER_APPOINTMENT.index("active")] = "False"
             update_data_appointment(appointment_found)
             return appointment_found
-        return None
     except Exception as e:
         raise Exception(f"Error al eliminar turno: {e}")
         
