@@ -56,7 +56,6 @@ def modify_appointment_action():
                 return updated_appointment
         else:
             print("\nNo se pudo modificar el Turno.\n")
-        return None
     except Exception as e:
         raise Exception(f"\nError al modificar el turno: {e}\n")
 

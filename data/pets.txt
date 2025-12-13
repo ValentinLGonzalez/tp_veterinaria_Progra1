@@ -1,9 +1,15 @@
-2,Luna,Gato,Siamés,3,1,4.2,Hembra,True
-3,Rocky,Perro,Bulldog,4,2,20.0,Macho,True
-4,Nina,Gato,Comúneuropeo,2,3,3.8,Hembra,True
-5,Max,Perro,Golden,2,4,18.0,Macho,True
-6,Bella,Perro,Chihuahua,1,5,2.5,Hembra,True
-7,Simba,Gato,Persa,4,7,5.1,Macho,True
-8,Coco,Perro,Caniche,3,8,6.8,Macho,True
-9,Lola,Gato,Angora,2,5,3.9,Hembra,False
-12,pepitox,lorito,parlante,15,6,4,macho,True
+1,Luna,Gato,Siamés,3,1,4.2,Hembra,True
+2,Rocky,Perro,Bulldog,4,2,20.0,Macho,True
+3,Nina,Gato,Común Europeo,2,3,3.8,Hembra,True
+4,Max,Perro,Golden,2,4,18.0,Macho,True
+5,Bella,Perro,Chihuahua,1,5,2.5,Hembra,True
+6,Simba,Gato,Persa,4,7,5.1,Macho,True
+7,Coco,Perro,Caniche,3,8,6.8,Macho,True
+8,Lola,Gato,Angora,2,5,3.9,Hembra,False
+9,Pepe,Lorito,Parlante,15,6,4,Macho,True
+10,Kiara,Gato,Persa,2,1,4.0,Hembra,False
+11,Toby,Perro,Bulldog,8,2,21.0,Macho,False
+12,Mora,Perro,Chihuahua,1,3,3.0,Hembra,True
+13,Pancho,Lorito,Parlante,2,6,4.2,Macho,False
+14,Morena,Gato,Angora,10,5,4.5,Hembra,True
+15,Brisa,Perro,Caniche,5,8,6.5,Hembra,True

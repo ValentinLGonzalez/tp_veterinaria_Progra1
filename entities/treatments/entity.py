@@ -1,6 +1,5 @@
 from entities.treatments.data import get_all_treatments
 
-
 def show_all_treatments():
     treatments = get_all_treatments()
     keys = treatments[0].keys()

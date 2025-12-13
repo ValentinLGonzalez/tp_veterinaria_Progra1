@@ -75,5 +75,5 @@ def delete_data_appointment(updated_appointment):
 
     """
     _id = updated_appointment[HEADER_APPOINTMENT.index("appointment_id")]
-    update_file_csv_with_temp(file_name, lambda v: v[HEADER_APPOINTMENT.index("appointmen_id")] == _id, updated_appointment)
+    update_file_csv_with_temp(file_name, lambda v: v[HEADER_APPOINTMENT.index("appointment_id")] == _id, updated_appointment)
     return updated_appointment
