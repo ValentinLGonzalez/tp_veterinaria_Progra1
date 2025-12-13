@@ -214,6 +214,7 @@ def get_readable_appointment(appointment):
         list: The readable appointment format.
     """
     try:
+        appointment_id = appointment[HEADER_APPOINTMENT.index("appointment_id")]
         pet_id = appointment[HEADER_APPOINTMENT.index("pet_id")]
         date = appointment[HEADER_APPOINTMENT.index("fecha")]
         time = appointment[HEADER_APPOINTMENT.index("hora")]
@@ -226,7 +227,7 @@ def get_readable_appointment(appointment):
         pet_name = pet[HEADER_PET.index("nombre")] #if pet else "Mascota no encontrada"
         vet_name = f"{veterinarian[HEADER_VETERINARIAN.index('nombre')]} {veterinarian[HEADER_VETERINARIAN.index('apellido')]}"
         
-        readable_appointment = [pet_name, date, time, treatment, vet_name]
+        readable_appointment = [appointment_id, pet_name, date, time, treatment, vet_name]
         return readable_appointment
     except Exception as e:
         raise Exception(f"Error al convertir appointment a formato legible: {e}")

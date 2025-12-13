@@ -5,7 +5,7 @@ from utils.arrayHelper import print_array
 from utils.constants import EXCLUDED_PRINT_HEADERS, HEADER_VETERINARIAN
 from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
-READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Matricula", "Email", "Teléfono"]
+READABLE_HEADER = ["dni", "nombre", "apellido", "matricula", "email", "telefono"]
 
 def create_veterinarian():
     """Creates a new veterinarian and appends it to the existing list.
@@ -225,6 +225,7 @@ def get_readable_veterinarian(veterinarian):
         tuple: A tuple containing the formatted veterinarian data, including
         DNI, name, surname, matricula, email, and phone.
     """
+    id = veterinarian[HEADER_VETERINARIAN.index("veterinarian_id")]
     dni = veterinarian[HEADER_VETERINARIAN.index("dni")]
     name = veterinarian[HEADER_VETERINARIAN.index("nombre")]
     surname = veterinarian[HEADER_VETERINARIAN.index("apellido")]
@@ -232,7 +233,7 @@ def get_readable_veterinarian(veterinarian):
     email = veterinarian[HEADER_VETERINARIAN.index("email")]
     phone = veterinarian[HEADER_VETERINARIAN.index("telefono")]
 
-    return (dni, name, surname, matricula, email, phone)
+    return (id, dni, name, surname, matricula, email, phone)
 
 def show_all_veterinarians_active():
     try:

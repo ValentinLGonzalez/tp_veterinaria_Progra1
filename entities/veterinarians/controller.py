@@ -54,8 +54,7 @@ def show_all_veterinarians_action():
         None
     """
     try:
-        readeable_veterinarians = show_all_veterinarians_active()
-        print_array_bidimensional(READABLE_HEADER, readeable_veterinarians)
+        return show_all_veterinarians_active()
     except Exception as e:
         print(f'[ERROR] Controller - show_all_veterinarians_action {e}')
     

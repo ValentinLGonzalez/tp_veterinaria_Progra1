@@ -85,10 +85,7 @@ def show_all_appointments_action():
     Filters active appointments and prints them in a readable format.
     """
     try:
-        print("\n--- Listado de Turnos Activos ---\n")
-        readable_appointments = show_all_appointments_active()
-        print_array_bidimensional(READABLE_HEADER, readable_appointments)
-        print("\n--- Fin del listado ---\n")
+        return show_all_appointments_active()
     except Exception as e:
         raise Exception(f"Error al mostrar todos los turnos: {e}")
     
