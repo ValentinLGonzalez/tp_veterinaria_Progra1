@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from entities.appointments.view import create_list_frame_appointment
+from entities.pets.view import create_list_frame_pet
 from entities.veterinarians.view import create_list_frame
 
 root = tk.Tk()
@@ -16,7 +17,6 @@ def mostrar_vista(nombre_vista):
         titulo = tk.Label(content_frame, text=f"Turnos", font=font)
         titulo.pack(pady=20)
         create_list_frame_appointment(content_frame)
-        tk.Label(content_frame, text="[Aquí iría la tabla de Turnos]").pack()
     elif nombre_vista == "veterinarian":
         titulo = tk.Label(content_frame, text=f"Veterinarios", font=font)
         titulo.pack(pady=20)
@@ -24,7 +24,7 @@ def mostrar_vista(nombre_vista):
     elif nombre_vista == "pet":
         titulo = tk.Label(content_frame, text=f"Mascotas", font=font)
         titulo.pack(pady=20)
-        tk.Label(content_frame, text="[Aquí iría la tabla de Mascotas]").pack()
+        create_list_frame_pet(content_frame)
     elif nombre_vista == "owner":
         titulo = tk.Label(content_frame, text=f"Dueños", font=font)
         titulo.pack(pady=20)

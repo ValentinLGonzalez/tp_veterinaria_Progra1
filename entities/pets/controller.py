@@ -2,7 +2,7 @@ from entities.owners.controller import show_all_owners_action
 from entities.owners.data import get_all_owners
 from entities.owners.entity import get_owner_by_dni
 from entities.pets.data import get_all_pets, save_data_pet, update_data_pets
-from entities.pets.entity import create_pet, delete_pet_by_id, get_pet_by_name_and_owner, show_pet
+from entities.pets.entity import create_pet, delete_pet_by_id, get_pet_by_name_and_owner, get_readable_pet, show_pet
 from utils.constants import HEADER_PET
 from utils.arrayHelper import print_array_bidimensional
 def add_pet_action():
@@ -49,7 +49,8 @@ def modify_pet_action():
 def show_all_pets_action():
     pets = get_all_pets()
     active_pets = list(filter(lambda p: bool(p[HEADER_PET.index("active")]) == True, pets))
-    print_array_bidimensional(HEADER_PET, active_pets)
+    active_pets_owners = list(map(lambda p: get_readable_pet(p), active_pets))
+    return active_pets_owners
 
 def delete_pet_action():
     try:    

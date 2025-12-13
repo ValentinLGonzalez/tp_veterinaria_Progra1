@@ -1,3 +1,4 @@
+from entities.owners.data import get_data_owner_by_id
 from entities.pets.data import delete_data_pets, get_data_pet_by_id, get_data_pet_by_name, get_data_pet_by_owner_id_and_pet_name, get_next_pet_id, save_data_pet
 from entities.owners.controller import show_all_owners_action
 from entities.owners.entity import get_owner_by_dni
@@ -6,7 +7,7 @@ from entities.veterinarians.validations import is_valid_name
 from utils.constants import HEADER_PET, EXCLUDED_PRINT_HEADERS, HEADER_OWNER
 from utils.arrayHelper import print_array
 
-READABLE_HEADER = ["Nombre", "Raza", "Edad", "Dueño", "Peso", "Sexo"]
+READABLE_HEADER = ["nombre", "raza", "edad", "dueño", "peso", "sexo"]
 
 def create_pet():
     new_pet = []    
@@ -143,11 +144,13 @@ def update_pet_data(current_pet):
 
 
 def get_readable_pet(pet):
+    owner = get_data_owner_by_id(pet[HEADER_PET.index("owner_id")])
+    id = pet[HEADER_PET.index("pet_id")]
     nombre = pet[HEADER_PET.index("nombre")]
     raza = pet[HEADER_PET.index("raza")]
     edad = pet[HEADER_PET.index("edad")]
-    duenio = pet[HEADER_PET.index("owner_id")]
+    duenio = owner[HEADER_OWNER.index("nombre")]
     peso = pet[HEADER_PET.index("peso")]
     sexo = pet[HEADER_PET.index("sexo")]
 
-    return (nombre, raza, edad, duenio, peso, sexo)
+    return (id, nombre, raza, edad, duenio, peso, sexo)
