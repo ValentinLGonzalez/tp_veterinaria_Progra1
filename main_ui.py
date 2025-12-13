@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from entities.appointments.view import create_list_frame_appointment
+from entities.owners.view import create_list_frame_owner
 from entities.pets.view import create_list_frame_pet
 from entities.veterinarians.view import create_list_frame
 
@@ -28,8 +29,7 @@ def mostrar_vista(nombre_vista):
     elif nombre_vista == "owner":
         titulo = tk.Label(content_frame, text=f"Dueños", font=font)
         titulo.pack(pady=20)
-        tk.Label(content_frame, text="[Aquí iría la tabla de Duenios]").pack()
-
+        create_list_frame_owner(content_frame)
 
 side_menu_frame = tk.Frame(root, width=200, bg="lightgray")
 side_menu_frame.pack(side="left", fill="y") 

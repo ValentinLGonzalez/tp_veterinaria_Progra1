@@ -85,14 +85,11 @@ def show_all_owners_action():
     only those marked as "active", formats the data for better
     readability, and finally prints it to the console in a table format.
     """
-    print("\n--- Listado de Dueños Activos ---\n")
     all_owners = get_all_owners()
     active_owners = list(
         filter(lambda o: o[HEADER_OWNER.index("active")] == "True", all_owners)
     )
-    readable_owners = [get_readable_owner(owner) for owner in active_owners]
-    print_array_bidimensional(READABLE_HEADER, readable_owners)
-    print("\n--- Fin del listado ---\n")
+    return [get_readable_owner(owner) for owner in active_owners]
 
 
 def delete_owner_action():
