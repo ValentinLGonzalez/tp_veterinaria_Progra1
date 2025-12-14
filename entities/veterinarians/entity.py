@@ -7,8 +7,10 @@ from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["dni", "nombre", "apellido", "matricula", "email", "telefono"]
 
-def validate_dni(dni):
-    return not get_data_veterinarian_by_dni(dni) and is_valid_dni(dni)
+def validate_dni(input_dni):
+    get_dni = get_data_veterinarian_by_dni(input_dni)[HEADER_VETERINARIAN.index("dni")]
+    return (not bool(get_data_veterinarian_by_dni(input_dni)) or get_dni == input_dni) and is_valid_dni(input_dni)
+
 def create_veterinarian():
     """Creates a new veterinarian and appends it to the existing list.
 
