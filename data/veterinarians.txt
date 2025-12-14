@@ -7,3 +7,5 @@
 7,32654321,Pablo,Castillo,MN44556,pablo.castillo@example.com,1155557777,True
 8,27654321,Rebeca,Ortega,MN77889,rebeca.ortega@example.com,1155558888,True
 9,39485335,Lucas,Barbosa,MN65488,barbosa@barbosa.com,1154057188,True
+10,40654999,Nahuel,Barbosa,MN12300,nahuel@gmail.com,1554876487,False
+11,40654888,Nahuel,Barbosa,MN09833,nahuel@nahuel.com,1554057144,False
