@@ -78,8 +78,8 @@ def update_pet_by_id(updated_pet, array_pets):
     return None
 
 
-def delete_pet_by_id(pet_to_delete):
-    print()
+def delete_pet_by_id(id):
+    pet_to_delete = get_data_pet_by_id(id)
     pet_to_delete[HEADER_PET.index('active')] = 'False'
     delete_data_pets(pet_to_delete)
 

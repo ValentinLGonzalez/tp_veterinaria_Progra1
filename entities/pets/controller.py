@@ -48,7 +48,7 @@ def modify_pet_action():
 
 def show_all_pets_action():
     pets = get_all_pets()
-    active_pets = list(filter(lambda p: bool(p[HEADER_PET.index("active")]) == True, pets))
+    active_pets = list(filter(lambda p: p[HEADER_PET.index("active")] == 'True', pets))
     active_pets_owners = list(map(lambda p: get_readable_pet(p), active_pets))
     return active_pets_owners
 

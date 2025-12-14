@@ -1,4 +1,4 @@
-1,Luna,Gato,Siamés,3,1,4.2,Hembra,True
+1,Luna,Gato,Siamés,3,1,4.2,Hembra,False
 2,Rocky,Perro,Bulldog,4,2,20.0,Macho,True
 3,Nina,Gato,Común Europeo,2,3,3.8,Hembra,True
 4,Max,Perro,Golden,2,4,18.0,Macho,True
@@ -12,4 +12,5 @@
 12,Mora,Perro,Chihuahua,1,3,3.0,Hembra,True
 13,Pancho,Lorito,Parlante,2,6,4.2,Macho,False
 14,Morena,Gato,Angora,10,5,4.5,Hembra,True
-15,Brisa,Perro,Caniche,5,8,6.5,Hembra,True
+15,Brisa,Perro,Caniche,5,8,6.5,Hembra,False
+16,violeta,perro,caniche,7,1,7,hembra,True

@@ -5,15 +5,8 @@ from entities.veterinarians.data import get_next_veterinarian_id, save_data_vete
 from entities.veterinarians.entity import READABLE_HEADER, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_id, validate_dni
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
+from utils.uiHelper import create_scrollable_container, on_focusOut_validation
 from utils.validations import is_valid_email, is_valid_phone
-
-def on_focusOut_validation(event, validatorHandler):
-    widget = event.widget
-    isValid = validatorHandler(widget.get())
-    if not isValid:
-        widget.configure(bg="#ffcccc")
-    else:
-        widget.configure(bg="#ccffcc")
         
 def on_create_new_veterinarian(root, container):
     modal_create = tk.Toplevel(root)
@@ -97,9 +90,7 @@ def on_search_veterinarian(input_search, list_frame, root):
         if match:
             entity_tuple = get_readable_veterinarian(entity.split('|'))
             load_dynamic_table(list_frame, root, entity_tuple)
-            
-    
-    
+              
 def modify_veterinarian(id, root, container):
     modal_modify = tk.Toplevel(root)
     modal_modify.title(f"Editar Usuario ID: {id}")
@@ -227,8 +218,6 @@ def load_dynamic_table(container, root, filtered_data=[]):
                   command=lambda i=row_id: modify_veterinarian(i, root, container)).pack(side="left", padx=2)
 
 def create_list_frame(root):
-    list_frame = tk.Frame(root, padx=10, pady=10)
-    
     frame_controles = tk.Frame(root, pady=10, padx=10, bg="#eee")
     frame_controles.pack(fill="x")
 
@@ -243,5 +232,5 @@ def create_list_frame(root):
     btn_nuevo = tk.Button(frame_controles, text="+ Nuevo Usuario", bg="#4CAF50", fg="white", command=lambda: on_create_new_veterinarian(root, list_frame))
     btn_nuevo.pack(side="right")
     
-    list_frame.pack(fill="both", expand=True)
+    list_frame = create_scrollable_container(root)
     load_dynamic_table(list_frame, root=root)
