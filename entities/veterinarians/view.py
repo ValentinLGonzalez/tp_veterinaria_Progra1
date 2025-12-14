@@ -1,58 +1,86 @@
-import re
 import tkinter as tk
 from tkinter import messagebox
 from entities.veterinarians.controller import show_all_veterinarians_action
 from entities.veterinarians.data import get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
-from entities.veterinarians.entity import READABLE_HEADER, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_id
+from entities.veterinarians.entity import READABLE_HEADER, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_id, validate_dni
+from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
+from utils.validations import is_valid_email, is_valid_phone
 
+def on_focusOut_validation(event, validatorHandler):
+    widget = event.widget
+    isValid = validatorHandler(widget.get())
+    if not isValid:
+        widget.configure(bg="#ffcccc")
+    else:
+        widget.configure(bg="#ccffcc")
+        
 def on_create_new_veterinarian(root, container):
     modal_modify = tk.Toplevel(root)
     modal_modify.title(f"Crear nuevo veterinario")
     modal_modify.geometry("500x400")
     
-    new_veterinarian = []
-    hasError = False
     for prop in HEADER_VETERINARIAN:
-        if prop == "veterinarian_id":
-            new_veterinarian.append(get_next_veterinarian_id())
-        elif prop == "dni":
+        if prop == "dni":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_dni = tk.Entry(modal_modify)
             input_dni.pack(fill="x", padx=10)
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_dni))
         elif prop == "nombre":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_modify)
             input_name.pack(fill="x", padx=10)
+            input_name.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
         elif prop == "apellido":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_surname = tk.Entry(modal_modify)
             input_surname.pack(fill="x", padx=10)
+            input_surname.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
         elif prop == "matricula":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_matricula = tk.Entry(modal_modify)
             input_matricula.pack(fill="x", padx=10)
+            input_matricula.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_matricula))
         elif prop == "email":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_email = tk.Entry(modal_modify)
             input_email.pack(fill="x", padx=10)
+            input_email.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_email))
         elif prop == "telefono":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_telefono = tk.Entry(modal_modify)
             input_telefono.pack(fill="x", padx=10)
+            input_telefono.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_phone))
+            
     def save_data():
+        new_veterinarian = []
+        hasError = False
+
+        if (not validate_dni(input_dni.get()) or 
+            not is_valid_name(input_name.get()) or 
+            not is_valid_name(input_surname.get()) or 
+            not is_valid_matricula(input_matricula.get()) or 
+            not is_valid_email(input_email.get()) or 
+            not is_valid_phone(input_telefono.get())):
+                hasError = True
+                
+        new_veterinarian.append(get_next_veterinarian_id())
+        new_veterinarian.append(input_dni.get())
+        new_veterinarian.append(input_name.get())
+        new_veterinarian.append(input_surname.get())
+        new_veterinarian.append(input_matricula.get())
+        new_veterinarian.append(input_email.get())
+        new_veterinarian.append(input_telefono.get())
+        new_veterinarian.append(True)
+        print(new_veterinarian)
         if not hasError:
-            new_veterinarian.append(input_dni.get())
-            new_veterinarian.append(input_name.get())
-            new_veterinarian.append(input_surname.get())
-            new_veterinarian.append(input_matricula.get())
-            new_veterinarian.append(input_email.get())
-            new_veterinarian.append(input_telefono.get())
-            new_veterinarian.append(True)
             save_data_veterinarian(new_veterinarian)
             modal_modify.destroy()
             load_dynamic_table(container, root)
-
+        else:
+            messagebox.showerror("Error", "Algunos datos son incorrectos.", parent=modal_modify)
+            return
+    
     btn_frame = tk.Frame(modal_modify, pady=20)
     btn_frame.pack()
     
@@ -85,31 +113,37 @@ def modify_veterinarian(id, root, container):
             input_dni = tk.Entry(modal_modify)
             input_dni.pack(fill="x", padx=10)
             input_dni.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_dni))
         elif prop == "nombre":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_modify)
             input_name.pack(fill="x", padx=10)
             input_name.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
         elif prop == "apellido":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_surname = tk.Entry(modal_modify)
             input_surname.pack(fill="x", padx=10)
             input_surname.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
         elif prop == "matricula":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_matricula = tk.Entry(modal_modify)
             input_matricula.pack(fill="x", padx=10)
             input_matricula.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_matricula))
         elif prop == "email":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_email = tk.Entry(modal_modify)
             input_email.pack(fill="x", padx=10)
             input_email.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_email))
         elif prop == "telefono":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_telefono = tk.Entry(modal_modify)
             input_telefono.pack(fill="x", padx=10)
             input_telefono.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_phone))
     def save_data():
         updated_entity = current_data.copy()
         updated_entity[HEADER_VETERINARIAN.index("dni")] = input_dni.get()

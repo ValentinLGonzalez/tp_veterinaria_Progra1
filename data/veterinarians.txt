@@ -9,3 +9,5 @@
 9,39485335,Lucas,Barbosa,MN65488,barbosa@barbosa.com,1154057188,True
 10,40654999,Nahuel,Barbosa,MN12300,nahuel@gmail.com,1554876487,False
 11,40654888,Nahuel,Barbosa,MN09833,nahuel@nahuel.com,1554057144,False
+12,40321654,nahuel,barbosa,MN12300,nahuel@barbosa.com,1154057166,False
+13,40321888,nahuel,barbosa,MN12311,nahuel@barbosa.com,1161336329,False
