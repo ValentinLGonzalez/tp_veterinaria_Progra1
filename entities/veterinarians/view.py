@@ -87,7 +87,7 @@ def on_create_new_veterinarian(root, container):
     tk.Button(btn_frame, text="Cancelar", command=modal_create.destroy).pack(side="left", padx=5)
     tk.Button(btn_frame, text="Guardar", bg="#4CAF50", fg="white", command=save_data).pack(side="left", padx=5)
 
-def on_search_veterinarian(input_search, list_frame):
+def on_search_veterinarian(input_search, list_frame, root):
     texto_busqueda = input_search.get().lower()
     
     entities = show_all_veterinarians_action()
@@ -96,7 +96,7 @@ def on_search_veterinarian(input_search, list_frame):
         match = texto_busqueda.lower() in entity.lower()
         if match:
             entity_tuple = get_readable_veterinarian(entity.split('|'))
-            load_dynamic_table(list_frame, entity_tuple)
+            load_dynamic_table(list_frame, root, entity_tuple)
             
     
     
@@ -237,7 +237,7 @@ def create_list_frame(root):
     input_search = tk.Entry(frame_controles)
     input_search.pack(side="left", padx=5)
 
-    btn_buscar = tk.Button(frame_controles, text="🔍", command=lambda: on_search_veterinarian(input_search, list_frame))
+    btn_buscar = tk.Button(frame_controles, text="🔍", command=lambda: on_search_veterinarian(input_search, list_frame, root))
     btn_buscar.pack(side="left")
 
     btn_nuevo = tk.Button(frame_controles, text="+ Nuevo Usuario", bg="#4CAF50", fg="white", command=lambda: on_create_new_veterinarian(root, list_frame))
