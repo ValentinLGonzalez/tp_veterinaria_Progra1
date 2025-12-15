@@ -1,6 +1,7 @@
 from entities.appointments.data import get_all_appointments_with
+from entities.pets.data import get_all_pets
 from entities.veterinarians.data import get_all_veterinarians_with
-from utils.constants import HEADER_APPOINTMENT, HEADER_VETERINARIAN
+from utils.constants import HEADER_APPOINTMENT, HEADER_PET, HEADER_VETERINARIAN
 from functools import reduce
 
 # STATISTICS
@@ -8,7 +9,7 @@ def appointment_statistics():
     """Generates statistics about appointments.
 
     """
-    staditics = {"total_appointments_active": 0, "total_appointments_by_day": {}, "total_appointments_by_vet": {}}
+    staditics = {"total_appointments_active": 0, "total_appointments_by_day": {}, "total_appointments_by_vet": {}, "average_pet_age": 0}
     print("\n--- Estadísticas de Turnos ---\n")
     appointments = get_all_appointments_with()
     veterinarians = get_all_veterinarians_with()
@@ -41,7 +42,12 @@ def appointment_statistics():
     print("\nTurnos por veterinario:")
     print_appointment_statistics(appointments_by_vet)
     staditics["total_appointments_by_vet"] = appointments_by_vet
-
+    
+    # Pets stadistics
+    pets_ages = [p[HEADER_PET.index('edad')] for p in get_all_pets()]
+    total_pet_ages = reduce(lambda acc, pet_age:acc + int(pet_age), pets_ages, 0)
+    average_pet_ages = round(total_pet_ages / len(pets_ages))
+    staditics["average_pet_age"] = average_pet_ages
     print("\n--- Fin de estadísticas ---\n")
     
     return staditics
