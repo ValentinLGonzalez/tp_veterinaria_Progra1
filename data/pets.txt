@@ -1,5 +1,5 @@
 1,Luna,Gato,Siamés,3,1,4.2,Hembra,False
-2,Rocky,Perro,Bulldog,4,2,20.0,Macho,True
+2,Rocky,Perro,Bulldog,4,2,20.1,Macho,True
 3,Nina,Gato,Común Europeo,2,3,3.8,Hembra,True
 4,Max,Perro,Golden,2,4,18.0,Macho,True
 5,Bella,Perro,Chihuahua,1,5,2.5,Hembra,True

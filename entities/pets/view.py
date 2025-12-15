@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import SINGLE, messagebox
 from entities.owners.entity import get_all_owners_active
 from entities.pets.controller import show_all_pets_action
-from entities.pets.data import get_all_pets, get_next_pet_id, save_data_pet
+from entities.pets.data import get_all_pets, get_data_pet_by_id, get_next_pet_id, save_data_pet, update_data_pets
 from entities.pets.entity import READABLE_HEADER, delete_pet_by_id,get_readable_pet
 from entities.pets.validations import is_valid_gender, is_valid_pet_age, is_valid_pet_weigth
 from entities.veterinarians.validations import is_valid_name
@@ -104,8 +104,91 @@ def on_search_pet(input_search, list_frame, root):
             entity_tuple = get_readable_pet(entity.split('|'))
             load_dynamic_table(list_frame, root, entity_tuple)
 
-def modify_pet(id):
-    print(f"Editando ID: {id}")
+def modify_pet(id, root, container):
+    modal_modify = tk.Toplevel(root)
+    modal_modify.title(f"Editar Mascota ID: {id}")
+    modal_modify.geometry("500x450")
+
+    current_data = get_data_pet_by_id(id)
+    for prop in HEADER_PET:
+        if prop == "owner_id":
+            tk.Label(modal_modify, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_owner = tk.Entry(modal_modify)
+            input_owner.pack(fill="x", padx=10)
+            input_owner.insert(0, current_data[HEADER_OWNER.index(prop)])
+            owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
+            def on_owner_selected(owner):
+                input_owner.delete(0, tk.END)
+                id, nombre, apellido = owner
+                completed_name = f"{nombre} {apellido}"
+                tk.Label(input_owner, text=completed_name).pack(anchor="w", padx=10, pady=(10, 0))
+                input_owner.insert(0, id)
+                
+            tk.Button(input_owner, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="left", padx=5)
+        elif prop == "nombre":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_name = tk.Entry(modal_modify)
+            input_name.pack(fill="x", padx=10)
+            input_name.insert(0, current_data[HEADER_PET.index(prop)])
+            input_name.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
+        elif prop == "edad":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_age = tk.Entry(modal_modify)
+            input_age.pack(fill="x", padx=10)
+            input_age.insert(0, current_data[HEADER_PET.index(prop)])
+            input_age.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_pet_age))
+        elif prop == "peso":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_weight = tk.Entry(modal_modify)
+            input_weight.pack(fill="x", padx=10)
+            input_weight.insert(0, float(current_data[HEADER_PET.index(prop)]))
+            input_weight.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_pet_weigth))
+        elif prop == "especie":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_especie = tk.Entry(modal_modify)
+            input_especie.pack(fill="x", padx=10)
+            input_especie.insert(0, current_data[HEADER_PET.index(prop)])
+        elif prop == "raza":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_raza = tk.Entry(modal_modify)
+            input_raza.pack(fill="x", padx=10)
+            input_raza.insert(0, current_data[HEADER_PET.index(prop)])
+        elif prop == "sexo":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_gender_option = show_radio_button(modal_modify,[('Macho','Macho'),('Hembra','Hembra')], current_data[HEADER_PET.index(prop)]) 
+    def save_data():
+        updated_pet = current_data.copy()
+        hasError = False
+        if (not input_owner.get() or 
+            not is_valid_name(input_name.get()) or 
+            not is_valid_pet_age(input_age.get()) or 
+            not is_valid_pet_weigth(input_weight.get()) or 
+            not input_especie.get() or 
+            not input_raza.get() or
+            not is_valid_gender(selected_gender_option.get())):
+                hasError = True
+                
+        updated_pet[HEADER_PET.index('nombre')] = input_name.get()
+        updated_pet[HEADER_PET.index('especie')] = input_especie.get()
+        updated_pet[HEADER_PET.index('raza')] = input_raza.get()
+        updated_pet[HEADER_PET.index('edad')] = input_age.get()
+        updated_pet[HEADER_PET.index('owner_id')] = input_owner.get()
+        updated_pet[HEADER_PET.index('peso')] = input_weight.get()
+        updated_pet[HEADER_PET.index('sexo')] = selected_gender_option.get()
+        
+        if not hasError:
+            update_data_pets(updated_pet)
+            modal_modify.destroy()
+            load_dynamic_table(container, root)
+        else:
+            messagebox.showerror("Error", "Algunos datos son incorrectos.", parent=modal_modify)
+            return
+    
+    btn_frame = tk.Frame(modal_modify, pady=20)
+    btn_frame.pack()
+    
+    tk.Button(btn_frame, text="Cancelar", command=modal_modify.destroy).pack(side="left", padx=5)
+    tk.Button(btn_frame, text="Guardar", bg="#4CAF50", fg="white", command=save_data).pack(side="left", padx=5)
 
 def delete_pet(id, root, list_container):
     if messagebox.askyesno("Confirmar", f"¿Borrar ID {id}?"):

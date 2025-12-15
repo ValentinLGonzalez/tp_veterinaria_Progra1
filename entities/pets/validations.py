@@ -13,9 +13,7 @@ def is_valid_pet_age(age_text):
     return False
 
 def is_valid_pet_weigth(weigth):
-    if weigth.isdigit():
-        return float(weigth) > 0
-    return False
+    return float(weigth) > 0
 
 def is_valid_gender(gender_text):
     """

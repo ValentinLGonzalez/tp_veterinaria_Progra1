@@ -30,7 +30,7 @@ def create_scrollable_container(parent):
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
     
-    canvas.bind_all("<MouseWheel>", on_mousewheel)
+    canvas.bind_all("<MouseWheel>", lambda e: on_mousewheel(e, canvas))
 
     return scrollable_frame
 
@@ -57,7 +57,7 @@ def add_scroll_to_widget(parent, widget_to_scroll):
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
     
-    canvas.bind_all("<MouseWheel>", on_mousewheel)
+    canvas.bind_all("<MouseWheel>", lambda e: on_mousewheel(e, canvas))
 
     return container
 
@@ -69,8 +69,8 @@ def on_focusOut_validation(event, validatorHandler):
     else:
         widget.configure(bg="#ccffcc")
 
-def show_radio_button(container, options):
-    selected_option = tk.StringVar()
+def show_radio_button(container, options, value_default):
+    selected_option = tk.StringVar(value=value_default)
     radios = []
     for text, value in options:
         radios.append(ttk.Radiobutton(container, text=text, value=value, variable=selected_option).pack(fill="x", padx=10))
