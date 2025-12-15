@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from entities.appointments.stadistics_view import create_list_frame_statistics
+from entities.appointments.stadistics_view import create_list_frame_statistics_appointments
 from entities.appointments.view import create_list_frame_appointment
 from entities.owners.view import create_list_frame_owner
+from entities.pets.stadistics_view import create_list_frame_statistics_pets
 from entities.pets.view import create_list_frame_pet
 from entities.veterinarians.view import create_list_frame
 
@@ -33,10 +34,15 @@ try:
             titulo = tk.Label(content_frame, text=f"Dueños", font=font)
             titulo.pack(pady=20)
             create_list_frame_owner(content_frame)
-        elif nombre_vista == "statistics":
-            titulo = tk.Label(content_frame, text=f"Estadisticas", font=font)
+        elif nombre_vista == "statistics_appointment":
+            titulo = tk.Label(content_frame, text=f"Estadisticas de Turnos", font=font)
             titulo.pack(pady=20)
-            create_list_frame_statistics(content_frame)
+            create_list_frame_statistics_appointments(content_frame)
+        elif nombre_vista == "statistics_pet":
+            titulo = tk.Label(content_frame, text=f"Estadisticas de Mascotas", font=font)
+            titulo.pack(pady=20)
+            create_list_frame_statistics_pets(content_frame)
+            
     side_menu_frame = tk.Frame(root, width=200, bg="lightgray")
     side_menu_frame.pack(side="left", fill="y") 
 
@@ -46,7 +52,8 @@ try:
     ttk.Button(side_menu_frame, text="Veterinarios", command=lambda: mostrar_vista("veterinarian")).pack(fill="x", pady=5)
     ttk.Button(side_menu_frame, text="Mascotas", command=lambda: mostrar_vista("pet")).pack(fill="x", pady=5)
     ttk.Button(side_menu_frame, text="Dueños", command=lambda: mostrar_vista("owner")).pack(fill="x", pady=5)
-    ttk.Button(side_menu_frame, text="Estadisticas", command=lambda: mostrar_vista("statistics")).pack(fill="x", pady=5)
+    ttk.Button(side_menu_frame, text="Estadisticas Turnos", command=lambda: mostrar_vista("statistics_appointment")).pack(fill="x", pady=5)
+    ttk.Button(side_menu_frame, text="Estadisticas Mascotas", command=lambda: mostrar_vista("statistics_pet")).pack(fill="x", pady=5)
 
     mostrar_vista("appointment")
 

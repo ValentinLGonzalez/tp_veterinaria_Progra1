@@ -101,3 +101,53 @@ def show_modal_selector(container, options, title, callback):
     listbox.bind("<<ListboxSelect>>",lambda e: on_confirm())
     tk.Button(modal_container, text="Cerrar", command=modal_container.destroy).pack(side="bottom", padx=5)
     add_scroll_to_widget(container, modal_container)
+
+def load_info_table(container, data, headers):
+    font = ("Arial", 12)
+    for widget in container.winfo_children():
+        widget.destroy()
+
+    header_frame = tk.Frame(container, bg="gray")
+    header_frame.pack(fill="x", pady=2)
+    
+    for title in headers:
+        tk.Label(header_frame, text=title.capitalize(), width=20, 
+                 bg="gray", fg="white", anchor="w").pack(side='left', padx=5)
+    for dic_row in data:
+        row_frame = tk.Frame(container, pady=2, bd=1, relief="solid")
+        row_frame.pack( pady=2)
+        tk.Label(row_frame, text=str(dic_row), width=20, anchor="w", font=font).pack(side='left', padx=5)
+        tk.Label(row_frame, text=str(data[dic_row]), width=20, anchor="w", font=font).pack(side='left', padx=5)
+        
+def load_info_table_set_individual(container, data, headers):
+    font = ("Arial", 12)
+    for widget in container.winfo_children():
+        widget.destroy()
+
+    header_frame = tk.Frame(container, bg="gray")
+    header_frame.pack(fill="x", pady=2)
+    
+    for title in headers:
+        tk.Label(header_frame, text=title.capitalize(), width=20, 
+                 bg="gray", fg="white", anchor="w").pack(side='left', padx=5)
+    for dic_row in data:
+        row_frame = tk.Frame(container, pady=2, bd=1, relief="solid")
+        row_frame.pack( pady=2)
+        tk.Label(row_frame, text=str(dic_row), width=40, anchor="w", font=font).pack(side='left', padx=5)
+        
+def load_info_table_set(container, data, headers):
+    font = ("Arial", 12)
+    for widget in container.winfo_children():
+        widget.destroy()
+
+    header_frame = tk.Frame(container, bg="gray")
+    header_frame.pack(fill="x", pady=2)
+    
+    for title in headers:
+        tk.Label(header_frame, text=title.capitalize(), width=20, 
+                 bg="gray", fg="white", anchor="w").pack(side='left', padx=5)
+    for dic_row in data:
+        row_frame = tk.Frame(container, pady=2, bd=1, relief="solid")
+        row_frame.pack( pady=2)
+        tk.Label(row_frame, text=str(dic_row), width="20", anchor="w", font=font).pack(side='left', padx=5)
+        tk.Label(row_frame, text=str(data[dic_row]), width=20, anchor="w", font=font).pack(side='left', padx=5)

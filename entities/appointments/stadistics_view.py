@@ -1,9 +1,9 @@
 import tkinter as tk
 
 from entities.appointments.statistics import appointment_statistics
-from utils.uiHelper import create_scrollable_container
+from utils.uiHelper import create_scrollable_container, load_info_table
 
-def create_list_frame_statistics(root):
+def create_list_frame_statistics_appointments(root):
     font = ("Arial", 20)
     total_appointments_active_frame = tk.Frame(root, pady=10, padx=10, bg="#eee")
     total_appointments_active_frame.pack(fill="x")
@@ -37,19 +37,3 @@ def create_list_frame_statistics(root):
     list_vet = create_scrollable_container(total_appointments_by_vet_frame)
     load_info_table(list_vet, current_stadistics["total_appointments_by_vet"], ['Veterinario', 'Cantidad de turnos'])
     
-def load_info_table(container, data, headers):
-    font = ("Arial", 12)
-    for widget in container.winfo_children():
-        widget.destroy()
-
-    header_frame = tk.Frame(container, bg="gray")
-    header_frame.pack(fill="x", pady=2)
-    
-    for title in headers:
-        tk.Label(header_frame, text=title.capitalize(), width=20, 
-                 bg="gray", fg="white", anchor="w").pack(side='left', padx=5)
-    for dic_row in data:
-        row_frame = tk.Frame(container, pady=2, bd=1, relief="solid")
-        row_frame.pack( pady=2)
-        tk.Label(row_frame, text=str(dic_row), width=20, anchor="w", font=font).pack(side='left', padx=5)
-        tk.Label(row_frame, text=str(data[dic_row]), width=20, anchor="w", font=font).pack(side='left', padx=5)

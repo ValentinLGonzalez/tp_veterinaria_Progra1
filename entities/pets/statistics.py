@@ -3,7 +3,7 @@ from utils.constants import HEADER_PET
 
 def pet_statistics():
     print("\n--- Estadísticas de Mascotas ---\n")
-    
+    staditics = {"total_active_pets": 0, "total_inactive_pets": 0, "total_species": {}, "breeds_by_species": {}}
     pets = get_all_pets()
 
     all_pets_set = { tuple(p) for p in pets }
@@ -12,7 +12,9 @@ def pet_statistics():
 
 
     print(f"Total de mascotas activas: {len(active_pets)}\n")
+    staditics["total_active_pets"] = len(active_pets)
     print(f"Total de mascotas no activas: {len(inactive_pets)}\n")
+    staditics["total_inactive_pets"] = len(inactive_pets)
 
     species = {
         p[HEADER_PET.index("especie")]
@@ -20,7 +22,7 @@ def pet_statistics():
     }
 
     print("Especies registradas:", species)
-
+    staditics["total_species"] = species
     breeds_by_species = {}
     for sp in species:
         breeds_by_species[sp] = { p[HEADER_PET.index("raza")] for p in active_pets if p[HEADER_PET.index("especie")] == sp }
@@ -32,8 +34,10 @@ def pet_statistics():
 
     breeds_active = { p[HEADER_PET.index("raza")] for p in active_pets }
     breeds_inactive = { p[HEADER_PET.index("raza")] for p in inactive_pets }
+    staditics["breeds_by_species"] = breeds_by_species
 
     if breeds_active.issubset(breeds_active | breeds_inactive):
         print("Todas las razas activas existen en el historial.")
 
     print("\n--- Fin de estadísticas de mascotas ---\n")
+    return staditics
