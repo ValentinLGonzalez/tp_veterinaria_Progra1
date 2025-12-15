@@ -42,6 +42,6 @@ ttk.Button(side_menu_frame, text="Veterinarios", command=lambda: mostrar_vista("
 ttk.Button(side_menu_frame, text="Mascotas", command=lambda: mostrar_vista("pet")).pack(fill="x", pady=5)
 ttk.Button(side_menu_frame, text="Dueños", command=lambda: mostrar_vista("owner")).pack(fill="x", pady=5)
 
-mostrar_vista("Bienvenido")
+mostrar_vista("appointment")
 
 root.mainloop()

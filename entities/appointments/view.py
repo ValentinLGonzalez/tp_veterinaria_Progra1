@@ -1,17 +1,18 @@
 import tkinter as tk
 from tkinter import messagebox
 from entities.appointments.controller import show_all_appointments_action
-from entities.appointments.data import get_next_appointment_id, save_data_appointment
-from entities.appointments.entity import get_all_appointments_active, get_readable_appointment
+from entities.appointments.data import get_next_appointment_id, save_data_appointment, update_data_appointment
+from entities.appointments.entity import READABLE_HEADER,delete_appointment_by_id, get_all_appointments_active, get_appointment_by_id, get_readable_appointment, show_all_appointments_active
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time
 from entities.owners.data import get_data_owner_by_id
 from entities.owners.entity import get_all_owners_active
 from entities.pets.controller import show_all_pets_action
 from entities.pets.data import get_all_pets, get_data_pet_by_id, get_next_pet_id, save_data_pet, update_data_pets
-from entities.pets.entity import READABLE_HEADER, delete_pet_by_id,get_readable_pet
 from entities.pets.validations import is_valid_gender, is_valid_pet_age, is_valid_pet_weigth
 from entities.treatments.data import get_all_treatments
+from entities.treatments.entity import get_treatment_by_id
 from entities.veterinarians.controller import show_all_veterinarians_action
+from entities.veterinarians.entity import get_veterinarian_by_id
 from entities.veterinarians.validations import is_valid_name
 from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
 from utils.uiHelper import create_scrollable_container, on_focusOut_validation, show_modal_selector, show_radio_button
@@ -110,89 +111,95 @@ def on_create_new_appointment(root, container):
 def on_search_appointment(input_search, list_frame, root):
     texto_busqueda = input_search.get().lower()
     
-    entities = get_all_appointments_active()
+    entities = show_all_appointments_active()
     string_array = [('|').join(list(e)) for e in entities]
     for entity in string_array:
         match = texto_busqueda.lower() in entity.lower()
         if match:
-            entity_tuple = get_readable_appointment(entity.split('|'))
+            entity_tuple = get_readable_appointment(get_appointment_by_id(entity[HEADER_APPOINTMENT.index('appointment_id')]))
             load_dynamic_table(list_frame, root, entity_tuple)
 
-def modify_pet(id, root, container):
+def modify_appointment(id, root, container):
     modal_modify = tk.Toplevel(root)
     modal_modify.title(f"Editar Mascota ID: {id}")
     modal_modify.geometry("500x500")
 
-    current_data = get_data_pet_by_id(id)
-    for prop in HEADER_PET:
-        if prop == "owner_id":
-            owner_frame = tk.Frame(modal_modify)
-            owner_frame.pack(anchor="w")
-            tk.Label(owner_frame, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
-            selected_owner_id = {"id": current_data[HEADER_PET.index(prop)]}
-            owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
-            current_owner = get_data_owner_by_id(selected_owner_id["id"])
-            owner_label_vatiable = tk.StringVar(value=f"{current_owner[HEADER_OWNER.index("nombre")]} {current_owner[HEADER_OWNER.index("apellido")]}")
-            tk.Label(owner_frame, textvariable=owner_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
-            def on_owner_selected(owner):
-                id, nombre, apellido = owner
-                completed_name = f"{nombre} {apellido}"
-                owner_label_vatiable.set(completed_name)
-                selected_owner_id["id"] = id
-            tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
-        elif prop == "nombre":
+    current_data = get_appointment_by_id(id)
+    for prop in HEADER_APPOINTMENT:
+        if prop == "veterinarian_id":
+            veterinarian_frame = tk.Frame(modal_modify)
+            veterinarian_frame.pack(anchor="w")
+            tk.Label(veterinarian_frame, text=f"Veterinario:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_veterinarian_id = {"id": current_data[HEADER_APPOINTMENT.index(prop)]}
+            veterinarians = list(map(lambda o: [o[HEADER_VETERINARIAN.index("veterinarian_id")], o[HEADER_VETERINARIAN.index("nombre")], o[HEADER_VETERINARIAN.index("apellido")]], show_all_veterinarians_action()))
+            current_veterinarian = get_veterinarian_by_id(selected_veterinarian_id["id"])
+            veterinarian_label_variable = tk.StringVar(value=f"{current_veterinarian[HEADER_VETERINARIAN.index("nombre")]} {current_veterinarian[HEADER_VETERINARIAN.index("apellido")]}")
+            tk.Label(veterinarian_frame, textvariable=veterinarian_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
+            def on_veterinarian_selected(veterinarian):
+                id, nombre, apellido = veterinarian
+                veterinarian_label_variable.set(f"{nombre} {apellido}")
+                selected_veterinarian_id["id"] = id
+            tk.Button(veterinarian_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, veterinarians, f"Seleccione un Veterinario", on_veterinarian_selected)).pack(side="right", padx=5)  
+        elif prop == "pet_id":
+            pet_frame = tk.Frame(modal_modify)
+            pet_frame.pack(anchor="w")
+            tk.Label(pet_frame, text=f"Mascota:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_pet_id = {"id": current_data[HEADER_APPOINTMENT.index(prop)]}
+            pet = list(map(lambda p: [p[HEADER_PET.index("pet_id")], p[HEADER_PET.index("nombre")]], get_all_pets()))
+            current_pet = get_data_pet_by_id(selected_pet_id["id"])
+            print(current_pet)
+            pet_label_vatiable = tk.StringVar(value=f'{current_pet[HEADER_PET.index('nombre')]}')
+            tk.Label(pet_frame, textvariable=pet_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            def on_pet_selected(pet):
+                id, nombre = pet
+                pet_label_vatiable.set(f"{nombre}")
+                selected_pet_id["id"] = id
+            tk.Button(pet_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, pet, f"Seleccione una Mascota", on_pet_selected)).pack(side="right", padx=5)  
+        elif prop == "fecha":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_name = tk.Entry(modal_modify)
-            input_name.pack(fill="x", padx=10)
-            input_name.insert(0, current_data[HEADER_PET.index(prop)])
-            input_name.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
-        elif prop == "edad":
+            input_date = tk.Entry(modal_modify)
+            input_date.pack(fill="x", padx=10)
+            input_date.insert(0, current_data[HEADER_APPOINTMENT.index(prop)])
+            input_date.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_appointment_date))
+        elif prop == "hora":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_age = tk.Entry(modal_modify)
-            input_age.pack(fill="x", padx=10)
-            input_age.insert(0, current_data[HEADER_PET.index(prop)])
-            input_age.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_pet_age))
-        elif prop == "peso":
-            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_weight = tk.Entry(modal_modify)
-            input_weight.pack(fill="x", padx=10)
-            input_weight.insert(0, float(current_data[HEADER_PET.index(prop)]))
-            input_weight.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_pet_weigth))
-        elif prop == "especie":
-            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_especie = tk.Entry(modal_modify)
-            input_especie.pack(fill="x", padx=10)
-            input_especie.insert(0, current_data[HEADER_PET.index(prop)])
-        elif prop == "raza":
-            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_raza = tk.Entry(modal_modify)
-            input_raza.pack(fill="x", padx=10)
-            input_raza.insert(0, current_data[HEADER_PET.index(prop)])
-        elif prop == "sexo":
-            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
-            selected_gender_option = show_radio_button(modal_modify,[('Macho','Macho'),('Hembra','Hembra')], current_data[HEADER_PET.index(prop)]) 
+            input_time = tk.Entry(modal_modify)
+            input_time.pack(fill="x", padx=10)
+            input_time.insert(0, current_data[HEADER_APPOINTMENT.index(prop)])
+            input_time.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_appointment_time))
+        elif prop == "treatment_id":
+            treatment_frame = tk.Frame(modal_modify)
+            treatment_frame.pack(anchor="w")
+            tk.Label(treatment_frame, text=f"Tratamiento:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_treatment_id = {"id": current_data[HEADER_APPOINTMENT.index(prop)]}
+            treatment = list(map(lambda t: [t['id'], t['description']], get_all_treatments()))
+            current_treatment = get_treatment_by_id(selected_treatment_id["id"])
+            treatment_label_vatiable = tk.StringVar(value=f'{current_treatment['description']}')
+            tk.Label(treatment_frame, textvariable=treatment_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            def on_treatment_selected(treatment):
+                id, description = treatment
+                treatment_label_vatiable.set(f"{description}")
+                selected_treatment_id["id"] = id
+            tk.Button(treatment_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, treatment, f"Seleccione una Tratamiento", on_treatment_selected)).pack(side="right", padx=5)
+
     def save_data():
-        updated_pet = current_data.copy()
+        updated_appointment = current_data.copy()
         hasError = False
-        if (not selected_owner_id['id'] or 
-            not is_valid_name(input_name.get()) or 
-            not is_valid_pet_age(input_age.get()) or 
-            not is_valid_pet_weigth(input_weight.get()) or 
-            not input_especie.get() or 
-            not input_raza.get() or
-            not is_valid_gender(selected_gender_option.get())):
+        if (not selected_pet_id['id'] or 
+            not is_valid_appointment_date(input_date.get()) or 
+            not is_valid_appointment_time(input_time.get()) or 
+            not selected_treatment_id['id'] or
+            not selected_veterinarian_id['id']):
                 hasError = True
-                
-        updated_pet[HEADER_PET.index('nombre')] = input_name.get()
-        updated_pet[HEADER_PET.index('especie')] = input_especie.get()
-        updated_pet[HEADER_PET.index('raza')] = input_raza.get()
-        updated_pet[HEADER_PET.index('edad')] = input_age.get()
-        updated_pet[HEADER_PET.index('owner_id')] = selected_owner_id['id']
-        updated_pet[HEADER_PET.index('peso')] = input_weight.get()
-        updated_pet[HEADER_PET.index('sexo')] = selected_gender_option.get()
+          
+        updated_appointment[HEADER_APPOINTMENT.index('pet_id')] = selected_pet_id['id']
+        updated_appointment[HEADER_APPOINTMENT.index('fecha')] = input_date.get()
+        updated_appointment[HEADER_APPOINTMENT.index('hora')] = input_time.get()
+        updated_appointment[HEADER_APPOINTMENT.index('treatment_id')] = selected_treatment_id['id']
+        updated_appointment[HEADER_APPOINTMENT.index('veterinarian_id')] = selected_veterinarian_id['id']
         
         if not hasError:
-            update_data_pets(updated_pet)
+            update_data_appointment(updated_appointment)
             modal_modify.destroy()
             load_dynamic_table(container, root)
         else:
@@ -205,9 +212,9 @@ def modify_pet(id, root, container):
     tk.Button(btn_frame, text="Cancelar", command=modal_modify.destroy).pack(side="left", padx=5)
     tk.Button(btn_frame, text="Guardar", bg="#4CAF50", fg="white", command=save_data).pack(side="left", padx=5)
 
-def delete_pet(id, root, list_container):
+def delete_appointment(id, root, list_container):
     if messagebox.askyesno("Confirmar", f"¿Borrar ID {id}?"):
-        delete_pet_by_id(id)
+        delete_appointment_by_id(id)
         load_dynamic_table(list_container, root)
 
 def load_dynamic_table(container, root, filtered_data=[]):
@@ -216,7 +223,7 @@ def load_dynamic_table(container, root, filtered_data=[]):
 
     try:
         index_to_show = [READABLE_HEADER.index(col) for col in READABLE_HEADER]
-        index_id = HEADER_PET.index("pet_id")
+        index_id = HEADER_APPOINTMENT.index("appointment_id")
     except ValueError as e:
         tk.Label(container, text=f"Error de configuración: {e}", fg="red").pack()
         return
@@ -234,7 +241,7 @@ def load_dynamic_table(container, root, filtered_data=[]):
     if filtered_data:
         data.append(filtered_data)
     else:
-        data = show_all_pets_action() 
+        data = show_all_appointments_active() 
         
     for tuple_row in data:
         row_frame = tk.Frame(container, pady=2, bd=1, relief="solid")
@@ -250,9 +257,9 @@ def load_dynamic_table(container, root, filtered_data=[]):
         btn_frame.pack(side="right", padx=5)
         
         tk.Button(btn_frame, text="Eliminar", bg="#ffcccc", 
-                  command=lambda i=row_id: delete_pet(i, root, container)).pack(side="left", padx=2)
+                  command=lambda i=row_id: delete_appointment(i, root, container)).pack(side="left", padx=2)
         tk.Button(btn_frame, text="Editar", 
-                  command=lambda i=row_id: modify_pet(i, root, container)).pack(side="left", padx=2)
+                  command=lambda i=row_id: modify_appointment(i, root, container)).pack(side="left", padx=2)
 
 def create_list_frame_appointment(root):
     
