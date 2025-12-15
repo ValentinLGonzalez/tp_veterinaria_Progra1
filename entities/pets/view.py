@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import SINGLE, messagebox
+from tkinter import messagebox
+from entities.owners.data import get_data_owner_by_id
 from entities.owners.entity import get_all_owners_active
 from entities.pets.controller import show_all_pets_action
 from entities.pets.data import get_all_pets, get_data_pet_by_id, get_next_pet_id, save_data_pet, update_data_pets
@@ -16,18 +17,20 @@ def on_create_new_pet(root, container):
     
     for prop in HEADER_PET:
         if prop == "owner_id":
-            tk.Label(modal_create, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_owner = tk.Entry(modal_create)
-            input_owner.pack(fill="x", padx=10)
+            owner_frame = tk.Frame(modal_create)
+            owner_frame.pack(anchor="w")
+            tk.Label(owner_frame, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_owner_id = {"id": None}
             owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
+            owner_label_vatiable = tk.StringVar()
+            tk.Label(owner_frame, textvariable=owner_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_owner_selected(owner):
-                input_owner.delete(0, tk.END)
                 id, nombre, apellido = owner
                 completed_name = f"{nombre} {apellido}"
-                tk.Label(input_owner, text=completed_name).pack(anchor="w", padx=10, pady=(10, 0))
-                input_owner.insert(0, id)
+                owner_label_vatiable.set(completed_name)
+                selected_owner_id["id"] = id
+            tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
                 
-            tk.Button(input_owner, text="Elegir", command=lambda:show_modal_selector(modal_create, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="left", padx=5)
         elif prop == "nombre":
             tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_create)
@@ -59,7 +62,7 @@ def on_create_new_pet(root, container):
         new_pet = []
         hasError = False
 
-        if (not input_owner.get() or 
+        if (not selected_owner_id['id'] or 
             not is_valid_name(input_name.get()) or 
             not is_valid_pet_age(input_age.get()) or 
             not is_valid_pet_weigth(input_weight.get()) or 
@@ -73,7 +76,7 @@ def on_create_new_pet(root, container):
         new_pet.append(input_especie.get())
         new_pet.append(input_raza.get())
         new_pet.append(input_age.get())
-        new_pet.append(input_owner.get())
+        new_pet.append(selected_owner_id['id'])
         new_pet.append(input_weight.get())
         new_pet.append(selected_gender_option.get())
         new_pet.append(True)
@@ -107,24 +110,25 @@ def on_search_pet(input_search, list_frame, root):
 def modify_pet(id, root, container):
     modal_modify = tk.Toplevel(root)
     modal_modify.title(f"Editar Mascota ID: {id}")
-    modal_modify.geometry("500x450")
+    modal_modify.geometry("500x500")
 
     current_data = get_data_pet_by_id(id)
     for prop in HEADER_PET:
         if prop == "owner_id":
-            tk.Label(modal_modify, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
-            input_owner = tk.Entry(modal_modify)
-            input_owner.pack(fill="x", padx=10)
-            input_owner.insert(0, current_data[HEADER_OWNER.index(prop)])
+            owner_frame = tk.Frame(modal_modify)
+            owner_frame.pack(anchor="w")
+            tk.Label(owner_frame, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
+            selected_owner_id = {"id": current_data[HEADER_PET.index(prop)]}
             owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
+            current_owner = get_data_owner_by_id(selected_owner_id["id"])
+            owner_label_vatiable = tk.StringVar(value=f"{current_owner[HEADER_OWNER.index("nombre")]} {current_owner[HEADER_OWNER.index("apellido")]}")
+            tk.Label(owner_frame, textvariable=owner_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_owner_selected(owner):
-                input_owner.delete(0, tk.END)
                 id, nombre, apellido = owner
                 completed_name = f"{nombre} {apellido}"
-                tk.Label(input_owner, text=completed_name).pack(anchor="w", padx=10, pady=(10, 0))
-                input_owner.insert(0, id)
-                
-            tk.Button(input_owner, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="left", padx=5)
+                owner_label_vatiable.set(completed_name)
+                selected_owner_id["id"] = id
+            tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
         elif prop == "nombre":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_modify)
@@ -159,7 +163,7 @@ def modify_pet(id, root, container):
     def save_data():
         updated_pet = current_data.copy()
         hasError = False
-        if (not input_owner.get() or 
+        if (not selected_owner_id['id'] or 
             not is_valid_name(input_name.get()) or 
             not is_valid_pet_age(input_age.get()) or 
             not is_valid_pet_weigth(input_weight.get()) or 
@@ -172,7 +176,7 @@ def modify_pet(id, root, container):
         updated_pet[HEADER_PET.index('especie')] = input_especie.get()
         updated_pet[HEADER_PET.index('raza')] = input_raza.get()
         updated_pet[HEADER_PET.index('edad')] = input_age.get()
-        updated_pet[HEADER_PET.index('owner_id')] = input_owner.get()
+        updated_pet[HEADER_PET.index('owner_id')] = selected_owner_id['id']
         updated_pet[HEADER_PET.index('peso')] = input_weight.get()
         updated_pet[HEADER_PET.index('sexo')] = selected_gender_option.get()
         

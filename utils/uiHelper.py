@@ -69,7 +69,7 @@ def on_focusOut_validation(event, validatorHandler):
     else:
         widget.configure(bg="#ccffcc")
 
-def show_radio_button(container, options, value_default):
+def show_radio_button(container, options, value_default=""):
     selected_option = tk.StringVar(value=value_default)
     radios = []
     for text, value in options:
