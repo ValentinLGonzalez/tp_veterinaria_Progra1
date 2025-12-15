@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from entities.owners.controller import show_all_owners_action
 from entities.owners.data import get_next_owner_id, save_data_owner
-from entities.owners.entity import READABLE_HEADER, get_all_owners_active, get_readable_owner, validate_owner_dni
+from entities.owners.entity import READABLE_HEADER, delete_owner_by_id, get_all_owners_active, get_readable_owner, read_owner_by_id, update_owner_by_id, update_owner_data, validate_owner_dni
 from entities.veterinarians.validations import is_valid_name
 from utils.constants import HEADER_OWNER
 from utils.uiHelper import create_scrollable_container, on_focusOut_validation
@@ -86,12 +86,79 @@ def on_search_owner(input_search, list_frame, root):
             entity_tuple = get_readable_owner(entity.split('|'))
             load_dynamic_table(list_frame, root, entity_tuple)
 
-def modify_owner(id):
-    print(f"Editando ID: {id}")
+def modify_owner(id, root, list_container):
+    modal_modify = tk.Toplevel(root)
+    modal_modify.title(f"Editar Usuario ID: {id}")
+    modal_modify.geometry("500x400")
+    current_data = read_owner_by_id(id)
+    print("current_data ", current_data)
+    for prop in HEADER_OWNER:
+        if prop == "dni":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_dni = tk.Entry(modal_modify)
+            input_dni.pack(fill="x", padx=10)
+            input_dni.insert(0, current_data[HEADER_OWNER.index(prop)])
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_owner_dni))
+        elif prop == "nombre":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_name = tk.Entry(modal_modify)
+            input_name.pack(fill="x", padx=10)
+            input_name.insert(0, current_data[HEADER_OWNER.index(prop)])
+            input_name.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
+        elif prop == "apellido":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_surname = tk.Entry(modal_modify)
+            input_surname.pack(fill="x", padx=10)
+            input_surname.insert(0, current_data[HEADER_OWNER.index(prop)])
+            input_surname.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_name))
+        elif prop == "email":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_email = tk.Entry(modal_modify)
+            input_email.pack(fill="x", padx=10)
+            input_email.insert(0, current_data[HEADER_OWNER.index(prop)])
+            input_email.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_email))
+        elif prop == "telefono":
+            tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            input_telefono = tk.Entry(modal_modify)
+            input_telefono.pack(fill="x", padx=10)
+            input_telefono.insert(0, current_data[HEADER_OWNER.index(prop)])
+            input_telefono.bind("<FocusOut>", lambda e: on_focusOut_validation(e, is_valid_phone))
+    def save_data():
+        hasError = False
+        updated_entity = current_data.copy()
+        
+        if (not validate_owner_dni(input_dni.get()) or 
+            not is_valid_name(input_name.get()) or 
+            not is_valid_name(input_surname.get()) or 
+            not is_valid_email(input_email.get()) or 
+            not is_valid_phone(input_telefono.get())):
+                hasError = True
+                
+        updated_entity[HEADER_OWNER.index("dni")] = input_dni.get()
+        updated_entity[HEADER_OWNER.index("nombre")] = input_name.get()
+        updated_entity[HEADER_OWNER.index("apellido")] = input_surname.get()
+        updated_entity[HEADER_OWNER.index("email")] = input_email.get()
+        updated_entity[HEADER_OWNER.index("telefono")] = input_telefono.get()
 
-def delete_owner(id):
+        if not hasError:
+            update_owner_by_id(updated_entity)
+            modal_modify.destroy()
+            load_dynamic_table(list_container, root)
+        else:
+            messagebox.showerror("Error", "Algunos datos son incorrectos.", parent=modal_modify)
+            return    
+
+    btn_frame = tk.Frame(modal_modify, pady=20)
+    btn_frame.pack()
+    
+    tk.Button(btn_frame, text="Cancelar", command=modal_modify.destroy).pack(side="left", padx=5)
+    tk.Button(btn_frame, text="Guardar", bg="#4CAF50", fg="white", command=save_data).pack(side="left", padx=5)
+
+
+def delete_owner(id, root, list_container):
     if messagebox.askyesno("Confirmar", f"¿Borrar ID {id}?"):
-        print(f"Eliminando ID: {id}")
+        delete_owner_by_id(id)
+        load_dynamic_table(list_container, root)
 
 def load_dynamic_table(container, root, filtered_data=[]):
     for widget in container.winfo_children():
@@ -133,9 +200,9 @@ def load_dynamic_table(container, root, filtered_data=[]):
         btn_frame.pack(side="right", padx=5)
         
         tk.Button(btn_frame, text="Eliminar", bg="#ffcccc", 
-                  command=lambda i=row_id: delete_owner(i)).pack(side="left", padx=2)
+                  command=lambda i=row_id: delete_owner(i, root, container)).pack(side="left", padx=2)
         tk.Button(btn_frame, text="Editar", 
-                  command=lambda i=row_id: modify_owner(i)).pack(side="left", padx=2)
+                  command=lambda i=row_id: modify_owner(i, root, container)).pack(side="left", padx=2)
 
 def create_list_frame_owner(root):
     frame_controles = tk.Frame(root, pady=10, padx=10, bg="#eee")

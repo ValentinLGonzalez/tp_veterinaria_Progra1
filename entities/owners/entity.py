@@ -237,14 +237,14 @@ def get_readable_owner(owner):
             tuple: A tuple containing the owner's information in the following
                    order: (dni, name, surname, email, phone).
         """
-    
+    id = owner[HEADER_OWNER.index("owner_id")]
     dni = owner[HEADER_OWNER.index("dni")]
     name = owner[HEADER_OWNER.index("nombre")]
     surname = owner[HEADER_OWNER.index("apellido")]
     email = owner[HEADER_OWNER.index("email")]
     phone = owner[HEADER_OWNER.index("telefono")]
 
-    return (dni, name, surname, email, phone)
+    return (id, dni, name, surname, email, phone)
 
 def get_all_owners_active():
     """Displays a list of all active owners.
