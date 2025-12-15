@@ -6,6 +6,11 @@ from utils.validations import is_valid_dni, is_valid_email, is_valid_phone
 
 READABLE_HEADER = ["Dni", "Nombre", "Apellido", "Email", "Teléfono"]
 
+
+def validate_owner_dni(input_dni):
+    get_dni = get_data_owner_by_dni(input_dni)
+    return (not bool(get_data_owner_by_dni(input_dni)) or get_dni[HEADER_OWNER.index("dni")] == input_dni) and is_valid_dni(input_dni)
+
 def create_owner():
     """Creates a new owner by interactively prompting the user for their information.
 

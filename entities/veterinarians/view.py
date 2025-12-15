@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from entities.veterinarians.controller import show_all_veterinarians_action
 from entities.veterinarians.data import get_next_veterinarian_id, save_data_veterinarian, update_data_veterinarian
-from entities.veterinarians.entity import READABLE_HEADER, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_id, validate_dni
+from entities.veterinarians.entity import READABLE_HEADER, delete_veterinarian_by_id, get_readable_veterinarian, get_veterinarian_by_id, validate_veterinarian_dni
 from entities.veterinarians.validations import is_valid_matricula, is_valid_name
 from utils.constants import HEADER_VETERINARIAN
 from utils.uiHelper import create_scrollable_container, on_focusOut_validation
@@ -18,7 +18,7 @@ def on_create_new_veterinarian(root, container):
             tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_dni = tk.Entry(modal_create)
             input_dni.pack(fill="x", padx=10)
-            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_dni))
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_veterinarian_dni))
         elif prop == "nombre":
             tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_create)
@@ -49,7 +49,7 @@ def on_create_new_veterinarian(root, container):
         new_veterinarian = []
         hasError = False
 
-        if (not validate_dni(input_dni.get()) or 
+        if (not validate_veterinarian_dni(input_dni.get()) or 
             not is_valid_name(input_name.get()) or 
             not is_valid_name(input_surname.get()) or 
             not is_valid_matricula(input_matricula.get()) or 
@@ -104,7 +104,7 @@ def modify_veterinarian(id, root, container):
             input_dni = tk.Entry(modal_modify)
             input_dni.pack(fill="x", padx=10)
             input_dni.insert(0, current_data[HEADER_VETERINARIAN.index(prop)])
-            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_dni))
+            input_dni.bind("<FocusOut>", lambda e: on_focusOut_validation(e, validate_veterinarian_dni))
         elif prop == "nombre":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_modify)
@@ -139,7 +139,7 @@ def modify_veterinarian(id, root, container):
         hasError = False
         updated_entity = current_data.copy()
         
-        if (not validate_dni(input_dni.get()) or 
+        if (not validate_veterinarian_dni(input_dni.get()) or 
             not is_valid_name(input_name.get()) or 
             not is_valid_name(input_surname.get()) or 
             not is_valid_matricula(input_matricula.get()) or 
