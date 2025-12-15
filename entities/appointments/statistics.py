@@ -44,10 +44,11 @@ def appointment_statistics():
     staditics["total_appointments_by_vet"] = appointments_by_vet
     
     # Pets stadistics
-    pets_ages = [p[HEADER_PET.index('edad')] for p in get_all_pets()]
-    total_pet_ages = reduce(lambda acc, pet_age:acc + int(pet_age), pets_ages, 0)
-    average_pet_ages = round(total_pet_ages / len(pets_ages))
-    staditics["average_pet_age"] = average_pet_ages
+    pets_ages = [p[HEADER_PET.index('edad')] for p in get_all_pets() if p[HEADER_PET.index('active')] == 'True']
+    if len(pets_ages):
+        total_pet_ages = reduce(lambda acc, pet_age:acc + int(pet_age), pets_ages, 0)
+        average_pet_ages = round(total_pet_ages / len(pets_ages))
+        staditics["average_pet_age"] = average_pet_ages
     print("\n--- Fin de estadísticas ---\n")
     
     return staditics

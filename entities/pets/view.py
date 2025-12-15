@@ -128,7 +128,7 @@ def modify_pet(id, root, container):
                 completed_name = f"{nombre} {apellido}"
                 owner_label_variable.set(completed_name)
                 selected_owner_id["id"] = id
-            tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
+            tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(padx=5)
         elif prop == "nombre":
             tk.Label(modal_modify, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_modify)

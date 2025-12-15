@@ -1,21 +1,15 @@
 import tkinter as tk
 from tkinter import messagebox
-from entities.appointments.controller import show_all_appointments_action
 from entities.appointments.data import get_next_appointment_id, save_data_appointment, update_data_appointment
-from entities.appointments.entity import READABLE_HEADER,delete_appointment_by_id, get_all_appointments_active, get_appointment_by_id, get_readable_appointment, show_all_appointments_active
+from entities.appointments.entity import READABLE_HEADER,delete_appointment_by_id, get_appointment_by_id, get_readable_appointment, show_all_appointments_active
 from entities.appointments.validations import is_valid_appointment_date, is_valid_appointment_time
-from entities.owners.data import get_data_owner_by_id
-from entities.owners.entity import get_all_owners_active
-from entities.pets.controller import show_all_pets_action
-from entities.pets.data import get_all_pets, get_data_pet_by_id, get_next_pet_id, save_data_pet, update_data_pets
-from entities.pets.validations import is_valid_gender, is_valid_pet_age, is_valid_pet_weigth
+from entities.pets.data import get_all_pets, get_data_pet_by_id
 from entities.treatments.data import get_all_treatments
 from entities.treatments.entity import get_treatment_by_id
 from entities.veterinarians.controller import show_all_veterinarians_action
 from entities.veterinarians.entity import get_veterinarian_by_id
-from entities.veterinarians.validations import is_valid_name
-from utils.constants import HEADER_APPOINTMENT, HEADER_OWNER, HEADER_PET, HEADER_VETERINARIAN
-from utils.uiHelper import create_scrollable_container, on_focusOut_validation, show_modal_selector, show_radio_button
+from utils.constants import HEADER_APPOINTMENT, HEADER_PET, HEADER_VETERINARIAN
+from utils.uiHelper import create_scrollable_container, on_focusOut_validation, show_modal_selector
 
 def on_create_new_appointment(root, container):
     modal_create = tk.Toplevel(root)
@@ -35,7 +29,7 @@ def on_create_new_appointment(root, container):
                 id, nombre, apellido = veterinarian
                 veterinarian_label_variable.set(f"{nombre} {apellido}")
                 selected_veterinarian_id["id"] = id
-            tk.Button(veterinarian_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, veterinarians, f"Seleccione un Veterinario", on_veterinarian_selected)).pack(side="right", padx=5)  
+            tk.Button(veterinarian_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, veterinarians, f"Seleccione un Veterinario", on_veterinarian_selected)).pack(padx=5)  
         elif prop == "pet_id":
             pet_frame = tk.Frame(modal_create)
             pet_frame.pack(anchor="w")
@@ -48,7 +42,7 @@ def on_create_new_appointment(root, container):
                 id, nombre = pet
                 pet_label_variable.set(f"{nombre}")
                 selected_pet_id["id"] = id
-            tk.Button(pet_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, pet, f"Seleccione una Mascota", on_pet_selected)).pack(side="right", padx=5)  
+            tk.Button(pet_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, pet, f"Seleccione una Mascota", on_pet_selected)).pack(padx=5)  
         elif prop == "fecha":
             tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_date = tk.Entry(modal_create)
@@ -71,7 +65,7 @@ def on_create_new_appointment(root, container):
                 id, description = treatment
                 treatment_label_variable.set(f"{description}")
                 selected_treatment_id["id"] = id
-            tk.Button(treatment_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, treatment, f"Seleccione una Tratamiento", on_treatment_selected)).pack(side="right", padx=5)
+            tk.Button(treatment_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, treatment, f"Seleccione una Tratamiento", on_treatment_selected)).pack(padx=5)
 
             
     def save_data():
@@ -274,7 +268,7 @@ def create_list_frame_appointment(root):
     btn_buscar = tk.Button(frame_controles, text="🔍", command=lambda: on_search_appointment(input_search, list_frame, root))
     btn_buscar.pack(side="left")
 
-    btn_nuevo = tk.Button(frame_controles, text="+ Nueva Mascota", bg="#4CAF50", fg="white", command=lambda: on_create_new_appointment(root, list_frame))
+    btn_nuevo = tk.Button(frame_controles, text="+ Nuevo Turno", bg="#4CAF50", fg="white", command=lambda: on_create_new_appointment(root, list_frame))
     btn_nuevo.pack(side="right")
     
     list_frame = create_scrollable_container(root)

@@ -216,7 +216,7 @@ def create_list_frame_owner(root):
     btn_buscar = tk.Button(frame_controles, text="🔍", command=lambda: on_search_owner(input_search, list_frame, root))
     btn_buscar.pack(side="left")
 
-    btn_nuevo = tk.Button(frame_controles, text="+ Nuevo Usuario", bg="#4CAF50", fg="white", command=lambda: on_create_new_owner(root, list_frame))
+    btn_nuevo = tk.Button(frame_controles, text="+ Nuevo Dueño", bg="#4CAF50", fg="white", command=lambda: on_create_new_owner(root, list_frame))
     btn_nuevo.pack(side="right")
     
     list_frame = create_scrollable_container(root)

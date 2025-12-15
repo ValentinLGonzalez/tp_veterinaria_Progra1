@@ -16,3 +16,4 @@
 16,violeta,perro,caniche,7,1,7,hembra,True
 17,loritox,loro,parlante,7,3,5,macho,True
 18,perico,canario,amarillo,1,9,1,macho,True
+19,lisa,gato,siames,7,2,2.5,hembra,True
