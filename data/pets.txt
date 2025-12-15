@@ -14,3 +14,4 @@
 14,Morena,Gato,Angora,10,5,4.5,Hembra,True
 15,Brisa,Perro,Caniche,5,8,6.5,Hembra,False
 16,violeta,perro,caniche,7,1,7,hembra,True
+17,loritox,loro,parlante,7,3,5,macho,True

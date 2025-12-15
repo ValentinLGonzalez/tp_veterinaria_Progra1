@@ -92,6 +92,8 @@ def show_all_owners_action():
     return [get_readable_owner(owner) for owner in active_owners]
 
 
+
+
 def delete_owner_action():
     """Manages the action of deactivating an owner.
 

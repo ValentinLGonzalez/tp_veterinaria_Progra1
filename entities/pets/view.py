@@ -1,12 +1,13 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import SINGLE, messagebox
+from entities.owners.entity import get_all_owners_active
 from entities.pets.controller import show_all_pets_action
 from entities.pets.data import get_all_pets, get_next_pet_id, save_data_pet
 from entities.pets.entity import READABLE_HEADER, delete_pet_by_id,get_readable_pet
 from entities.pets.validations import is_valid_gender, is_valid_pet_age, is_valid_pet_weigth
 from entities.veterinarians.validations import is_valid_name
-from utils.constants import HEADER_PET
-from utils.uiHelper import create_scrollable_container, on_focusOut_validation, show_radio_button
+from utils.constants import HEADER_OWNER, HEADER_PET
+from utils.uiHelper import create_scrollable_container, on_focusOut_validation, show_modal_selector, show_radio_button
 
 def on_create_new_pet(root, container):
     modal_create = tk.Toplevel(root)
@@ -15,10 +16,18 @@ def on_create_new_pet(root, container):
     
     for prop in HEADER_PET:
         if prop == "owner_id":
-            tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
+            tk.Label(modal_create, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
             input_owner = tk.Entry(modal_create)
             input_owner.pack(fill="x", padx=10)
-            #btn que habra modal y le muestre todos los owners y se guarde el id
+            owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
+            def on_owner_selected(owner):
+                input_owner.delete(0, tk.END)
+                id, nombre, apellido = owner
+                completed_name = f"{nombre} {apellido}"
+                tk.Label(input_owner, text=completed_name).pack(anchor="w", padx=10, pady=(10, 0))
+                input_owner.insert(0, id)
+                
+            tk.Button(input_owner, text="Elegir", command=lambda:show_modal_selector(modal_create, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="left", padx=5)
         elif prop == "nombre":
             tk.Label(modal_create, text=f"{prop.capitalize()}:").pack(anchor="w", padx=10, pady=(10, 0))
             input_name = tk.Entry(modal_create)

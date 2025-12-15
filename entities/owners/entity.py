@@ -241,3 +241,14 @@ def get_readable_owner(owner):
 
     return (dni, name, surname, email, phone)
 
+def get_all_owners_active():
+    """Displays a list of all active owners.
+
+    This function gets the complete list of owners, filters it to include
+    only those marked as "active".
+    """
+    all_owners = get_all_owners()
+    active_owners = list(
+        filter(lambda o: o[HEADER_OWNER.index("active")] == "True", all_owners)
+    )
+    return active_owners
