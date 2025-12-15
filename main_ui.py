@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from entities.appointments.stadistics_view import create_list_frame_statistics
 from entities.appointments.view import create_list_frame_appointment
 from entities.owners.view import create_list_frame_owner
 from entities.pets.view import create_list_frame_pet
@@ -30,6 +31,10 @@ def mostrar_vista(nombre_vista):
         titulo = tk.Label(content_frame, text=f"Dueños", font=font)
         titulo.pack(pady=20)
         create_list_frame_owner(content_frame)
+    elif nombre_vista == "statistics":
+        titulo = tk.Label(content_frame, text=f"Estadisticas", font=font)
+        titulo.pack(pady=20)
+        create_list_frame_statistics(content_frame)
 
 side_menu_frame = tk.Frame(root, width=200, bg="lightgray")
 side_menu_frame.pack(side="left", fill="y") 
@@ -41,7 +46,8 @@ ttk.Button(side_menu_frame, text="Turnos", command=lambda: mostrar_vista("appoin
 ttk.Button(side_menu_frame, text="Veterinarios", command=lambda: mostrar_vista("veterinarian")).pack(fill="x", pady=5)
 ttk.Button(side_menu_frame, text="Mascotas", command=lambda: mostrar_vista("pet")).pack(fill="x", pady=5)
 ttk.Button(side_menu_frame, text="Dueños", command=lambda: mostrar_vista("owner")).pack(fill="x", pady=5)
+ttk.Button(side_menu_frame, text="Estadisticas", command=lambda: mostrar_vista("statistics")).pack(fill="x", pady=5)
 
-mostrar_vista("appointment")
+mostrar_vista("statistics")
 
 root.mainloop()

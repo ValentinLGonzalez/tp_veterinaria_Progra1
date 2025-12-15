@@ -29,11 +29,11 @@ def on_create_new_appointment(root, container):
             tk.Label(veterinarian_frame, text=f"Veterinario:").pack(anchor="w", padx=10, pady=(10, 0))
             selected_veterinarian_id = {"id": None}
             veterinarians = list(map(lambda o: [o[HEADER_VETERINARIAN.index("veterinarian_id")], o[HEADER_VETERINARIAN.index("nombre")], o[HEADER_VETERINARIAN.index("apellido")]], show_all_veterinarians_action()))
-            veterinarian_label_vatiable = tk.StringVar()
-            tk.Label(veterinarian_frame, textvariable=veterinarian_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            veterinarian_label_variable = tk.StringVar()
+            tk.Label(veterinarian_frame, textvariable=veterinarian_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_veterinarian_selected(veterinarian):
                 id, nombre, apellido = veterinarian
-                veterinarian_label_vatiable.set(f"{nombre} {apellido}")
+                veterinarian_label_variable.set(f"{nombre} {apellido}")
                 selected_veterinarian_id["id"] = id
             tk.Button(veterinarian_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, veterinarians, f"Seleccione un Veterinario", on_veterinarian_selected)).pack(side="right", padx=5)  
         elif prop == "pet_id":
@@ -42,11 +42,11 @@ def on_create_new_appointment(root, container):
             tk.Label(pet_frame, text=f"Mascota:").pack(anchor="w", padx=10, pady=(10, 0))
             selected_pet_id = {"id": None}
             pet = list(map(lambda p: [p[HEADER_PET.index("pet_id")], p[HEADER_PET.index("nombre")]], get_all_pets()))
-            pet_label_vatiable = tk.StringVar()
-            tk.Label(pet_frame, textvariable=pet_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            pet_label_variable = tk.StringVar()
+            tk.Label(pet_frame, textvariable=pet_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_pet_selected(pet):
                 id, nombre = pet
-                pet_label_vatiable.set(f"{nombre}")
+                pet_label_variable.set(f"{nombre}")
                 selected_pet_id["id"] = id
             tk.Button(pet_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, pet, f"Seleccione una Mascota", on_pet_selected)).pack(side="right", padx=5)  
         elif prop == "fecha":
@@ -65,11 +65,11 @@ def on_create_new_appointment(root, container):
             tk.Label(treatment_frame, text=f"Tratamiento:").pack(anchor="w", padx=10, pady=(10, 0))
             selected_treatment_id = {"id": None}
             treatment = list(map(lambda t: [t['id'], t['description']], get_all_treatments()))
-            treatment_label_vatiable = tk.StringVar()
-            tk.Label(treatment_frame, textvariable=treatment_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            treatment_label_variable = tk.StringVar()
+            tk.Label(treatment_frame, textvariable=treatment_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_treatment_selected(treatment):
                 id, description = treatment
-                treatment_label_vatiable.set(f"{description}")
+                treatment_label_variable.set(f"{description}")
                 selected_treatment_id["id"] = id
             tk.Button(treatment_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, treatment, f"Seleccione una Tratamiento", on_treatment_selected)).pack(side="right", padx=5)
 
@@ -148,11 +148,11 @@ def modify_appointment(id, root, container):
             pet = list(map(lambda p: [p[HEADER_PET.index("pet_id")], p[HEADER_PET.index("nombre")]], get_all_pets()))
             current_pet = get_data_pet_by_id(selected_pet_id["id"])
             print(current_pet)
-            pet_label_vatiable = tk.StringVar(value=f'{current_pet[HEADER_PET.index('nombre')]}')
-            tk.Label(pet_frame, textvariable=pet_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            pet_label_variable = tk.StringVar(value=f'{current_pet[HEADER_PET.index('nombre')]}')
+            tk.Label(pet_frame, textvariable=pet_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_pet_selected(pet):
                 id, nombre = pet
-                pet_label_vatiable.set(f"{nombre}")
+                pet_label_variable.set(f"{nombre}")
                 selected_pet_id["id"] = id
             tk.Button(pet_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, pet, f"Seleccione una Mascota", on_pet_selected)).pack(side="right", padx=5)  
         elif prop == "fecha":
@@ -174,11 +174,11 @@ def modify_appointment(id, root, container):
             selected_treatment_id = {"id": current_data[HEADER_APPOINTMENT.index(prop)]}
             treatment = list(map(lambda t: [t['id'], t['description']], get_all_treatments()))
             current_treatment = get_treatment_by_id(selected_treatment_id["id"])
-            treatment_label_vatiable = tk.StringVar(value=f'{current_treatment['description']}')
-            tk.Label(treatment_frame, textvariable=treatment_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            treatment_label_variable = tk.StringVar(value=f'{current_treatment['description']}')
+            tk.Label(treatment_frame, textvariable=treatment_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_treatment_selected(treatment):
                 id, description = treatment
-                treatment_label_vatiable.set(f"{description}")
+                treatment_label_variable.set(f"{description}")
                 selected_treatment_id["id"] = id
             tk.Button(treatment_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, treatment, f"Seleccione una Tratamiento", on_treatment_selected)).pack(side="right", padx=5)
 

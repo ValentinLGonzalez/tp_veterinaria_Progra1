@@ -22,12 +22,12 @@ def on_create_new_pet(root, container):
             tk.Label(owner_frame, text=f"Dueño:").pack(anchor="w", padx=10, pady=(10, 0))
             selected_owner_id = {"id": None}
             owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
-            owner_label_vatiable = tk.StringVar()
-            tk.Label(owner_frame, textvariable=owner_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            owner_label_variable = tk.StringVar()
+            tk.Label(owner_frame, textvariable=owner_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_owner_selected(owner):
                 id, nombre, apellido = owner
                 completed_name = f"{nombre} {apellido}"
-                owner_label_vatiable.set(completed_name)
+                owner_label_variable.set(completed_name)
                 selected_owner_id["id"] = id
             tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_create, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
                 
@@ -121,12 +121,12 @@ def modify_pet(id, root, container):
             selected_owner_id = {"id": current_data[HEADER_PET.index(prop)]}
             owners = list(map(lambda o: [o[HEADER_OWNER.index("owner_id")], o[HEADER_OWNER.index("nombre")], o[HEADER_OWNER.index("apellido")]], get_all_owners_active()))
             current_owner = get_data_owner_by_id(selected_owner_id["id"])
-            owner_label_vatiable = tk.StringVar(value=f"{current_owner[HEADER_OWNER.index("nombre")]} {current_owner[HEADER_OWNER.index("apellido")]}")
-            tk.Label(owner_frame, textvariable=owner_label_vatiable).pack(anchor="w", padx=10, pady=(10, 0))
+            owner_label_variable = tk.StringVar(value=f"{current_owner[HEADER_OWNER.index("nombre")]} {current_owner[HEADER_OWNER.index("apellido")]}")
+            tk.Label(owner_frame, textvariable=owner_label_variable).pack(anchor="w", padx=10, pady=(10, 0))
             def on_owner_selected(owner):
                 id, nombre, apellido = owner
                 completed_name = f"{nombre} {apellido}"
-                owner_label_vatiable.set(completed_name)
+                owner_label_variable.set(completed_name)
                 selected_owner_id["id"] = id
             tk.Button(owner_frame, text="Elegir", command=lambda:show_modal_selector(modal_modify, owners, f"Seleccione un Dueño", on_owner_selected)).pack(side="right", padx=5)
         elif prop == "nombre":
