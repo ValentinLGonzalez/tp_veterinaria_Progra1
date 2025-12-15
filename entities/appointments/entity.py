@@ -351,3 +351,16 @@ def show_all_appointments_active():
     appointments = get_all_appointments_with()
     appointments_active = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
     return [get_readable_appointment(apt) for apt in appointments_active]
+
+def get_all_appointments_active():
+    """
+    Returns all active appointments in a readable format.
+
+    Loads all appointments, filters those marked as active.
+
+    Returns:
+        list[str]: A list of active appointments.
+    """
+    appointments = get_all_appointments_with()
+    appointments_active = list(filter(lambda apt: apt[HEADER_APPOINTMENT.index("active")] == 'True', appointments))
+    return appointments_active
